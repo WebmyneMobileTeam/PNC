@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PNC.iml" filepath="$PROJECT_DIR$/PNC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Parvarish-NutriCalculator.iml" filepath="$PROJECT_DIR$/Parvarish-NutriCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

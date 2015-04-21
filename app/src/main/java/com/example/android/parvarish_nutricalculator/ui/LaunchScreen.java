@@ -19,21 +19,14 @@ public class LaunchScreen extends ActionBarActivity {
         new CountDownTimer(2000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-
             }
-
             @Override
             public void onFinish() {
-
                 Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
                 startActivity(iStartScreen);
                 finish();
-
             }
         }.start();
-
-
-
 
     }
 
