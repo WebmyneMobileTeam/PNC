@@ -13,6 +13,8 @@
         style="@style/both_match_parent">
 
         <RelativeLayout
+            android:id="@+id/relTopProfile"
+
             android:background="@color/color_button_darkred"
             android:layout_weight="1.5"
             style="@style/both_match_parent">

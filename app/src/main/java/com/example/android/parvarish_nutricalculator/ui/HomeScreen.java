@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
@@ -22,7 +23,7 @@ import java.lang.reflect.Method;
 
 public class HomeScreen extends ActionBarActivity {
 
-
+    private RelativeLayout relTopProfile;
     private String[] names1 = {"My Recipes", "Profiles", "Add Recipe"};
     private String[] names2 = {"Diary", "Friends", "Welcome Tour"};
     private int[] icons1 = {R.drawable.myrecipes, R.drawable.profile, R.drawable.addrecipe};
@@ -48,6 +49,15 @@ public class HomeScreen extends ActionBarActivity {
     }
 
     private void setupButtons() {
+        relTopProfile = (RelativeLayout)findViewById(R.id.relTopProfile);
+
+        relTopProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(HomeScreen.this,ProfileScreen.class);
+                startActivity(i);
+            }
+        });
 
         linearFirst = (LinearLayout)findViewById(R.id.firstRow);
         linearSecond = (LinearLayout)findViewById(R.id.secondRow);
