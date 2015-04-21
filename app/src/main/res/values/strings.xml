@@ -19,6 +19,8 @@
     <string name="actionGlossary">Glossary of Ingredients</string>
     <string name="actionTour">Welcome Tour</string>
     <string name="title_activity_profile_screen">ProfileScreen</string>
+    <string name="title_activity_add_recipe_web_screen">AddRecipeWebScreen</string>
+    <string name="title_activity_add_recipe_manual_screen">AddRecipeManualScreen</string>
 
 
 

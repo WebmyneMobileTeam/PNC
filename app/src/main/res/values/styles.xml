@@ -41,6 +41,15 @@
 
     </style>
 
+    <style name="context_menu_red_button" parent="both_match_wrap_content">
+        <item name="android:background">@color/color_button_darkred</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/normal_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+
+    </style>
+
     <style name="full_button_white" parent="both_match_wrap_content">
         <item name="android:background">@android:color/white</item>
         <item name="android:textColor">@color/color_button_darkred</item>

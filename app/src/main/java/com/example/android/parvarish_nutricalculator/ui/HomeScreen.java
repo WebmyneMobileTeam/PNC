@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.ui.StartScreen;
 
 import java.lang.reflect.Field;
@@ -65,6 +66,19 @@ public class HomeScreen extends ActionBarActivity {
                     startActivity(i);
                     break;
                 case 2:
+                    CustomDialog customDialog=new CustomDialog(HomeScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+                    customDialog.show();
+                    customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
+                        @Override
+                        public void addRecipeFromWeb() {
+
+                        }
+
+                        @Override
+                        public void addRecipeManually() {
+
+                        }
+                    });
                     break;
 
             }

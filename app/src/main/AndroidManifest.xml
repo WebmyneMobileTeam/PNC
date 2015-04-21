@@ -36,6 +36,14 @@
             android:name=".ui.ProfileScreen"
             android:label="@string/title_activity_profile_screen" >
         </activity>
+        <activity
+            android:name=".ui.AddRecipeWebScreen"
+            android:label="@string/title_activity_add_recipe_web_screen" >
+        </activity>
+        <activity
+            android:name=".ui.AddRecipeManualScreen"
+            android:label="@string/title_activity_add_recipe_manual_screen" >
+        </activity>
     </application>
 
 </manifest>

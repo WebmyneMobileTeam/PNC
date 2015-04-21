@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:minWidth="800dp"
+
+    android:layout_height="match_parent"
+    android:background="#70000000"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/addRecipeFromWeb"
+        style="@style/context_menu_red_button"
+        android:text="Add Recipe from Web"
+
+
+        android:padding="16dp"
+        />
+<View
+    android:layout_width="match_parent"
+    android:layout_height="2dp"
+    android:background="#fff"/>
+    <Button
+       
+        android:id="@+id/addRecipeManually"
+        style="@style/context_menu_red_button"
+        android:text="Enter Recipe Manually"
+
+        android:padding="16dp"
+        />
+
+</LinearLayout>
