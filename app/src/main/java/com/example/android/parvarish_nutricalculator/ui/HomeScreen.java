@@ -58,7 +58,7 @@ public class HomeScreen extends ActionBarActivity {
     private View.OnClickListener firstLayoutItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch ((int)v.getId()){
+            switch ((int)v.getTag()){
                 case 0:
                     break;
                 case 1:
