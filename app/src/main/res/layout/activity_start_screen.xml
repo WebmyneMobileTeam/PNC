@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+    tools:context=".StartScreen">
+
+    <FrameLayout
+        android:layout_above="@+id/bottomstartlinear"
+        android:layout_below="@+id/appbar"
+        style="@style/both_match_parent">
+
+        <ImageView
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@drawable/start_screen_bg"
+            style="@style/full_imageView" />
+
+        <ImageView
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@drawable/start_screen_logo"
+            style="@style/both_wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="32dp"
+            android:layout_gravity="top|center_horizontal"
+            android:src="@drawable/start_screen_banner"
+            style="@style/both_wrap_content" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="top|right"
+            android:src="@drawable/start_screen_header"
+            style="@style/both_wrap_content" />
+
+    </FrameLayout>
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/app_bar"></include>
+
+    <LinearLayout
+        android:id="@+id/bottomstartlinear"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        style="@style/both_match_wrap_content">
+
+        <me.drakeet.library.UIButton
+            android:id="@+id/btnSignUpStartScreen"
+            android:text="Sign Up"
+            style="@style/full_button_red"
+            drakeet:alpha_pressed="80"
+            drakeet:color_pressed="#d1d1d1" />
+
+        <me.drakeet.library.UIButton
+            android:id="@+id/btnLoginStartScreen"
+            android:text="Login"
+            style="@style/full_button_white"
+            drakeet:alpha_pressed="80"
+            drakeet:color_pressed="#464646" />
+
+    </LinearLayout>
+
+</RelativeLayout>

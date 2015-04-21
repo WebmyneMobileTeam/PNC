@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
+
+    <include layout="@layout/app_bar"></include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_below="@+id/appbar"
+        style="@style/both_match_parent">
+
+        <RelativeLayout
+            android:background="@color/color_button_darkred"
+            android:layout_weight="1.5"
+            style="@style/both_match_parent">
+
+            <ImageView
+                style="@style/both_wrap_content"
+                android:src="@drawable/white_heart"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            style="@style/both_match_parent">
+
+            <LinearLayout
+                android:layout_centerInParent="true"
+                style="@style/both_match_wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/firstRow"
+                    style="@style/both_match_wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/item_home"></include>
+                    <include layout="@layout/item_home"></include>
+                    <include layout="@layout/item_home"></include>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/secondRow"
+                    style="@style/both_match_wrap_content"
+                    android:orientation="horizontal">
+
+                    <include layout="@layout/item_home"></include>
+                    <include layout="@layout/item_home"></include>
+                    <include layout="@layout/item_home"></include>
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

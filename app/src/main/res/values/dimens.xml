@@ -1,0 +1,32 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="ultra_small_margin">4dp</dimen>
+    <dimen name="normal_text">18sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="small_text">14sp</dimen>
+    <dimen name="ultra_small_text">12sp</dimen>
+
+    <!-- Preference fragment padding, bottom -->
+    <dimen name="preference_fragment_padding_bottom">0dp</dimen>
+    <!-- Preference fragment padding, sides -->
+    <dimen name="preference_fragment_padding_side">16dp</dimen>
+
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
+
+<!--  ratio is 7:4 normal 4 i.e {28:16}-->
+    <dimen name="flag_width1">28dp</dimen>
+    <dimen name="flag_height1">16dp</dimen>
+
+    <dimen name="forgot_button_width">180dp</dimen>
+    <dimen name="forgot_button_height">30dp</dimen>
+    <dimen name="forgot_button_corner">14dp</dimen>
+
+    <dimen name="homeScreenImageSize">28dp</dimen>
+
+
+
+</resources>

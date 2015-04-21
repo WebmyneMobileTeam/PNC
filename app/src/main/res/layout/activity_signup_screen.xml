@@ -1,0 +1,142 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+    tools:context=".StartScreen">
+
+    <FrameLayout
+        android:layout_above="@+id/bottomstartlinear"
+        android:layout_below="@+id/appbar"
+        style="@style/both_match_parent">
+
+
+        <LinearLayout
+            android:padding="@dimen/activity_margin"
+            android:orientation="vertical"
+            style="@style/both_match_wrap_content">
+
+            <me.drakeet.library.UIButton
+                android:id="@+id/btnSignUpFacebook"
+                android:text="Sign up with Facebook"
+                style="@style/full_button_facebook"
+                drakeet:alpha_pressed="80"
+                drakeet:color_pressed="#464646" />
+
+            <TextView
+                style="@style/smallTextView"
+                android:layout_marginTop="8dp"
+                android:textStyle="italic"
+                android:text="We use facebook to make signups easier. We will never share anything with your friends without your permission."
+                android:id="@+id/staticText" />
+
+
+            <LinearLayout
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                style="@style/both_match_wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_button_darkred"></View>
+
+                <TextView
+                    android:layout_weight="1.5"
+                    style="@style/normalTextView"
+                    android:text="OR"
+                    android:textColor="#7A7C7C"
+                    android:textStyle="italic" />
+
+                <View
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/color_button_darkred"></View>
+
+
+            </LinearLayout>
+
+            <ScrollView
+                style="@style/both_match_parent"
+                android:layout_marginTop="16dp">
+
+                <LinearLayout
+                    style="@style/both_match_parent"
+
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edSignUpUserName"
+                        android:drawablePadding="16dp"
+                        android:hint="username"
+                        android:drawableLeft="@drawable/ic_user"
+                        style="@style/edittext_login" />
+
+                    <EditText
+                        android:id="@+id/edSignUpPassword"
+                        android:drawablePadding="16dp"
+                        android:inputType="textPassword"
+                        android:hint="password"
+                        android:layout_marginTop="4dp"
+                        android:drawableLeft="@drawable/ic_lock"
+                        style="@style/edittext_login" />
+
+
+                    <EditText
+                        android:id="@+id/edSignUpEmail"
+                        android:layout_marginTop="4dp"
+                        android:drawablePadding="16dp"
+                        android:hint="email"
+                        android:drawableLeft="@drawable/ic_msg"
+                        style="@style/edittext_login" />
+
+
+                    <EditText
+                        android:id="@+id/edSignUpMobile"
+                        android:layout_marginTop="4dp"
+                        android:drawablePadding="16dp"
+                        android:hint="mobile"
+                        android:drawableLeft="@drawable/ic_phone"
+                        style="@style/edittext_login" />
+
+
+                    <EditText
+                        android:id="@+id/edSignUpCity"
+                        android:layout_marginTop="4dp"
+                        android:drawablePadding="16dp"
+                        android:hint="city"
+                        android:drawableLeft="@drawable/ic_city"
+                        style="@style/edittext_login" />
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <include
+        android:id="@+id/appbar"
+        layout="@layout/app_bar"></include>
+
+    <LinearLayout
+        android:id="@+id/bottomstartlinear"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        style="@style/both_match_wrap_content">
+
+        <me.drakeet.library.UIButton
+            android:id="@+id/btnSignUp"
+            android:text="Sign Up"
+            style="@style/full_button_red"
+            drakeet:alpha_pressed="80"
+            drakeet:color_pressed="#464646" />
+    </LinearLayout>
+
+
+</RelativeLayout>

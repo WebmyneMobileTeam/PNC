@@ -1,0 +1,69 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.LaunchScreen">
+
+
+    <item
+
+        android:id="@+id/actionHome"
+        android:title="@string/actionHome"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionProfile"
+        android:title="@string/actionProfile"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionMyRecipes"
+        android:title="@string/actionMyRecipes"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionDiary"
+        android:title="@string/actionDiary"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionFriends"
+        android:title="@string/actionFriends"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionNutriGuide"
+        android:title="@string/actionNutriGuide"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionGlossary"
+        android:title="@string/actionGlossary"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionTour"
+        android:title="@string/actionTour"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_more_vert"
+        app:showAsAction="never" />
+
+
+
+
+
+
+</menu>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="red">#FFC93437</color>
+    <color name="blue">#FF375BF1</color>
+    <color name="yellow">#FFF7D23E</color>
+    <color name="primaryColor">#C6A347</color>
+    <color name="primaryColorDark">#9e8238</color>
+    <drawable name="list_normal">#00000000</drawable>
+    <drawable name="list_selected">#d1d1d1</drawable>
+
+    <color name="color_button_darkred">#D13B3D</color>
+    <color name="color_facebook">#3D599A</color>
+
+</resources>

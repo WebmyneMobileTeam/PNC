@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.android.parvarish_nutricalculator.ui.widgets.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_weight="1"
+    android:padding="16dp"
+    android:layout_margin="8dp"
+    android:gravity="center"
+    android:background="#dcdcdc"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/itemImageHome"
+        style="@style/imageViewHome" />
+
+    <TextView
+        android:id="@+id/itemTextHome"
+        style="@style/normalTextView"
+        android:text="Text" />
+
+
+</com.example.android.parvarish_nutricalculator.ui.widgets.SquareLayout>
