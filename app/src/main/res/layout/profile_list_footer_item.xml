@@ -3,18 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
     android:paddingTop="16dp"
+    android:background="#fff"
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
 
 
 
     <LinearLayout
-        android:padding="16dp"
-        android:background="@drawable/square_background"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -31,7 +26,7 @@
                 android:id="@+id/btnChangePassword"
                 android:text="Add Baby"
                 android:textColor="#ffffff"
-                android:background="@drawable/ed_background" />
+                android:background="@color/color_button_darkred" />
 
 </LinearLayout>
 </LinearLayout>

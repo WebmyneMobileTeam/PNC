@@ -54,6 +54,40 @@ public class HomeScreen extends ActionBarActivity {
        setupButtons();
     }
 
+    private View.OnClickListener firstLayoutItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch ((int)v.getId()){
+                case 0:
+                    break;
+                case 1:
+                    Intent i = new Intent(HomeScreen.this,ProfileScreen.class);
+                    startActivity(i);
+                    break;
+                case 2:
+                    break;
+
+            }
+
+        }
+    };
+
+    private View.OnClickListener secondLayoutItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch ((int)v.getId()){
+                case 0:
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    break;
+
+            }
+        }
+    };
+
     private void setupButtons() {
         relTopProfile = (RelativeLayout)findViewById(R.id.relTopProfile);
 
@@ -71,6 +105,8 @@ public class HomeScreen extends ActionBarActivity {
         for(int i=0;i<linearFirst.getChildCount();i++){
 
             ViewGroup vg = (ViewGroup)linearFirst.getChildAt(i);
+            vg.setTag(i);
+            vg.setOnClickListener(firstLayoutItemClickListener);
             ImageView img = (ImageView)vg.findViewById(R.id.itemImageHome);
             TextView txt = (TextView)vg.findViewById(R.id.itemTextHome);
             img.setImageResource(icons1[i]);
@@ -80,6 +116,8 @@ public class HomeScreen extends ActionBarActivity {
         for(int i=0;i<linearSecond.getChildCount();i++){
 
             ViewGroup vg = (ViewGroup)linearSecond.getChildAt(i);
+            vg.setTag(i);
+            vg.setOnClickListener(secondLayoutItemClickListener);
             ImageView img = (ImageView)vg.findViewById(R.id.itemImageHome);
             TextView txt = (TextView)vg.findViewById(R.id.itemTextHome);
             img.setImageResource(icons2[i]);
@@ -144,13 +182,18 @@ public class HomeScreen extends ActionBarActivity {
         <string name="actionTour"></string>
         <string name="title_activity_profile_screen"></string>*/
 
+        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
+
+        int[] drawableImage = {R.drawable.drawable_profile,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.drawable_friends,R.drawable.drawable_friends,R.drawable.drawable_tour};
+
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
+
         popupWindow.setAnchorView(menuItemView);
-
-        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour","ProfileScreen"};
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
+        popupWindow.setWidth(400);
 
-        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList));
+        popupWindow.setModal(true);
+        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage));
         popupWindow.show();
 
     }
@@ -158,13 +201,17 @@ public class HomeScreen extends ActionBarActivity {
 
     public static class UsersAdapter extends ArrayAdapter<String> {
         // View lookup cache
+        private ArrayList<String> users;
+        private int[] imgIcons;
         private static class ViewHolder {
             TextView name;
             TextView home;
         }
 
-        public UsersAdapter(Context context, ArrayList<String> users) {
+        public UsersAdapter(Context context, ArrayList<String> users,int[] img) {
             super(context, R.layout.item_popup, users);
+            this.users = users;
+            this.imgIcons = img;
         }
 
         @Override
@@ -177,6 +224,12 @@ public class HomeScreen extends ActionBarActivity {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.item_popup,parent,false);
+
+
+                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                itemNames.setText(users.get(position));
+                imgIcon.setImageResource(imgIcons[position]);
 
                 convertView.setTag(viewHolder);
             } else {

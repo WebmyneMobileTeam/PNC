@@ -54,7 +54,7 @@
     <me.drakeet.library.UIButton
         android:layout_marginTop="10dp"
         android:id="@+id/btnLoginFacebook"
-        android:text="Login with Facebook"
+        android:text="Connect with Facebook"
         style="@style/full_button_facebook"
         drakeet:alpha_pressed="80"
         drakeet:color_pressed="#464646" />
