@@ -23,6 +23,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
      //   listFeeds = (ListView)findViewById(R.id.listFeeds);
 
 
+
       /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
         View footerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
         profileList.addHeaderView(headerView);
