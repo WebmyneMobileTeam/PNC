@@ -19,6 +19,7 @@ public class StartScreen extends ActionBarActivity {
     private UIButton btnLogin;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
