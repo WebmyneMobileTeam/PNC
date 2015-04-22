@@ -9,11 +9,8 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/addRecipeFromWeb"
+        android:id="@+id/topButton"
         style="@style/context_menu_red_button"
-        android:text="Add Recipe from Web"
-
-
         android:padding="16dp"
         />
 <View
@@ -22,10 +19,8 @@
     android:background="#fff"/>
     <Button
        
-        android:id="@+id/addRecipeManually"
+        android:id="@+id/bottomButton"
         style="@style/context_menu_red_button"
-        android:text="Enter Recipe Manually"
-
         android:padding="16dp"
         />
 

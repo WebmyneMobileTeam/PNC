@@ -66,16 +66,17 @@ public class HomeScreen extends ActionBarActivity {
                     startActivity(i);
                     break;
                 case 2:
-                    CustomDialog customDialog=new CustomDialog(HomeScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+
+                    CustomDialog customDialog=new CustomDialog(HomeScreen.this,"Add Recipe from Web","Enter Recipe Manually",android.R.style.Theme_Translucent_NoTitleBar);
                     customDialog.show();
                     customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                         @Override
-                        public void addRecipeFromWeb() {
+                        public void topButton() {
 
                         }
 
                         @Override
-                        public void addRecipeManually() {
+                        public void bottomButton() {
 
                         }
                     });
@@ -89,11 +90,12 @@ public class HomeScreen extends ActionBarActivity {
     private View.OnClickListener secondLayoutItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch ((int)v.getId()){
+            switch ((int)v.getTag()){
                 case 0:
                     break;
                 case 1:
-
+                    Intent i = new Intent(HomeScreen.this,FriendsScreen.class);
+                    startActivity(i);
                     break;
                 case 2:
                     break;

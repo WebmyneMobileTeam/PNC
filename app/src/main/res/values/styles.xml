@@ -113,6 +113,8 @@
         <item name="android:padding">8dp</item>
     </style>
 
+
+
     <style name="full_imageView" parent="both_match_parent">
         <item name="android:scaleType">centerCrop</item>
     </style>

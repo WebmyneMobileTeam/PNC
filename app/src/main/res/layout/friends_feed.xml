@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
+
+    <LinearLayout
+        android:background="@color/color_button_darkred"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/white_heart"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/txtName"
+            android:padding="16dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Richa Sharma"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <ListView
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        android:padding="16dp"
+        android:id="@+id/listFeeds"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        </ListView>
+
+</LinearLayout>

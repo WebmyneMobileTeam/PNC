@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#EDEDED"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
+    <EditText
+
+        android:background="#DBDBDB"
+        android:textColor="#000000"
+        android:textSize="@dimen/normal_text"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|left"
+        android:textStyle="normal"
+        android:singleLine="true"
+        android:padding="8dp"
+        android:textColorHint="#000000"
+        android:id="@+id/edUserNameLogin"
+        android:drawablePadding="16dp"
+        android:hint="Search Recipe / Ingredient"
+        android:drawableRight="@drawable/ic_user"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>

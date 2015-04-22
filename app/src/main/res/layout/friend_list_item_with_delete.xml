@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
+
+    <LinearLayout
+        android:layout_margin="1dp"
+        android:background="#DBDBDB"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:background="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:text="Dummy Text"
+            android:textColor="#000000"
+            android:textStyle="normal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:background="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

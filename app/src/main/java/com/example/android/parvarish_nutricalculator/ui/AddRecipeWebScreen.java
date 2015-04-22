@@ -15,7 +15,7 @@ public class AddRecipeWebScreen extends ActionBarActivity {
         setContentView(R.layout.activity_add_recipe_web_screen);
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_recipe_web_screen, menu);
@@ -35,5 +35,5 @@ public class AddRecipeWebScreen extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }

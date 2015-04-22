@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
@@ -18,17 +17,20 @@ public class CustomDialog extends Dialog implements
     CustomDialogInterface customDialogInterface;
     public Activity c;
     public Dialog d;
-    public TextView addRecipeFromWeb, addRecipeManually;
+    private String msgText1,msgText2;
+    public TextView topButton, bottomButton;
 
-    public CustomDialog(Activity a,int theme) {
+    public CustomDialog(Activity a,String txt1,String txt2,int theme) {
         super(a,theme);
 
         // TODO Auto-generated constructor stub
         this.c = a;
+        this.msgText1 = txt1;
+        this.msgText2 = txt2;
     }
 
     public void setResponse(CustomDialogInterface customDialogInterface){
-  this.customDialogInterface=customDialogInterface;
+            this.customDialogInterface=customDialogInterface;
     }
 
     @Override
@@ -37,21 +39,27 @@ public class CustomDialog extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.custom_dialog);
 
-        addRecipeFromWeb = (TextView) findViewById(R.id.addRecipeFromWeb);
-        addRecipeManually = (TextView) findViewById(R.id.addRecipeManually);
-        addRecipeFromWeb.setOnClickListener(this);
-        addRecipeManually.setOnClickListener(this);
+        topButton = (TextView) findViewById(R.id.topButton);
+        bottomButton = (TextView) findViewById(R.id.bottomButton);
+
+        topButton.setText(msgText1);
+        bottomButton.setText(msgText2);
+
+
+
+        topButton.setOnClickListener(this);
+        bottomButton.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.addRecipeFromWeb:
-                customDialogInterface.addRecipeFromWeb();
+            case R.id.topButton:
+                customDialogInterface.topButton();
                 break;
-            case R.id.addRecipeManually:
-                customDialogInterface.addRecipeManually();
+            case R.id.bottomButton:
+                customDialogInterface.bottomButton();
                 break;
             default:
                 break;
@@ -61,9 +69,9 @@ public class CustomDialog extends Dialog implements
 
     public interface CustomDialogInterface {
 
-        public void addRecipeFromWeb();
+        public void topButton();
 
-        public void addRecipeManually();
+        public void bottomButton();
 
 
 
