@@ -1,29 +1,26 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.example.android.parvarish_nutricalculator.R;
-import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 
-public class FriendsFeedsScreen extends ActionBarActivity {
+public class ViewFriendsRecipe extends ActionBarActivity {
 
     private ListView listFeeds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.friends_feed);
+        setContentView(R.layout.activity_view_freinds_recipie);
 
-        listFeeds = (ListView)findViewById(R.id.listFeeds);
+     //   listFeeds = (ListView)findViewById(R.id.listFeeds);
 
 
       /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
@@ -33,19 +30,11 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
         profileList.setAdapter(adp);*/
 
-        View headerView = ((LayoutInflater) FriendsFeedsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friends_feed_item_view_header, null, false);
+      /*  View headerView = ((LayoutInflater) ViewFriendsRecipe.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friends_feed_item_view_header, null, false);
         listFeeds.addHeaderView(headerView);
 
-        CustomAdapter adp = new CustomAdapter(FriendsFeedsScreen.this);
-        listFeeds.setAdapter(adp);
-
-        listFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(FriendsFeedsScreen.this,ViewFriendsRecipe.class);
-                startActivity(i);
-            }
-        });
+        CustomAdapter adp = new CustomAdapter(ViewFriendsRecipe.this);
+        listFeeds.setAdapter(adp);*/
 
 
 
