@@ -69,7 +69,7 @@
                 android:id="@+id/edUserNameLogin"
                 android:drawablePadding="16dp"
                 android:hint="Search Friend"
-                android:drawableRight="@drawable/ic_user"
+                android:drawableRight="@drawable/icon_search"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="2"
@@ -77,16 +77,21 @@
 
 
             <ImageView
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:background="@mipmap/ic_launcher"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_addfreind"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <ImageView
+                android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:background="@mipmap/ic_launcher"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_addfreind"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
 
 

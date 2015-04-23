@@ -30,16 +30,20 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:padding="10dp"
+            android:layout_marginRight="16dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
-            android:background="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:background="@drawable/icon_blackselect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:layout_marginRight="12dp"
+            android:padding="8dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
-            android:background="@drawable/abc_btn_check_to_on_mtrl_000"
+            android:background="@drawable/ic_icon_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

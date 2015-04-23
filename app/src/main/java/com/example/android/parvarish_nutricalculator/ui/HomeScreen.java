@@ -2,6 +2,8 @@ package com.example.android.parvarish_nutricalculator.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
@@ -167,57 +169,53 @@ public class HomeScreen extends ActionBarActivity {
             case R.id.actionMore:
                 openMore();
                 break;
+            case R.id.actionSettings:
+                openSettings();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void openSettings() {
+
+        View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
+
+        String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
+
+        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+
+        ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
+
+        popupWindow.setAnchorView(menuSettings);
+        ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
+        popupWindow.setWidth(500);
+
+        popupWindow.setModal(true);
+        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,true));
+        popupWindow.show();
+
+    }
+
+
+
+
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
-   /*     PopupMenu popup = new PopupMenu(this,menuItemView);
-
-        try {
-            Field[] fields = popup.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                if ("mPopup".equals(field.getName())) {
-                    field.setAccessible(true);
-                    Object menuPopupHelper = field.get(popup);
-                    Class<?> classPopupHelper = Class.forName(menuPopupHelper
-                            .getClass().getName());
-                    Method setForceIcons = classPopupHelper.getMethod(
-                            "setForceShowIcon", boolean.class);
-                    setForceIcons.invoke(menuPopupHelper, true);
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        popup.inflate(R.menu.menu_more_home);
-        popup.show();*/
-
-       /* <string name="actionHome"></string>
-        <string name="actionProfile"></string>
-        <string name="actionMyRecipes"></string>
-        <string name="actionDiary"></string>
-        <string name="actionFriends"></string>
-        <string name="actionNutriGuide"></string>
-        <string name="actionGlossary"></string>
-        <string name="actionTour"></string>
-        <string name="title_activity_profile_screen"></string>*/
 
         String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
 
-        int[] drawableImage = {R.drawable.drawable_profile,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.drawable_friends,R.drawable.drawable_friends,R.drawable.drawable_tour};
+        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
 
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
 
         popupWindow.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
-        popupWindow.setWidth(400);
+        popupWindow.setWidth(500);
 
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this, arrayList, drawableImage));
+        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -243,15 +241,17 @@ public class HomeScreen extends ActionBarActivity {
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
+        private boolean isSettings;
         private static class ViewHolder {
             TextView name;
             TextView home;
         }
 
-        public UsersAdapter(Context context, ArrayList<String> users,int[] img) {
+        public UsersAdapter(Context context, ArrayList<String> users,int[] img,boolean value) {
             super(context, R.layout.item_popup, users);
             this.users = users;
             this.imgIcons = img;
+            this.isSettings=value;
         }
 
         @Override
@@ -268,8 +268,23 @@ public class HomeScreen extends ActionBarActivity {
 
                 TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
                 ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
-                itemNames.setText(users.get(position));
-                imgIcon.setImageResource(imgIcons[position]);
+
+               if(isSettings){
+                   itemNames.setText(users.get(position));
+                   int col = Color.parseColor("#D13B3D");
+                   imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
+                   imgIcon.setImageResource(R.drawable.iconsettings);
+                   if(position!=0) {
+                       imgIcon.setVisibility(View.INVISIBLE);
+                   }
+
+               }else{
+                   itemNames.setText(users.get(position));
+                   imgIcon.setImageResource(imgIcons[position]);
+                }
+
+
+
 
                 convertView.setTag(viewHolder);
             } else {
