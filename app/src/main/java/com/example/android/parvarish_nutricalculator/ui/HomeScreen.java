@@ -198,6 +198,14 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
 
+
+        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(HomeScreen.this,"Item - "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -220,13 +228,7 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setModal(true);
         popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
-        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-            }
-        });
 
     }
 
@@ -245,6 +247,7 @@ public class HomeScreen extends ActionBarActivity {
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
+        Context ctx;
         private static class ViewHolder {
             TextView name;
             TextView home;
@@ -253,12 +256,13 @@ public class HomeScreen extends ActionBarActivity {
         public UsersAdapter(Context context, ArrayList<String> users,int[] img,boolean value) {
             super(context, R.layout.item_popup, users);
             this.users = users;
+            this.ctx = context;
             this.imgIcons = img;
             this.isSettings=value;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             // Get the data item for this position
 
             // Check if an existing view is being reused, otherwise inflate the view
@@ -293,6 +297,17 @@ public class HomeScreen extends ActionBarActivity {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
+
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(ctx,"Item - "+position,Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+
             // Populate the data into the template view using the data object
 
             // Return the completed view to render on screen
