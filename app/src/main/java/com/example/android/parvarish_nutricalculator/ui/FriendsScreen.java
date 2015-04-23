@@ -58,11 +58,7 @@ public class FriendsScreen extends ActionBarActivity {
             }
         });
 
-
     }
-
-
-
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
         private Context ctx;

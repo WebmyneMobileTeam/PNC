@@ -17,6 +17,7 @@
         android:id="@+id/txtItemName"
         android:textColor="#000"
         android:textStyle="bold"
+        android:textSize="@dimen/normal_text"
         android:text="Name" />
 
 </LinearLayout>

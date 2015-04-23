@@ -29,5 +29,4 @@ public class LaunchScreen extends ActionBarActivity {
         }.start();
 
     }
-
 }

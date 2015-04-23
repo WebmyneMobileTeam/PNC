@@ -41,8 +41,6 @@ public class ProfileScreen extends ActionBarActivity {
         profileList.addFooterView(footerView);
         CustomAdapter adp = new CustomAdapter(ProfileScreen.this);
         profileList.setAdapter(adp);
-
-
     }
 
     @Override

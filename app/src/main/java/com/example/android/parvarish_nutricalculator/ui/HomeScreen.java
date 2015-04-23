@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,11 +25,8 @@ import android.widget.Toast;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
-import com.example.android.parvarish_nutricalculator.ui.StartScreen;
 import com.facebook.login.LoginManager;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -104,7 +99,7 @@ public class HomeScreen extends ActionBarActivity {
         public void onClick(View v) {
             switch ((int)v.getTag()){
                 case 0:
-                    logoutFromApp();
+
                     break;
                 case 1:
                     Intent i = new Intent(HomeScreen.this,FriendsScreen.class);
@@ -195,7 +190,7 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setWidth(500);
 
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,true));
+        popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
 
 
@@ -226,13 +221,13 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setWidth(500);
 
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(HomeScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
-
 
     }
 
     private void logoutFromApp() {
+
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(HomeScreen.this);
         LoginManager.getInstance().logOut();
@@ -241,19 +236,19 @@ public class HomeScreen extends ActionBarActivity {
         finish();
     }
 
+    public  class SettingsAdapter extends ArrayAdapter<String> {
 
-    public static class UsersAdapter extends ArrayAdapter<String> {
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
         Context ctx;
-        private static class ViewHolder {
+        private  class ViewHolder {
             TextView name;
             TextView home;
         }
 
-        public UsersAdapter(Context context, ArrayList<String> users,int[] img,boolean value) {
+        public SettingsAdapter(Context context, ArrayList<String> users, int[] img, boolean value) {
             super(context, R.layout.item_popup, users);
             this.users = users;
             this.ctx = context;
@@ -272,6 +267,79 @@ public class HomeScreen extends ActionBarActivity {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.item_popup,parent,false);
 
+                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+
+                if(isSettings){
+                    itemNames.setText(users.get(position));
+                    int col = Color.parseColor("#D13B3D");
+                    imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
+                    imgIcon.setImageResource(R.drawable.iconsettings);
+                    if(position!=0) {
+                        imgIcon.setVisibility(View.INVISIBLE);
+                    }
+
+                }else{
+                    itemNames.setText(users.get(position));
+                    imgIcon.setImageResource(imgIcons[position]);
+                }
+
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(position == 7){
+                        logoutFromApp();
+                    }
+
+
+                }
+            });
+
+
+
+            // Populate the data into the template view using the data object
+
+            // Return the completed view to render on screen
+            return convertView;
+        }
+    }
+
+    public  class MoreAdapter extends ArrayAdapter<String> {
+
+        // View lookup cache
+        private ArrayList<String> users;
+        private int[] imgIcons;
+        private boolean isSettings;
+        Context ctx;
+        private  class ViewHolder {
+            TextView name;
+            TextView home;
+        }
+
+        public MoreAdapter(Context context, ArrayList<String> users, int[] img, boolean value) {
+            super(context, R.layout.item_popup, users);
+            this.users = users;
+            this.ctx = context;
+            this.imgIcons = img;
+            this.isSettings=value;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            // Get the data item for this position
+
+            // Check if an existing view is being reused, otherwise inflate the view
+            ViewHolder viewHolder; // view lookup cache stored in tag
+            if (convertView == null) {
+                viewHolder = new ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.item_popup,parent,false);
 
                 TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
                 ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
@@ -290,20 +358,17 @@ public class HomeScreen extends ActionBarActivity {
                    imgIcon.setImageResource(imgIcons[position]);
                 }
 
-
-
-
-
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(ctx,"Item - "+position,Toast.LENGTH_SHORT).show();
+
+
+
                 }
             });
 

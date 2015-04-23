@@ -7,71 +7,66 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
+
+import java.util.ArrayList;
 
 public class ViewFriendsRecipe extends ActionBarActivity {
 
-    private ListView listFeeds;
+    private LinearLayout linearTableDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_freinds_recipie);
 
-     //   listFeeds = (ListView)findViewById(R.id.listFeeds);
-
-
-
-      /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
-        View footerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
-        profileList.addHeaderView(headerView);
-        profileList.addFooterView(footerView);
-        CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
-        profileList.setAdapter(adp);*/
-
-      /*  View headerView = ((LayoutInflater) ViewFriendsRecipe.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friends_feed_item_view_header, null, false);
-        listFeeds.addHeaderView(headerView);
-
-        CustomAdapter adp = new CustomAdapter(ViewFriendsRecipe.this);
-        listFeeds.setAdapter(adp);*/
-
-
+        linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
+        addTableView();
 
 
     }
 
+    private void addTableView() {
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-    class CustomAdapter extends BaseAdapter{
-        LayoutInflater layoutInflator;
-        private Context ctx;
-        public CustomAdapter(Context ctx){
-            this.ctx = ctx;
-        }
+        MyTableView tableView = new MyTableView(ViewFriendsRecipe.this);
+        tableView.setPadding(8,8,8,8);
 
-        @Override
-        public int getCount() {
-            return 10;
-        }
+        // setting weights
+        ArrayList<Float> weights = new ArrayList<>();
+        weights.add(1f);
+        weights.add(1f);
+        weights.add(0.5f);
+        tableView.setWeights(weights);
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
+        linearTableDetails.addView(tableView, params);
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+        ArrayList<String> values = new ArrayList<>();
+        values.add("Nutrients");
+        values.add("ICMR Recommandation");
+        values.add("Values");
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = convertView;
-            view = layoutInflator.inflate(R.layout.friend_feed_item_view, parent, false);
-            return view;
-        }
+        tableView.addRow(values, "#000000");
+        tableView.addDivider();
+
+        ArrayList<String> values2 = new ArrayList<>();
+        values2.add("Energy");
+        values2.add("6.733(Approx)");
+        values2.add("174");
+
+        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values2, "#ffffff");
+
     }
+
+
 }
