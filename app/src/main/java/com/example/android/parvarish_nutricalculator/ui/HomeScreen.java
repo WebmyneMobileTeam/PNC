@@ -51,8 +51,7 @@ public class HomeScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-
-        Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
+//        Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("HOME");
@@ -82,10 +81,14 @@ public class HomeScreen extends ActionBarActivity {
                         @Override
                         public void topButton() {
 
+                            Intent i = new Intent(HomeScreen.this,AddRecipeWebScreen.class);
+                            startActivity(i);
                         }
 
                         @Override
                         public void bottomButton() {
+                            Intent i = new Intent(HomeScreen.this,AddRecipeManualScreen.class);
+                            startActivity(i);
 
                         }
                     });

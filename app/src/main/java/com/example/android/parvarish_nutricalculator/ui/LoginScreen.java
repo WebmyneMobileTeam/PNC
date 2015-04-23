@@ -158,9 +158,7 @@ public class LoginScreen extends ActionBarActivity {
                             startActivity(intent);
                             finish();
 //                                callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
-
                         }
-
                     });
 
             Bundle parameters = new Bundle();

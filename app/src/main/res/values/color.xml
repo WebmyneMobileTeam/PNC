@@ -2,6 +2,8 @@
 <resources>
 
     <color name="red">#FFC93437</color>
+
+
     <color name="blue">#FF375BF1</color>
     <color name="yellow">#FFF7D23E</color>
     <color name="primaryColor">#C6A347</color>
@@ -10,6 +12,7 @@
     <drawable name="list_selected">#d1d1d1</drawable>
 
     <color name="color_button_darkred">#D13B3D</color>
+
     <color name="color_facebook">#3D599A</color>
 
 </resources>
