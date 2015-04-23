@@ -293,6 +293,7 @@ public class HomeScreen extends ActionBarActivity {
 
 
 
+
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
