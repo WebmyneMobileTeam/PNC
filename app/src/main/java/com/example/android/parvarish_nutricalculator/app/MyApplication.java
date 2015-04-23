@@ -23,7 +23,7 @@ public class MyApplication extends Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.android.facebookloginsample",
+                    "com.example.android.parvarish_nutricalculator",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
