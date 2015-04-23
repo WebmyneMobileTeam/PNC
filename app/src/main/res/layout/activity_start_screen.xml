@@ -37,9 +37,9 @@
 
     </FrameLayout>
 
-    <include
-        android:id="@+id/appbar"
-        layout="@layout/app_bar"></include>
+    <!--<include-->
+        <!--android:id="@+id/appbar"-->
+        <!--layout="@layout/app_bar"></include>-->
 
     <LinearLayout
         android:id="@+id/bottomstartlinear"

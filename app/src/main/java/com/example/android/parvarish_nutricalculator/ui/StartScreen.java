@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,13 @@ public class StartScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
         setupUI();
+
+        if(PrefUtils.getCurrentUser(StartScreen.this) != null){
+
+            Intent homeIntent = new Intent(StartScreen.this, LoginScreen.class);
+            startActivity(homeIntent);
+            finish();
+        }
     }
 
     private void setupUI() {
@@ -42,6 +50,7 @@ public class StartScreen extends ActionBarActivity {
 
             Intent i = new Intent(StartScreen.this,LoginScreen.class);
             startActivity(i);
+            finish();
 
         }
     };
@@ -52,6 +61,7 @@ public class StartScreen extends ActionBarActivity {
 
             Intent i = new Intent(StartScreen.this,SignupScreen.class);
             startActivity(i);
+            finish();
 
         }
     };

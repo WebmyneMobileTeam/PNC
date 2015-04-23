@@ -8,20 +8,25 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.ui.StartScreen;
+import com.facebook.login.LoginManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -44,6 +49,8 @@ public class HomeScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
+
+        Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("HOME");
@@ -92,6 +99,7 @@ public class HomeScreen extends ActionBarActivity {
         public void onClick(View v) {
             switch ((int)v.getTag()){
                 case 0:
+                    logoutFromApp();
                     break;
                 case 1:
                     Intent i = new Intent(HomeScreen.this,FriendsScreen.class);
@@ -209,9 +217,25 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setWidth(400);
 
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this,arrayList,drawableImage));
+        popupWindow.setAdapter(new UsersAdapter(HomeScreen.this, arrayList, drawableImage));
         popupWindow.show();
+        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+            }
+        });
+
+    }
+
+    private void logoutFromApp() {
+        Log.e("click", "logout");
+        PrefUtils.clearCurrentUser(HomeScreen.this);
+        LoginManager.getInstance().logOut();
+        Intent i= new Intent(HomeScreen.this,StartScreen.class);
+        startActivity(i);
+        finish();
     }
 
 

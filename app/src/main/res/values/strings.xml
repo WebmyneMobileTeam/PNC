@@ -8,7 +8,7 @@
     <string name="title_activity_login_screen">LoginScreen</string>
     <string name="title_activity_signup_screen">SignupScreen</string>
     <string name="title_activity_home_screen">HomeScreen</string>
-
+    <string name="facebook_app_id">369582476581821</string>
 
     <string name="actionHome">Home</string>
     <string name="actionProfile">Profile</string>

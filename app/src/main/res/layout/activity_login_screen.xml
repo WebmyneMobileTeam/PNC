@@ -71,9 +71,9 @@
 
     </FrameLayout>
 
-    <include
-        android:id="@+id/appbar"
-        layout="@layout/app_bar"></include>
+    <!--<include-->
+        <!--android:id="@+id/appbar"-->
+        <!--layout="@layout/app_bar"></include>-->
 
     <LinearLayout
         android:id="@+id/bottomstartlinear"
@@ -90,4 +90,12 @@
     </LinearLayout>
 
 
+    <com.facebook.login.widget.LoginButton
+        android:visibility="gone"
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
 </RelativeLayout>
