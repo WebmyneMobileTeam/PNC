@@ -81,8 +81,8 @@
                 <FrameLayout
                     android:layout_gravity="center"
                     android:background="@drawable/circle_with_camera"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp">
+                    android:layout_width="300dp"
+                    android:layout_height="300dp">
 
                     <ImageView
                         android:padding="8dp"
@@ -98,7 +98,7 @@
                 </FrameLayout>
 
                 <LinearLayout
-                   android:paddingLeft="16dp"
+                    android:weightSum="2"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -114,7 +114,7 @@
                         android:id="@+id/forSpinner"
                         android:gravity="center"
 
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
 
                         android:layout_margin="16dp"
 
@@ -125,23 +125,20 @@
                         android:layout_weight="1"
                         android:layout_height="wrap_content" />
 
+                    <EditText
+                        android:gravity="center"
+                        android:hint="No. of servings"
+                        android:layout_width="wrap_content"
+                        android:padding="12dp"
 
+
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/black"
+                        android:background="@android:color/white"
+
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
-                <EditText
-                    android:layout_marginBottom="8dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:hint="No. of servings"
-                    android:layout_width="wrap_content"
-                    android:padding="12dp"
-
-
-                    android:textSize="18sp"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/black"
-                    android:background="@android:color/white"
-
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
