@@ -21,6 +21,7 @@
     <string name="title_activity_profile_screen">ProfileScreen</string>
     <string name="title_activity_add_recipe_web_screen">AddRecipeWebScreen</string>
     <string name="title_activity_add_recipe_manual_screen">AddRecipeManualScreen</string>
+    <string name="title_activity_my_recipe_list_screen">MyRecipeListScreen</string>
 
 
 

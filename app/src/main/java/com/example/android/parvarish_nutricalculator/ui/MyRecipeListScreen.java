@@ -5,12 +5,13 @@ import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -19,34 +20,28 @@ import com.example.android.parvarish_nutricalculator.R;
 
 import java.util.ArrayList;
 
-public class AddRecipeManualScreen extends ActionBarActivity {
+public class MyRecipeListScreen extends ActionBarActivity {
 
-    ArrayList<String> spinnerList=new ArrayList<>();
     private Spinner forSpinner;
-    private Spinner spOne,spTwo;
-    LinearLayout linearTable;
+    ArrayList<String> spinnerList=new ArrayList<>();
+    private ListView myRecipeList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_recipe_manual_screen);
-        linearTable= (LinearLayout) findViewById(R.id.linearTable);
-        spinnerList.add("Select Baby");
+        setContentView(R.layout.activity_my_recipe_list_screen);
+        myRecipeList= (ListView) findViewById(R.id.myRecipeList);
+
+        CustomAdapter adp = new CustomAdapter(MyRecipeListScreen.this);
+        myRecipeList.setAdapter(adp);
+
+        spinnerList.add("Sort");
         spinnerList.add("one");
         spinnerList.add("two");
         spinnerList.add("three");
         spinnerList.add("four");
-        CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(AddRecipeManualScreen.this,spinnerList);
+        CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(MyRecipeListScreen.this,spinnerList);
         forSpinner= (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
-        for(int i=0;i<5;i++) {
-            View view = getLayoutInflater().inflate(R.layout.item_recipe_manual_screen, linearTable, false);
-            spOne = (Spinner) view.findViewById(R.id.spOne);
-            spTwo = (Spinner) view.findViewById(R.id.spTwo);
-            spOne.setAdapter(customSpinnerAdapter);
-            spTwo.setAdapter(customSpinnerAdapter);
-            linearTable.addView(view);
-        }
-
     }
 
 
@@ -77,7 +72,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView txt = new TextView(AddRecipeManualScreen.this);
+            TextView txt = new TextView(MyRecipeListScreen.this);
             txt.setPadding(16,16,16,16);
             txt.setTextSize(18);
             txt.setGravity(Gravity.CENTER_VERTICAL);
@@ -88,7 +83,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         }
 
         public View getView(int i, View view, ViewGroup viewgroup) {
-            TextView txt = new TextView(AddRecipeManualScreen.this);
+            TextView txt = new TextView(MyRecipeListScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16,16,16,16);
             txt.setTextSize(18);
@@ -99,27 +94,34 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         }
     }
 
-    
-
- /*   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_recipe_manual_screen, menu);
-        return true;
-    }
-*/
-  /*  @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    class CustomAdapter extends BaseAdapter{
+        LayoutInflater layoutInflator;
+        private Context ctx;
+        public CustomAdapter(Context ctx){
+            this.ctx = ctx;
         }
 
-        return super.onOptionsItemSelected(item);
-    }*/
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = convertView;
+            view = layoutInflator.inflate(R.layout.friend_feed_item_view, parent, false);
+            return view;
+        }
+    }
 }

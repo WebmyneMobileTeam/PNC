@@ -36,7 +36,7 @@ public class LoginScreen extends ActionBarActivity {
     private Button btnLogin;
     private UIButton btnFacebookLogin;
 
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     User user;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -98,9 +98,9 @@ public class LoginScreen extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                progressDialog = new ProgressDialog(LoginScreen.this);
-                progressDialog.setMessage("Loading...");
-                progressDialog.show();
+//                progressDialog = new ProgressDialog(LoginScreen.this);
+//                progressDialog.setMessage("Loading...");
+//                progressDialog.show();
 
                 loginButton.performClick();
 
@@ -153,7 +153,7 @@ public class LoginScreen extends ActionBarActivity {
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
-                            progressDialog.dismiss();
+//                            progressDialog.dismiss();
                             Intent intent=new Intent(LoginScreen.this,HomeScreen.class);
                             startActivity(intent);
                             finish();
@@ -170,12 +170,14 @@ public class LoginScreen extends ActionBarActivity {
 
         @Override
         public void onCancel() {
-            progressDialog.dismiss();
+
+//            progressDialog.dismiss();
         }
 
         @Override
         public void onError(FacebookException e) {
-            progressDialog.dismiss();
+
+//            progressDialog.dismiss();
         }
     };
 

@@ -39,13 +39,14 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         CustomAdapter adp = new CustomAdapter(FriendsFeedsScreen.this);
         listFeeds.setAdapter(adp);
 
-        listFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listFeeds.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(FriendsFeedsScreen.this,ViewFriendsRecipe.class);
+            public void onClick(View v) {
+                Intent i = new Intent(FriendsFeedsScreen.this, ViewFriendsRecipe.class);
                 startActivity(i);
             }
         });
+
 
 
 

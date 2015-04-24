@@ -45,8 +45,10 @@ public class HomeScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        if(PrefUtils.getCurrentUser(HomeScreen.this) != null){
+            Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
+        }
 
-//        Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("HOME");
@@ -63,10 +65,12 @@ public class HomeScreen extends ActionBarActivity {
         public void onClick(View v) {
             switch ((int)v.getTag()){
                 case 0:
+                    Intent i = new Intent(HomeScreen.this,MyRecipeListScreen.class);
+                    startActivity(i);
                     break;
                 case 1:
-                    Intent i = new Intent(HomeScreen.this,ProfileScreen.class);
-                    startActivity(i);
+                    Intent i1 = new Intent(HomeScreen.this,ProfileScreen.class);
+                    startActivity(i1);
                     break;
                 case 2:
 
