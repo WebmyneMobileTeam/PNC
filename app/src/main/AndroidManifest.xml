@@ -40,6 +40,11 @@
             android:name=".ui.HomeScreen"
             android:label="@string/title_activity_home_screen" >
         </activity>
+
+        <activity
+            android:name=".ui.ImportRecipeFromWebScreen"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
         <activity
             android:name=".ui.FriendsScreen"
             android:label="@string/title_activity_home_screen" >

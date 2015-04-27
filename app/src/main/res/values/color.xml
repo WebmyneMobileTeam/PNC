@@ -11,6 +11,8 @@
     <drawable name="list_normal">#00000000</drawable>
     <drawable name="list_selected">#d1d1d1</drawable>
 
+
+    <color name="list_selectedColor">#d1d1d1</color>
     <color name="color_button_darkred">#D13B3D</color>
 
     <color name="color_facebook">#3D599A</color>

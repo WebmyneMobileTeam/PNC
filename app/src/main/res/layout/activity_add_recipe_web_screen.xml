@@ -1,15 +1,213 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+
     tools:context="com.example.android.parvarish_nutricalculator.ui.AddRecipeWebScreen">
 
-<ImageView
-    android:id="@+id/heart"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:background="@drawable/heart"></ImageView>
+    <ScrollView
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_above="@+id/btnImport"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+
+        <LinearLayout
+
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@drawable/leftred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="ADD RECIPES"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:background="@drawable/rightred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_height="2dp"
+            android:background="#ccc"/>
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="Enter the URL of any recipe above, or browse recipes from some popular baby food recipe sites listed below."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:layout_marginTop="16dp"
+            android:background="#DBDBDB"
+            android:textColor="#000000"
+            android:textSize="@dimen/normal_text"
+            android:layout_gravity="center"
+            android:gravity="center_vertical|left"
+            android:textStyle="normal"
+            android:singleLine="true"
+            android:padding="16dp"
+            android:textColorHint="#000000"
+            android:id="@+id/edUserNameLogin"
+            android:drawablePadding="16dp"
+            android:hint="Search Recipe / Ingredient"
+            android:drawableRight="@drawable/icon_search"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/color_button_darkred"/>
+            <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="OR"
+                android:textColor="#AFAFAF"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/color_button_darkred"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="Calculate a regional baby-food recipe."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/SpRecipie"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:background="@drawable/spinner_bg_white"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/color_button_darkred"/>
+            <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="OR"
+                android:textColor="#AFAFAF"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/color_button_darkred"/>
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="Calculate a popular Parvarish Sanjeev Kapoor recipe."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TableLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <include
+                    android:id="@+id/menuOne"
+                    layout="@layout/top_heart_left"></include>
+
+                <include
+                    android:id="@+id/menuTwo"
+                    layout="@layout/top_heart_right"></include>
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <include
+                    android:id="@+id/menuThree"
+                    layout="@layout/bottom_heart_left"></include>
+
+                <include
+                    android:id="@+id/menuFour"
+                    layout="@layout/bottom_heart_right"></include>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+    </ScrollView>
+
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:singleLine="true"
+        android:textStyle="normal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="@dimen/normal_text"
+        android:id="@+id/btnImport"
+        android:text="Import Recipe"
+        android:textColor="#ffffff"
+        android:background="@color/color_button_darkred" />
 </RelativeLayout>

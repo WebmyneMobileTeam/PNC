@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,12 +9,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -191,8 +194,9 @@ public class HomeScreen extends ActionBarActivity {
 
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
-        popupWindow.setWidth(500);
+        popupWindow.setWidth(popupWindow.WRAP_CONTENT);
 
+        popupWindow.setWidth(500);
         popupWindow.setModal(true);
         popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
@@ -222,7 +226,10 @@ public class HomeScreen extends ActionBarActivity {
 
         popupWindow.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
+
+
         popupWindow.setWidth(500);
+
 
         popupWindow.setModal(true);
         popupWindow.setAdapter(new MoreAdapter(HomeScreen.this,arrayList,drawableImage,false));

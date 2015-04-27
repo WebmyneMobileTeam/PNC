@@ -7,7 +7,6 @@
     android:background="#EDEDED"
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
     <EditText
-
         android:background="#DBDBDB"
         android:textColor="#000000"
         android:textSize="@dimen/normal_text"
@@ -20,7 +19,7 @@
         android:id="@+id/edUserNameLogin"
         android:drawablePadding="16dp"
         android:hint="Search Recipe / Ingredient"
-        android:drawableRight="@drawable/ic_user"
+        android:drawableRight="@drawable/icon_search"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         />
