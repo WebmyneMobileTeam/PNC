@@ -106,7 +106,8 @@ public class HomeScreen extends ActionBarActivity {
         public void onClick(View v) {
             switch ((int)v.getTag()){
                 case 0:
-
+                    Intent i1 = new Intent(HomeScreen.this,DiaryScreen.class);
+                    startActivity(i1);
                     break;
                 case 1:
                     Intent i = new Intent(HomeScreen.this,FriendsScreen.class);

@@ -42,6 +42,10 @@
         </activity>
 
         <activity
+            android:name=".ui.DiaryScreen"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+        <activity
             android:name=".ui.ImportRecipeFromWebScreen"
             android:label="@string/title_activity_home_screen" >
         </activity>

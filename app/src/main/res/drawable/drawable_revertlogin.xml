@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="@dimen/forgot_button_width"
+                android:height="@dimen/forgot_button_height" />
+            <solid android:color="#fff" />
+
+            <corners
+                android:topLeftRadius="@dimen/forgot_button_corner"
+                android:topRightRadius="@dimen/forgot_button_corner"
+                android:bottomLeftRadius="@dimen/forgot_button_corner"
+                android:bottomRightRadius="@dimen/forgot_button_corner"></corners>
+
+        </shape>
+    </item>
+
+    <item
+        android:right="4dp"
+        android:left="4dp">
+        <shape android:shape="rectangle">
+            <size
+                android:width="@dimen/forgot_button_width"
+                android:height="@dimen/forgot_button_height" />
+            <solid android:color="@color/color_button_darkred" />
+            <corners
+                android:topLeftRadius="@dimen/forgot_button_corner"
+                android:topRightRadius="@dimen/forgot_button_corner"
+                android:bottomLeftRadius="@dimen/forgot_button_corner"
+                android:bottomRightRadius="@dimen/forgot_button_corner"></corners>
+
+        </shape>t
+    </item>
+
+</layer-list>
