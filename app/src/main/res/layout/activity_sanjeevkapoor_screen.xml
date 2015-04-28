@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.ProfileScreen">
+
+    <include layout="@layout/app_bar"></include>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@drawable/leftred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="MY FRIENDS"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:background="@drawable/rightred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+<LinearLayout
+            android:padding="16dp"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <GridView
+            android:gravity="center"
+            android:dividerHeight="0dp"
+            android:divider="@null"
+            android:id="@+id/imageList"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </GridView>
+
+</LinearLayout>
+
+q</LinearLayout>
+
+
+
+</LinearLayout>

@@ -196,19 +196,11 @@ public class HomeScreen extends ActionBarActivity {
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         popupWindow.setWidth(500);
-
-
         popupWindow.setModal(true);
         popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
 
 
-        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(HomeScreen.this,"Item - "+position,Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -227,6 +219,7 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setModal(true);
         popupWindow.setAdapter(new MoreAdapter(HomeScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
+
 
     }
 
@@ -297,10 +290,19 @@ public class HomeScreen extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if(position == 7){
-                        logoutFromApp();
+                    switch (position) {
+                        case 4:
+                            Intent i = new Intent(HomeScreen.this,DisclaimerScreen.class);
+                            startActivity(i);
+                            break;
+                        case 5:
+                            Intent i2 = new Intent(HomeScreen.this,AboutusScreen.class);
+                            startActivity(i2);
+                            break;
+                        case 7:
+                            logoutFromApp();
+                            break;
                     }
-
 
                 }
             });
@@ -371,7 +373,11 @@ public class HomeScreen extends ActionBarActivity {
 
                     switch (position){
                         case 5:
-                            Toast.makeText(HomeScreen.this,"5",Toast.LENGTH_SHORT).show();
+                            break;
+                        case 6:
+                            Intent i = new Intent(HomeScreen.this,GlossaryScreen.class);
+                            startActivity(i);
+
                             break;
                     }
                 }

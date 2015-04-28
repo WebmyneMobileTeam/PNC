@@ -6,6 +6,7 @@
     android:layout_height="@dimen/addFromWebHeartSIze">
 
     <ImageView
+        android:id="@+id/img3"
         android:src="@drawable/d_three"
         android:layout_width="@dimen/addFromWebHeartSIze"
         android:layout_height="@dimen/addFromWebHeartSIze"

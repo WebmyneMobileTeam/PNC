@@ -41,6 +41,10 @@
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
+            android:name=".ui.GlossaryScreen"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+        <activity
             android:name=".ui.DiaryScreen"
             android:label="@string/title_activity_home_screen" >
         </activity>
@@ -70,6 +74,19 @@
         </activity>
         <activity
             android:name=".ui.AddRecipeWebScreen"
+            android:label="@string/title_activity_add_recipe_web_screen" >
+        </activity>
+
+        <activity
+            android:name=".ui.AboutusScreen"
+            android:label="@string/title_activity_add_recipe_web_screen" >
+        </activity>
+        <activity
+            android:name=".ui.DisclaimerScreen"
+            android:label="@string/title_activity_add_recipe_web_screen" >
+        </activity>
+        <activity
+            android:name=".ui.SanjeevKapoorScreen"
             android:label="@string/title_activity_add_recipe_web_screen" >
         </activity>
         <activity

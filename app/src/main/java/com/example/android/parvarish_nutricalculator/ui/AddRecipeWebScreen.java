@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -20,11 +21,14 @@ import com.example.android.parvarish_nutricalculator.R;
 
 import java.util.ArrayList;
 
-public class AddRecipeWebScreen extends ActionBarActivity {
+public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClickListener{
 
     ArrayList<String> spinnerList=new ArrayList<>();
     private Spinner SpRecipie;
     private Button btnImport;
+
+    ImageView img1,img2,img3,img4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,16 @@ public class AddRecipeWebScreen extends ActionBarActivity {
         SpRecipie= (Spinner) findViewById(R.id.SpRecipie);
         SpRecipie.setAdapter(customSpinnerAdapter);
 
+        img1 = (ImageView)findViewById(R.id.img1);
+        img2 = (ImageView)findViewById(R.id.img2);
+        img3 = (ImageView)findViewById(R.id.img3);
+        img4 = (ImageView)findViewById(R.id.img4);
+
+        img1.setOnClickListener(this);
+        img2.setOnClickListener(this);
+        img3.setOnClickListener(this);
+        img4.setOnClickListener(this);
+
         btnImport = (Button)findViewById(R.id.btnImport);
 
         btnImport.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +64,19 @@ public class AddRecipeWebScreen extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.img1:
+            case R.id.img2:
+            case R.id.img3:
+            case R.id.img4:
+                Intent i = new Intent(AddRecipeWebScreen.this,SanjeevKapoorScreen.class);
+                startActivity(i);
+                break;
 
+        }
+    }
 
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
