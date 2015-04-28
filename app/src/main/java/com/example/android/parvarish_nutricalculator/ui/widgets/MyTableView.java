@@ -44,15 +44,15 @@ public class MyTableView extends TableLayout {
 
         for (int i = 0; i < values.size(); i++) {
 
-            TableRow.LayoutParams tvPar = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, weights.get(i));
+            TableRow.LayoutParams tvPar = new TableRow.LayoutParams( 0, LayoutParams.MATCH_PARENT, weights.get(i));
             TextView txt = new TextView(ctx);
             txt.setLayoutParams(tvPar);
             txt.setPadding(8, 8, 8, 8);
             txt.setTextColor(Color.parseColor(textColor));
             txt.setText(values.get(i));
             txt.setGravity(Gravity.CENTER);
-            txt.setSingleLine(true);
-            txt.setTextSize(ctx.getResources().getDimension(R.dimen.small_text));
+
+            txt.setTextSize(ctx.getResources().getDimension(R.dimen.small_text2));
             txt.setBackgroundColor(Color.parseColor(colors[i]));
             row.addView(txt);
         }

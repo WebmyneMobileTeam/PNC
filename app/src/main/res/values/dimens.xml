@@ -10,6 +10,9 @@
     <dimen name="small_text">12sp</dimen>
     <dimen name="ultra_small_text">12sp</dimen>
 
+    <dimen name="small_text2">6sp</dimen>
+
+
     <!-- Preference fragment padding, bottom -->
     <dimen name="preference_fragment_padding_bottom">0dp</dimen>
     <!-- Preference fragment padding, sides -->
