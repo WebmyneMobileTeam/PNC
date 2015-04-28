@@ -29,6 +29,7 @@
     <dimen name="forgot_button_corner">14dp</dimen>
 
     <dimen name="homeScreenImageSize">28dp</dimen>
+    <dimen name="addFromWebHeartSIze">120dp</dimen>
 
 
 

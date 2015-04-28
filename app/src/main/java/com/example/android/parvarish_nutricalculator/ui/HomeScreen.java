@@ -188,16 +188,16 @@ public class HomeScreen extends ActionBarActivity {
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
 
         String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
-
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
 
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
 
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
-        popupWindow.setWidth(popupWindow.WRAP_CONTENT);
 
         popupWindow.setWidth(500);
+
+
         popupWindow.setModal(true);
         popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
@@ -212,9 +212,6 @@ public class HomeScreen extends ActionBarActivity {
 
     }
 
-
-
-
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
@@ -222,16 +219,11 @@ public class HomeScreen extends ActionBarActivity {
         String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
 
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
 
         popupWindow.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
-
-
         popupWindow.setWidth(500);
-
-
         popupWindow.setModal(true);
         popupWindow.setAdapter(new MoreAdapter(HomeScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
@@ -314,7 +306,6 @@ public class HomeScreen extends ActionBarActivity {
             });
 
 
-
             // Populate the data into the template view using the data object
 
             // Return the completed view to render on screen
@@ -364,7 +355,6 @@ public class HomeScreen extends ActionBarActivity {
                    if(position!=0) {
                        imgIcon.setVisibility(View.INVISIBLE);
                    }
-
                }else{
                    itemNames.setText(users.get(position));
                    imgIcon.setImageResource(imgIcons[position]);
@@ -379,16 +369,14 @@ public class HomeScreen extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-
-
+                    switch (position){
+                        case 5:
+                            Toast.makeText(HomeScreen.this,"5",Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
             });
 
-
-
-            // Populate the data into the template view using the data object
-
-            // Return the completed view to render on screen
             return convertView;
         }
     }

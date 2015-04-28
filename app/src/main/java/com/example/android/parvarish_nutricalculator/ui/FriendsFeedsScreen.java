@@ -22,9 +22,7 @@ public class FriendsFeedsScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friends_feed);
-
         listFeeds = (ListView)findViewById(R.id.listFeeds);
-
 
       /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
         View footerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
@@ -38,22 +36,14 @@ public class FriendsFeedsScreen extends ActionBarActivity {
 
         CustomAdapter adp = new CustomAdapter(FriendsFeedsScreen.this);
         listFeeds.setAdapter(adp);
-
-        listFeeds.setOnClickListener(new View.OnClickListener() {
+        listFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(FriendsFeedsScreen.this, ViewFriendsRecipe.class);
                 startActivity(i);
             }
         });
-
-
-
-
-
     }
-
-
 
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;

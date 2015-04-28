@@ -24,22 +24,13 @@ public class FriendsScreen extends ActionBarActivity {
         setContentView(R.layout.activity_freinds_screen);
 
         friendList = (ListView)findViewById(R.id.friendList);
-
-
-      /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
-        View footerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
-        profileList.addHeaderView(headerView);
-        profileList.addFooterView(footerView);
-        CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
-        profileList.setAdapter(adp);*/
-
+        
         CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
         friendList.setAdapter(adp);
 
-        friendList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CustomDialog customDialog=new CustomDialog(FriendsScreen.this,"See Friend's Feed","Unfriend",android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
                 customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
@@ -54,7 +45,6 @@ public class FriendsScreen extends ActionBarActivity {
 
                     }
                 });
-                return false;
             }
         });
 

@@ -37,7 +37,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
         MyTableView tableView = new MyTableView(ViewFriendsRecipe.this);
         tableView.setPadding(8,8,8,8);
 
-        // setting weights
+        // setting weights recommanded
         ArrayList<Float> weights = new ArrayList<>();
         weights.add(1f);
         weights.add(1f);
@@ -58,6 +58,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
         values2.add("Energy");
         values2.add("6.733(Approx)");
         values2.add("174");
+
 
         tableView.addRow(values2, "#ffffff");
         tableView.addRow(values2, "#ffffff");

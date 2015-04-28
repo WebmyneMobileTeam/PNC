@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:drakeet="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="@dimen/addFromWebHeartSIze"
+    android:layout_height="@dimen/addFromWebHeartSIze">
 
     <ImageView
         android:src="@drawable/d_three"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitEnd"/>
+        android:layout_width="@dimen/addFromWebHeartSIze"
+        android:layout_height="@dimen/addFromWebHeartSIze"
+        android:scaleType="fitStart"/>
 </LinearLayout>

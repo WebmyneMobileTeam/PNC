@@ -40,7 +40,6 @@
             android:name=".ui.HomeScreen"
             android:label="@string/title_activity_home_screen" >
         </activity>
-
         <activity
             android:name=".ui.DiaryScreen"
             android:label="@string/title_activity_home_screen" >
@@ -85,6 +84,10 @@
         <activity
             android:name=".ui.MyRecipeListScreen"
             android:label="@string/title_activity_my_recipe_list_screen" >
+        </activity>
+        <activity
+            android:name=".ui.GuideLinesMainScreen"
+            android:label="@string/title_activity_guide_lines_main_screen" >
         </activity>
     </application>
 

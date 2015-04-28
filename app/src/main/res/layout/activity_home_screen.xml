@@ -40,7 +40,9 @@
                     android:orientation="horizontal">
 
                     <include layout="@layout/item_home"></include>
+
                     <include layout="@layout/item_home"></include>
+
                     <include layout="@layout/item_home"></include>
 
                 </LinearLayout>
@@ -51,7 +53,9 @@
                     android:orientation="horizontal">
 
                     <include layout="@layout/item_home"></include>
+
                     <include layout="@layout/item_home"></include>
+
                     <include layout="@layout/item_home"></include>
 
                 </LinearLayout>

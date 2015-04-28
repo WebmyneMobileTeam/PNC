@@ -35,6 +35,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         spinnerList.add("two");
         spinnerList.add("three");
         spinnerList.add("four");
+
         CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(AddRecipeManualScreen.this,spinnerList);
         forSpinner= (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
@@ -46,9 +47,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             spTwo.setAdapter(customSpinnerAdapter);
             linearTable.addView(view);
         }
-
     }
-
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
@@ -59,7 +58,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             this.asr=asr;
             activity = context;
         }
-
         public int getCount()
         {
             return asr.size();
@@ -84,10 +82,10 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
             return  txt;
-
         }
 
         public View getView(int i, View view, ViewGroup viewgroup) {
+
             TextView txt = new TextView(AddRecipeManualScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16,16,16,16);
@@ -98,8 +96,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             return  txt;
         }
     }
-
-    
 
  /*   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
