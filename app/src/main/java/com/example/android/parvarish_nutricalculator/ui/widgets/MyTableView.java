@@ -21,7 +21,7 @@ public class MyTableView extends TableLayout {
 
     private Context ctx;
 
-    private String[] colors = {"#BCC221", "#FDBF03", "#F48222"};
+    private String[] colors = {"#BCC221", "#FDBF03", "#F48222","#FDBF03"};
     private ArrayList<Float> weights;
 
 
