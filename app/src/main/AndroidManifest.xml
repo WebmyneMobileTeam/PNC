@@ -58,6 +58,10 @@
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
+            android:name=".ui.DiaryResult"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+        <activity
             android:name=".ui.ViewFriendsRecipe"
             android:label="@string/title_activity_home_screen" >
         </activity>

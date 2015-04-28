@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -29,6 +30,7 @@ public class DiaryScreen extends ActionBarActivity {
     ArrayList<String> spinnerList=new ArrayList<>();
     private Spinner SpBaby;
     private ListView listdiary;
+    private Button btnCalculate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,17 @@ public class DiaryScreen extends ActionBarActivity {
         listdiary = (ListView)findViewById(R.id.listdiary);
 
         SpBaby.setAdapter(customSpinnerAdapter);
+
+        btnCalculate = (Button)findViewById(R.id.btnCalculate);
+
+
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DiaryScreen.this,DiaryResult.class);
+                startActivity(i);
+            }
+        });
 
         SpBaby.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
