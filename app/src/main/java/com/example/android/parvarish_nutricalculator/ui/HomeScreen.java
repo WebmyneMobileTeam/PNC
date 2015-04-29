@@ -38,8 +38,8 @@ public class HomeScreen extends ActionBarActivity {
     private RelativeLayout relTopProfile;
     private String[] names1 = {"My Recipes", "Profiles", "Add Recipe"};
     private String[] names2 = {"Diary", "Friends", "Welcome Tour"};
-    private int[] icons1 = {R.drawable.myrecipes, R.drawable.profile, R.drawable.addrecipe};
-    private int[] icons2 = {R.drawable.diary, R.drawable.friends, R.drawable.help};
+    private int[] icons1 = {R.drawable.main_myrecpie, R.drawable.main_profile, R.drawable.main_addrecpie};
+    private int[] icons2 = {R.drawable.main_diary, R.drawable.main_friends, R.drawable.main_tour};
     private LinearLayout linearFirst;
     private LinearLayout linearSecond;
     private Toolbar toolbar;
