@@ -32,6 +32,11 @@
             android:name=".ui.LoginScreen"
             android:label="@string/title_activity_login_screen" >
         </activity>
+
+        <activity
+            android:name=".ui.SanjeevKumarEditRecipeScreen"
+            android:label="@string/title_activity_login_screen" >
+        </activity>
         <activity
             android:name=".ui.SignupScreen"
             android:label="@string/title_activity_signup_screen" >
