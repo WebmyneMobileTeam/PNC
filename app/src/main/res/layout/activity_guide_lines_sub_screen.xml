@@ -27,6 +27,21 @@
                 style="@style/both_match_wrap_content" />
 
 
+            <GridView
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:dividerHeight="0dp"
+                android:divider="@null"
+                android:id="@+id/imageList"
+                android:numColumns="2"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:stretchMode="columnWidth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </GridView>
+
+
         </LinearLayout>
 
 
