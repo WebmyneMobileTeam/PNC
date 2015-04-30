@@ -33,7 +33,6 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
         CustomAdapter adp = new CustomAdapter(MyRecipeListScreen.this);
         myRecipeList.setAdapter(adp);
-
         spinnerList.add("Sort");
         spinnerList.add("one");
         spinnerList.add("two");
@@ -42,8 +41,8 @@ public class MyRecipeListScreen extends ActionBarActivity {
         CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(MyRecipeListScreen.this,spinnerList);
         forSpinner= (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
-    }
 
+    }
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 

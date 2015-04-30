@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class DiaryScreen extends ActionBarActivity {
 
-    ArrayList<String> spinnerList=new ArrayList<>();
+    ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner SpBaby;
     private ListView listdiary;
     private Button btnCalculate;
@@ -44,19 +44,19 @@ public class DiaryScreen extends ActionBarActivity {
         spinnerList.add("three");
         spinnerList.add("four");
 
-        CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(DiaryScreen.this,spinnerList);
-        SpBaby= (Spinner) findViewById(R.id.SpBaby);
-        listdiary = (ListView)findViewById(R.id.listdiary);
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerList);
+        SpBaby = (Spinner) findViewById(R.id.SpBaby);
+        listdiary = (ListView) findViewById(R.id.listdiary);
 
         SpBaby.setAdapter(customSpinnerAdapter);
 
-        btnCalculate = (Button)findViewById(R.id.btnCalculate);
+        btnCalculate = (Button) findViewById(R.id.btnCalculate);
 
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(DiaryScreen.this,DiaryResult.class);
+                Intent i = new Intent(DiaryScreen.this, DiaryResult.class);
                 startActivity(i);
             }
         });
@@ -64,11 +64,11 @@ public class DiaryScreen extends ActionBarActivity {
         SpBaby.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 1){
+                if (position == 1) {
                     CustomDialogBox cdbox = new CustomDialogBox(DiaryScreen.this);
                     cdbox.show();
 
-                }else{
+                } else {
                 }
             }
 
@@ -77,7 +77,6 @@ public class DiaryScreen extends ActionBarActivity {
 
             }
         });
-
 
 
         View headerView = ((LayoutInflater) DiaryScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.diary_list_header_item, null, false);
@@ -89,12 +88,11 @@ public class DiaryScreen extends ActionBarActivity {
 
     }
 
-
-
-class CustomListAdapter extends BaseAdapter{
+    class CustomListAdapter extends BaseAdapter {
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomListAdapter(Context ctx){
+
+        public CustomListAdapter(Context ctx) {
             this.ctx = ctx;
         }
 
@@ -122,8 +120,7 @@ class CustomListAdapter extends BaseAdapter{
         }
     }
 
-
-public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
+    public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
         private final Context activity;
         private ArrayList<String> asr;
@@ -132,7 +129,6 @@ public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter 
             this.asr = asr;
             activity = context;
         }
-
         public int getCount() {
             return asr.size();
         }

@@ -18,8 +18,26 @@ public class StartScreen extends ActionBarActivity {
 
     private UIButton btnSignUp;
     private UIButton btnLogin;
+    private View.OnClickListener loginClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
 
+            Intent i = new Intent(StartScreen.this,LoginScreen.class);
+            startActivity(i);
+            finish();
 
+        }
+    };
+    private View.OnClickListener signupClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            Intent i = new Intent(StartScreen.this,SignupScreen.class);
+            startActivity(i);
+            finish();
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +62,5 @@ public class StartScreen extends ActionBarActivity {
         btnSignUp.setOnClickListener(signupClick);
 
     }
-    private View.OnClickListener loginClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            Intent i = new Intent(StartScreen.this,LoginScreen.class);
-            startActivity(i);
-            finish();
-
-        }
-    };
-
-    private View.OnClickListener signupClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            Intent i = new Intent(StartScreen.this,SignupScreen.class);
-            startActivity(i);
-            finish();
-
-        }
-    };
 
 }

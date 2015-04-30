@@ -12,11 +12,12 @@
         style="@style/both_wrap_content"
         android:scaleType="centerInside" />
 
-    <TextView style="@style/both_match_wrap_content"
+    <TextView
+        style="@style/both_match_wrap_content"
         android:layout_marginLeft="5dp"
         android:id="@+id/txtItemName"
         android:textColor="#000"
-        android:textStyle="bold"
+        android:textStyle="normal"
         android:textSize="@dimen/normal_text"
         android:text="Name" />
 

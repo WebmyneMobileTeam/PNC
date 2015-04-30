@@ -76,7 +76,6 @@
             android:name=".ui.AddRecipeWebScreen"
             android:label="@string/title_activity_add_recipe_web_screen" >
         </activity>
-
         <activity
             android:name=".ui.AboutusScreen"
             android:label="@string/title_activity_add_recipe_web_screen" >
@@ -105,6 +104,10 @@
         <activity
             android:name=".ui.GuideLinesMainScreen"
             android:label="@string/title_activity_guide_lines_main_screen" >
+        </activity>
+        <activity
+            android:name=".ui.GuideLinesSubScreen"
+            android:label="@string/title_activity_guide_lines_sub_screen" >
         </activity>
     </application>
 

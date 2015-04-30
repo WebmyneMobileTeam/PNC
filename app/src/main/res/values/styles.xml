@@ -39,6 +39,7 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">normal</item>
 
+
     </style>
 
     <style name="context_menu_red_button" parent="both_match_wrap_content">
@@ -137,7 +138,23 @@
         <item name="android:padding">8dp</item>
     </style>
 
+    <style name="guideline_mainpage_item_left" parent="both_wrap_content">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginRight">@dimen/guide_item_marginleftright</item>
+        <item name="android:layout_width">@dimen/guide_main_page_item_width</item>
+        <item name="android:layout_height">@dimen/guide_main_page_item_height</item>
+    </style>
 
+    <style name="guideline_mainpage_item_right" parent="both_wrap_content">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">@dimen/guide_item_marginleftright</item>
+        <item name="android:layout_width">@dimen/guide_main_page_item_width</item>
+        <item name="android:layout_height">@dimen/guide_main_page_item_height</item>
+    </style>
 
     <style name="full_imageView" parent="both_match_parent">
         <item name="android:scaleType">centerCrop</item>

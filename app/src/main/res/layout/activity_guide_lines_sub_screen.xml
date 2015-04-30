@@ -16,35 +16,21 @@
             android:layout_above="@+id/btnSaveImageNutritionGuidelines"
             android:layout_centerInParent="true"
             style="@style/both_match_parent"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/img_guidelinemainpage_energy"
-                android:background="@drawable/guide_energy"
-                style="@style/guideline_mainpage_item_left" />
+            <TextView
+                android:textSize="@dimen/medium_text"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:id="@+id/txtGuideLineSubPageHeading"
+                style="@style/both_match_wrap_content" />
 
-            <ImageView
-                android:id="@+id/img_guidelinemainpage_calcium"
-                android:src="@drawable/guide_calcium"
-                style="@style/guideline_mainpage_item_right" />
-
-            <ImageView
-                android:id="@+id/img_guidelinemainpage_zinc"
-                android:src="@drawable/guide_zinc"
-                style="@style/guideline_mainpage_item_left" />
-
-            <ImageView
-                android:id="@+id/img_guidelinemainpage_iron"
-                android:src="@drawable/guide_iron"
-                style="@style/guideline_mainpage_item_right" />
-
-            <ImageView
-                android:id="@+id/img_guidelinemainpage_foods"
-                android:src="@drawable/guide_foods"
-                style="@style/guideline_mainpage_item_left" />
 
         </LinearLayout>
+
+
+
 
         <LinearLayout
             android:id="@+id/linearTopGuidelines"

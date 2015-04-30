@@ -31,6 +31,10 @@
     <dimen name="homeScreenImageSize">28dp</dimen>
     <dimen name="addFromWebHeartSIze">120dp</dimen>
 
+    <dimen name="guide_main_page_item_width">220dp</dimen>
+    <dimen name="guide_main_page_item_height">70dp</dimen>
+    <dimen name="guide_item_marginleftright">30dp</dimen>
+
 
 
 </resources>

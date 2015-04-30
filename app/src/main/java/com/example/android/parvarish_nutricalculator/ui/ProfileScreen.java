@@ -34,7 +34,6 @@ public class ProfileScreen extends ActionBarActivity {
                 return false;
             }
         });
-
         View headerView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
         View footerView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
         profileList.addHeaderView(headerView);
