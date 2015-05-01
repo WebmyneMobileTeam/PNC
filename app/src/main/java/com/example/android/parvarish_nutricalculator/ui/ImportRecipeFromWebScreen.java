@@ -29,8 +29,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_recipe_web_screen);
-
-
         linearTable= (LinearLayout) findViewById(R.id.linearTable);
         spinnerList.add("Select Baby");
         spinnerList.add("one");
@@ -50,9 +48,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         }
 
     }
-
-
-
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
@@ -78,6 +73,7 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
             TextView txt = new TextView(ImportRecipeFromWebScreen.this);
             txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(18);
@@ -85,7 +81,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
-
         }
 
         public View getView(int i, View view, ViewGroup viewgroup) {
