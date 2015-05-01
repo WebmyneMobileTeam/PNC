@@ -6,6 +6,7 @@
     android:id="@+id/t1"
 
     tools:context="com.example.android.parvarish_nutricalculator.ui.AddRecipeManualScreen">
+
     <LinearLayout
         android:background="@drawable/square_background"
         android:layout_marginBottom="20dp"
@@ -23,19 +24,17 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:background="@drawable/leftred_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
+
                 android:text="BAJRA"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/header_text" />
+
             <ImageView
                 android:background="@drawable/rightred_arrow"
                 android:layout_width="wrap_content"
@@ -48,17 +47,16 @@
             android:layout_marginRight="24dp"
             android:background="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="3dp"/>
+            android:layout_height="3dp" />
 
         <TextView
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Also known as Black Millet or Pearl Millet Among the most widely grown varieties of millet; bajra, which is produced largely in Rajasthan, has been a part of the Indian diet for mllennia."
             android:textColor="#000000"
-            android:textSize="16sp"
+            android:textSize="@dimen/normal_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
 
         <TextView
@@ -67,7 +65,7 @@
             android:text="Nutrients and Benefits:"
             android:textStyle="bold"
             android:textColor="@color/color_button_darkred"
-            android:textSize="16sp"
+            android:textSize="@dimen/normal_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -76,10 +74,9 @@
             android:gravity="center"
             android:text="Proteins, iron, and contains a good amount amino acids, aiding metabolism."
             android:textColor="#000000"
-            android:textSize="16sp"
+            android:textSize="@dimen/normal_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
 
     </LinearLayout>

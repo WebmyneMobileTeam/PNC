@@ -1,12 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:drakeet="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.android.parvarish_nutricalculator.ui.ProfileScreen">
 
     <include layout="@layout/app_bar"></include>
-
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,35 +16,34 @@
 
         <LinearLayout
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:background="@drawable/leftred_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
+
                 android:text="ABOUT US"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                style="@style/header_text" />
+
             <ImageView
                 android:background="@drawable/rightred_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <View
             android:layout_marginTop="16dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:background="#d1d1d1"
             android:layout_width="match_parent"
-            android:layout_height="2dp"/>
+            android:layout_height="2dp" />
 
 
         <LinearLayout
@@ -55,6 +54,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:textSize="@dimen/normal_text"
                 android:layout_margin="16dp"
                 android:gravity="center"
                 android:text="@string/dummytext"
@@ -66,10 +66,8 @@
         </LinearLayout>
 
 
-
-
-q</LinearLayout>
-
+        q
+    </LinearLayout>
 
 
 </LinearLayout>

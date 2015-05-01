@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:drakeet="http://schemas.android.com/apk/res-auto"
@@ -18,44 +19,44 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:background="@drawable/leftred_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
             <TextView
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+
                 android:gravity="center"
                 android:text="MY DIARY"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+               style="@style/header_text"/>
+
             <ImageView
                 android:background="@drawable/rightred_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <View
             android:layout_marginTop="16dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:background="#d1d1d1"
             android:layout_width="match_parent"
-            android:layout_height="2dp"/>
-
+            android:layout_height="2dp" />
 
         <TextView
-            android:layout_marginTop= "10dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="THE CALCULATIONS BELOW ARE DONE FOR THE FOLLOWING RECIPES:"
             android:textColor="#000000"
-            android:textSize="14sp"
+            android:textSize="@dimen/normal_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -66,38 +67,9 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <TextView
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:text="Oats and Vegetable soup"
-            android:textColor="#C5C5C5"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-            <TextView
-                android:textStyle="bold"
-                android:text="Oats and Vegetable soup"
-                android:textColor="#C5C5C5"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textStyle="bold"
-                android:text="Oats and Vegetable soup"
-                android:textColor="#C5C5C5"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
             <TextView
+                android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:text="Oats and Vegetable soup"
@@ -105,14 +77,55 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
+                android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
                 android:text="Oats and Vegetable soup"
                 android:textColor="#C5C5C5"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                android:text="Oats and Vegetable soup"
+                android:textColor="#C5C5C5"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="Oats and Vegetable soup"
+                android:textColor="#C5C5C5"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="@dimen/medium_text"
+                android:textStyle="bold"
+                android:text="Oats and Vegetable soup"
+                android:textColor="#C5C5C5"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="@dimen/medium_text"
                 android:textStyle="bold"
                 android:text="Oats and Vegetable soup"
                 android:textColor="#C5C5C5"
@@ -134,24 +147,25 @@
             android:background="@drawable/square_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <TextView
-            android:textStyle="bold"
-            android:textColor="#7ab900"
 
-            android:gravity="center"
-            android:textSize="12sp"
-            android:text="GOOD GOING, MUM! YOU'RE ALMOST THERE!"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:textStyle="bold"
+                android:textColor="#7ab900"
+                android:gravity="center"
+                android:textSize="@dimen/normal_text"
+                android:text="GOOD GOING, MUM! YOU'RE ALMOST THERE!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:layout_marginTop="5dp"
                 android:textColor="#000000"
                 android:gravity="center"
-                android:textSize="10sp"
+                android:textSize="@dimen/normal_text"
                 android:text="To get on track, know more about right nutrient sources for your baby."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </LinearLayout>

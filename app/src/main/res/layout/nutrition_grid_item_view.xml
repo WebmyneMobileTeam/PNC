@@ -1,27 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
 
+    android:gravity="center"
     xmlns:drakeet="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.android.parvarish_nutricalculator.ui.ProfileScreen">
 
     <LinearLayout
         android:background="@drawable/square_background_nutrtion_main"
         android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:background="@drawable/square_background_nutrtion_submain"
             android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content">
-<ImageView
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:padding="4dp"
-    android:id="@+id/image"
-    android:layout_margin="4dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+
+            <ImageView
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:id="@+id/image"
+                android:layout_margin="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
@@ -33,5 +38,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

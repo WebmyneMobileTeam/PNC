@@ -9,14 +9,15 @@
     <dimen name="medium_text">20sp</dimen>
     <dimen name="small_text">14sp</dimen>
     <dimen name="ultra_small_text">12sp</dimen>
-
+    <dimen name="big_text">34sp</dimen>
     <!-- Preference fragment padding, bottom -->
     <dimen name="preference_fragment_padding_bottom">0dp</dimen>
     <!-- Preference fragment padding, sides -->
     <dimen name="preference_fragment_padding_side">16dp</dimen>
-    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer> <!-- outsideOverlay -->
+    <integer name="preference_fragment_scrollbarStyle">0x02000000</integer>
+    <!-- outsideOverlay -->
 
-<!--  ratio is 7:4 normal 4 i.e {28:16}-->
+    <!--  ratio is 7:4 normal 4 i.e {28:16}-->
     <dimen name="flag_width1">28dp</dimen>
     <dimen name="flag_height1">16dp</dimen>
 

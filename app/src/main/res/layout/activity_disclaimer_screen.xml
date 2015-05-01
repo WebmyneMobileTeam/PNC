@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -26,14 +26,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="center"
+
                 android:text="DISCLAIMER"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+               style="@style/header_text" />
             <ImageView
                 android:background="@drawable/rightred_arrow"
                 android:layout_width="wrap_content"
@@ -56,6 +51,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:textSize="@dimen/normal_text"
                 android:layout_margin="16dp"
                 android:gravity="center"
                 android:text="@string/dummytext"
@@ -63,10 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
         </LinearLayout>
-
-
 
 
         q</LinearLayout>
