@@ -7,22 +7,246 @@
 
     <include layout="@layout/app_bar"></include>
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
+        android:orientation="vertical"
         android:background="#fff"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ListView
-            android:dividerHeight="0dp"
-            android:divider="@null"
-            android:id="@+id/profileList"
+
+        <LinearLayout
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@color/color_button_darkred"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            </ListView>
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@drawable/leftwhite_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="My Profile"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:background="@drawable/rightwhite_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"/>
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/white_heart"
+            android:scaleType="centerInside"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <me.drakeet.library.UIButton
+            android:layout_marginTop="10dp"
+            android:id="@+id/btnLoginFacebook"
+            android:text="Connect with Facebook"
+            style="@style/full_button_facebook"
+            drakeet:alpha_pressed="80"
+            drakeet:color_pressed="#464646" />
+
+
+        <EditText
+            android:layout_marginTop="15dp"
+            android:id="@+id/edSignUpUserName"
+            android:drawablePadding="16dp"
+            android:hint="username"
+            android:drawableLeft="@drawable/ic_user"
+            style="@style/edittext_login" />
+
+        <EditText
+            android:id="@+id/edSignUpPassword"
+            android:drawablePadding="16dp"
+            android:inputType="textPassword"
+            android:hint="password"
+            android:layout_marginTop="4dp"
+            android:drawableLeft="@drawable/ic_lock"
+            style="@style/edittext_login" />
+
+
+        <EditText
+            android:id="@+id/edSignUpEmail"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="16dp"
+            android:hint="email"
+            android:drawableLeft="@drawable/ic_msg"
+            style="@style/edittext_login" />
+
+
+        <EditText
+            android:id="@+id/edSignUpMobile"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="16dp"
+            android:hint="mobile"
+            android:drawableLeft="@drawable/ic_phone"
+            style="@style/edittext_login" />
+
+
+        <EditText
+            android:id="@+id/edSignUpCity"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="16dp"
+            android:hint="city"
+            android:drawableLeft="@drawable/ic_city"
+            style="@style/edittext_login" />
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            style="@style/both_match_wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:id="@+id/btnChangePassword"
+                android:text="Change Password"
+                style="@style/button_forgotPassword" />
+
+            <Button
+                android:layout_marginLeft="4dp"
+                android:layout_weight="1"
+                android:id="@+id/btnSave"
+                android:text="Save Changes"
+                style="@style/button_forgotPassword" />
+
+        </LinearLayout>
+        </LinearLayout>
+
+
+            <!-- Add baby start-->
+
+        <LinearLayout
+            android:layout_margin="16dp"
+            android:background="@drawable/square_background"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:background="@drawable/leftwhite_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:text="BABY PROFILE"
+                    android:textColor="#000000"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:background="@drawable/rightwhite_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="#ffffff"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"/>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/white_heart"
+                    android:scaleType="centerInside"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:paddingLeft="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/edBabyName"
+                        android:hint="Name"
+                        style="@style/edittext_login" />
+
+                    <EditText
+                        android:layout_marginTop="15dp"
+                        android:id="@+id/edBabyDOB"
+                        android:hint="Date of Birth"
+
+                        style="@style/edittext_login" />
+                </LinearLayout>
+            </LinearLayout>
+
 
 
         </LinearLayout>
 
+<LinearLayout
+    android:gravity="right"
+    android:layout_gravity="right"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <Button
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btnAddBaby"
+            android:text="Add Baby"
+            style="@style/btn_addBaby" />
+</LinearLayout>
 
+        <!-- Add baby start end -->
+
+        </LinearLayout>
+</ScrollView>
 
 </LinearLayout>

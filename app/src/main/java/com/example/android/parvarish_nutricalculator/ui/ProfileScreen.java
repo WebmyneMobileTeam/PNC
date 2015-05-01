@@ -46,7 +46,7 @@ public class ProfileScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-        profileList = (ListView)findViewById(R.id.profileList);
+       /* profileList = (ListView)findViewById(R.id.profileList);
 
         // Setting on Touch Listener for handling the touch inside ScrollView
         profileList.setOnTouchListener(new View.OnTouchListener() {
@@ -62,7 +62,7 @@ public class ProfileScreen extends ActionBarActivity {
         profileList.addHeaderView(headerView);
         profileList.addFooterView(footerView);
         CustomAdapter adp = new CustomAdapter(ProfileScreen.this);
-        profileList.setAdapter(adp);
+        profileList.setAdapter(adp);*/
     }
 
 
