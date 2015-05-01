@@ -161,19 +161,13 @@
     </style>
 
     <style name="imageViewHome" parent="both_wrap_content">
-
         <item name="android:layout_width">@dimen/homeScreenImageSize</item>
         <item name="android:layout_height">@dimen/homeScreenImageSize</item>
         <item name="android:scaleType">fitCenter</item>
         <item name="android:src">@drawable/ic_user</item>
-
     </style>
 
-
-
-
     <style name="header_text" parent="both_wrap_content">
-
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:layout_marginLeft">10dp</item>
