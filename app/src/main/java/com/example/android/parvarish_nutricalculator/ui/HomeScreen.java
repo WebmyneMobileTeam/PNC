@@ -56,7 +56,7 @@ public class HomeScreen extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("HOME");
+            toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
 //            toolbar.setLogo(R.drawable.logo);
             setSupportActionBar(toolbar);
         }

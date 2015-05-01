@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
-
+<include layout="@layout/app_bar"/>
     <LinearLayout
         android:background="@color/color_button_darkred"
         android:orientation="vertical"

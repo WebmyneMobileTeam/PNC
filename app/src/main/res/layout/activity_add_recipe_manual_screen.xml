@@ -7,7 +7,6 @@
     tools:context="com.example.android.parvarish_nutricalculator.ui.AddRecipeManualScreen">
 
     <include
-        android:id="@+id/appbar"
         layout="@layout/app_bar"/>
 
     <ScrollView

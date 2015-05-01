@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.android.parvarish_nutricalculator.ui.AddRecipeWebScreen">
-
+<include layout="@layout/app_bar"/>
     <LinearLayout
         android:layout_weight="1"
         android:orientation="vertical"

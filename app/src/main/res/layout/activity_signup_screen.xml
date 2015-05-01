@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:layout_above="@+id/bottomstartlinear"
-        android:layout_below="@+id/appbar"
+        android:layout_below="@+id/toolbar"
         style="@style/both_match_parent">
 
 
@@ -120,7 +120,6 @@
     </FrameLayout>
 
     <include
-        android:id="@+id/appbar"
         layout="@layout/app_bar"></include>
 
     <LinearLayout
