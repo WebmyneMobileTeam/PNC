@@ -38,7 +38,7 @@ public class HomeScreen extends ActionBarActivity {
 
     private RelativeLayout relTopProfile;
     private String[] names1 = {"My Recipes", "Profiles", "Add Recipe"};
-    private String[] names2 = {"Diary", "Friends", "Welcome Tour"};
+    private String[] names2 = {"Diary", "Friends", "Welcome\nTour"};
     private int[] icons1 = {R.drawable.main_myrecpie, R.drawable.main_profile, R.drawable.main_addrecpie};
     private int[] icons2 = {R.drawable.main_diary, R.drawable.main_friends, R.drawable.main_tour};
     private LinearLayout linearFirst;
@@ -50,7 +50,7 @@ public class HomeScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        if(PrefUtils.getCurrentUser(HomeScreen.this) != null){
+        if (PrefUtils.getCurrentUser(HomeScreen.this) != null) {
             Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
         }
 
@@ -62,42 +62,42 @@ public class HomeScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-       setupButtons();
+        setupButtons();
     }
 
     private View.OnClickListener firstLayoutItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            switch ((int)v.getTag()){
+            switch ((int) v.getTag()) {
 
                 case 0:
 
-                    Intent i = new Intent(HomeScreen.this,MyRecipeListScreen.class);
+                    Intent i = new Intent(HomeScreen.this, MyRecipeListScreen.class);
                     startActivity(i);
                     break;
 
                 case 1:
 
-                    Intent i1 = new Intent(HomeScreen.this,ProfileScreen.class);
+                    Intent i1 = new Intent(HomeScreen.this, ProfileScreen.class);
                     startActivity(i1);
                     break;
 
                 case 2:
 
-                    CustomDialog customDialog=new CustomDialog(HomeScreen.this,"Add Recipe from Web","Enter Recipe Manually",android.R.style.Theme_Translucent_NoTitleBar);
+                    CustomDialog customDialog = new CustomDialog(HomeScreen.this, "Add Recipe from Web", "Enter Recipe Manually", android.R.style.Theme_Translucent_NoTitleBar);
                     customDialog.show();
                     customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                         @Override
                         public void topButton() {
 
-                            Intent i = new Intent(HomeScreen.this,AddRecipeWebScreen.class);
+                            Intent i = new Intent(HomeScreen.this, AddRecipeWebScreen.class);
                             startActivity(i);
                         }
 
                         @Override
                         public void bottomButton() {
-                            Intent i = new Intent(HomeScreen.this,AddRecipeManualScreen.class);
+                            Intent i = new Intent(HomeScreen.this, AddRecipeManualScreen.class);
                             startActivity(i);
 
                         }
@@ -112,13 +112,13 @@ public class HomeScreen extends ActionBarActivity {
     private View.OnClickListener secondLayoutItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch ((int)v.getTag()){
+            switch ((int) v.getTag()) {
                 case 0:
-                    Intent i1 = new Intent(HomeScreen.this,DiaryScreen.class);
+                    Intent i1 = new Intent(HomeScreen.this, DiaryScreen.class);
                     startActivity(i1);
                     break;
                 case 1:
-                    Intent i = new Intent(HomeScreen.this,FriendsScreen.class);
+                    Intent i = new Intent(HomeScreen.this, FriendsScreen.class);
                     startActivity(i);
                     break;
                 case 2:
@@ -129,37 +129,37 @@ public class HomeScreen extends ActionBarActivity {
     };
 
     private void setupButtons() {
-        relTopProfile = (RelativeLayout)findViewById(R.id.relTopProfile);
+        relTopProfile = (RelativeLayout) findViewById(R.id.relTopProfile);
 
         relTopProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(HomeScreen.this,ProfileScreen.class);
+                Intent i = new Intent(HomeScreen.this, ProfileScreen.class);
                 startActivity(i);
             }
         });
 
-        linearFirst = (LinearLayout)findViewById(R.id.firstRow);
-        linearSecond = (LinearLayout)findViewById(R.id.secondRow);
+        linearFirst = (LinearLayout) findViewById(R.id.firstRow);
+        linearSecond = (LinearLayout) findViewById(R.id.secondRow);
 
-        for(int i=0;i<linearFirst.getChildCount();i++){
+        for (int i = 0; i < linearFirst.getChildCount(); i++) {
 
-            ViewGroup vg = (ViewGroup)linearFirst.getChildAt(i);
+            ViewGroup vg = (ViewGroup) linearFirst.getChildAt(i);
             vg.setTag(i);
             vg.setOnClickListener(firstLayoutItemClickListener);
-            ImageView img = (ImageView)vg.findViewById(R.id.itemImageHome);
-            TextView txt = (TextView)vg.findViewById(R.id.itemTextHome);
+            ImageView img = (ImageView) vg.findViewById(R.id.itemImageHome);
+            TextView txt = (TextView) vg.findViewById(R.id.itemTextHome);
             img.setImageResource(icons1[i]);
             txt.setText(names1[i]);
         }
 
-        for(int i=0;i<linearSecond.getChildCount();i++){
+        for (int i = 0; i < linearSecond.getChildCount(); i++) {
 
-            ViewGroup vg = (ViewGroup)linearSecond.getChildAt(i);
+            ViewGroup vg = (ViewGroup) linearSecond.getChildAt(i);
             vg.setTag(i);
             vg.setOnClickListener(secondLayoutItemClickListener);
-            ImageView img = (ImageView)vg.findViewById(R.id.itemImageHome);
-            TextView txt = (TextView)vg.findViewById(R.id.itemTextHome);
+            ImageView img = (ImageView) vg.findViewById(R.id.itemImageHome);
+            TextView txt = (TextView) vg.findViewById(R.id.itemTextHome);
             img.setImageResource(icons2[i]);
             txt.setText(names2[i]);
         }
@@ -179,7 +179,7 @@ public class HomeScreen extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -195,28 +195,28 @@ public class HomeScreen extends ActionBarActivity {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
 
-        String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+        String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
 
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this,arrayList,drawableImage,true));
+        popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this, arrayList, drawableImage, true));
         popupWindow.show();
     }
 
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
-        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+        String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());
@@ -224,12 +224,12 @@ public class HomeScreen extends ActionBarActivity {
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int)(height/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
+        popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(HomeScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(HomeScreen.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 
@@ -240,19 +240,20 @@ public class HomeScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(HomeScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(HomeScreen.this,StartScreen.class);
+        Intent i = new Intent(HomeScreen.this, StartScreen.class);
         startActivity(i);
         finish();
     }
 
-    public  class SettingsAdapter extends ArrayAdapter<String> {
+    public class SettingsAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
         Context ctx;
-        private  class ViewHolder {
+
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -262,7 +263,7 @@ public class HomeScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -274,20 +275,20 @@ public class HomeScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
                 }
@@ -302,11 +303,11 @@ public class HomeScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(HomeScreen.this,DisclaimerScreen.class);
+                            Intent i = new Intent(HomeScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(HomeScreen.this,AboutusScreen.class);
+                            Intent i2 = new Intent(HomeScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -322,7 +323,7 @@ public class HomeScreen extends ActionBarActivity {
         }
     }
 
-    public  class MoreAdapter extends ArrayAdapter<String> {
+    public class MoreAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
@@ -330,7 +331,7 @@ public class HomeScreen extends ActionBarActivity {
         private boolean isSettings;
         Context ctx;
 
-        private  class ViewHolder {
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -340,7 +341,7 @@ public class HomeScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -352,24 +353,24 @@ public class HomeScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-               if(isSettings){
+                if (isSettings) {
 
-                   itemNames.setText(users.get(position));
-                   int col = Color.parseColor("#D13B3D");
-                   imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
-                   imgIcon.setImageResource(R.drawable.iconsettings);
-                   if(position!=0) {
-                       imgIcon.setVisibility(View.INVISIBLE);
-                   }
-               }else{
+                    itemNames.setText(users.get(position));
+                    int col = Color.parseColor("#D13B3D");
+                    imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
+                    imgIcon.setImageResource(R.drawable.iconsettings);
+                    if (position != 0) {
+                        imgIcon.setVisibility(View.INVISIBLE);
+                    }
+                } else {
 
-                   itemNames.setText(users.get(position));
-                   imgIcon.setImageResource(imgIcons[position]);
+                    itemNames.setText(users.get(position));
+                    imgIcon.setImageResource(imgIcons[position]);
                 }
 
                 convertView.setTag(viewHolder);
@@ -383,14 +384,14 @@ public class HomeScreen extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    switch (position){
+                    switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(HomeScreen.this,GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(HomeScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(HomeScreen.this,GlossaryScreen.class);
+                            Intent i = new Intent(HomeScreen.this, GlossaryScreen.class);
                             startActivity(i);
                             break;
                     }

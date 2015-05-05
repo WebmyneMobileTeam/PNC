@@ -44,8 +44,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_import_recipe_web_screen);
 
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
@@ -63,13 +61,16 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(ImportRecipeFromWebScreen.this,spinnerList);
         forSpinner= (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
+
         for(int i=0;i<5;i++) {
+
             View view = getLayoutInflater().inflate(R.layout.item_recipe_manual_screen, linearTable, false);
             spOne = (Spinner) view.findViewById(R.id.spOne);
             spTwo = (Spinner) view.findViewById(R.id.spTwo);
             spOne.setAdapter(customSpinnerAdapter);
             spTwo.setAdapter(customSpinnerAdapter);
             linearTable.addView(view);
+
         }
 
     }
@@ -187,7 +188,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         popupWindow.setAdapter(new MoreAdapter(ImportRecipeFromWebScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
 
-
     }
 
     private void logoutFromApp() {
@@ -304,7 +304,9 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
 
             // Check if an existing view is being reused, otherwise inflate the view
             ViewHolder viewHolder; // view lookup cache stored in tag
+
             if (convertView == null) {
+
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.item_popup,parent,false);
@@ -326,7 +328,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
                 }
-
                 convertView.setTag(viewHolder);
 
             } else {
@@ -339,7 +340,6 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
                 public void onClick(View v) {
 
                     switch (position){
-
                         case 5:
                             Intent iGuide = new Intent(ImportRecipeFromWebScreen.this,GuideLinesMainScreen.class);
                             startActivity(iGuide);
@@ -355,7 +355,5 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
             return convertView;
         }
     }
-
-
     //end of main class
 }

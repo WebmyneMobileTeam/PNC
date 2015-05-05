@@ -14,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.helpers.User;
 import com.facebook.CallbackManager;
@@ -24,11 +27,16 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.drakeet.library.UIButton;
 
-public class LoginScreen extends ActionBarActivity {
+public class LoginScreen extends ActionBarActivity implements View.OnClickListener{
 
     private EditText edUserName;
     private EditText edPassword;
@@ -61,7 +69,8 @@ public class LoginScreen extends ActionBarActivity {
         btnForgotPassword.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
         btnLogin.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
         btnFacebookLogin.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
-        btnLogin.setOnClickListener(loginClick);
+        //btnLogin.setOnClickListener(loginClick);
+        btnLogin.setOnClickListener(this);
 
     }
 
@@ -86,14 +95,9 @@ public class LoginScreen extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-
         callbackManager=CallbackManager.Factory.create();
-
         loginButton= (LoginButton)findViewById(R.id.login_button);
-
         loginButton.setReadPermissions("public_profile", "email","user_friends");
-
-
         btnFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,15 +107,10 @@ public class LoginScreen extends ActionBarActivity {
 //                progressDialog.show();
 
                 loginButton.performClick();
-
                 loginButton.setPressed(true);
-
                 loginButton.invalidate();
-
                 loginButton.registerCallback(callbackManager, mCallBack);
-
                 loginButton.setPressed(false);
-
                 loginButton.invalidate();
 
             }
@@ -129,8 +128,6 @@ public class LoginScreen extends ActionBarActivity {
         @Override
         public void onSuccess(LoginResult loginResult) {
 
-
-
             // App code
             GraphRequest request = GraphRequest.newMeRequest(
                     loginResult.getAccessToken(),
@@ -142,7 +139,6 @@ public class LoginScreen extends ActionBarActivity {
 
                             Log.e("response: ", response + "");
                             try {
-
                                 user = new User();
                                 user.facebookID = object.getString("id").toString();
                                 user.email = object.getString("email").toString();
@@ -180,5 +176,55 @@ public class LoginScreen extends ActionBarActivity {
 //            progressDialog.dismiss();
         }
     };
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.btnLogin:
+
+                loginProcess();
+                break;
+
+        }
+    }
+
+    private void loginProcess() {
+
+        if(passValidationProcess()){
+
+            List<NameValuePair> pairs = new ArrayList<>();
+            pairs.add(new BasicNameValuePair("email",edUserName.getText().toString()));
+            pairs.add(new BasicNameValuePair("fb_id",""));
+            pairs.add(new BasicNameValuePair("password",edPassword.getText().toString()));
+
+            new GetPostClass(API.LOGIN,pairs,EnumType.POST) {
+                @Override
+                public void response(String response) {
+                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void error(String error) {
+                    Toast.makeText(LoginScreen.this,error,Toast.LENGTH_SHORT).show();
+                }
+            }.call();
+
+        }else{
+            Toast.makeText(LoginScreen.this,"Enter credentials",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean passValidationProcess(){
+        boolean ispassed = false;
+
+        if(edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()){
+            ispassed = false;
+        }else{
+            ispassed = true;
+        }
+        return ispassed;
+
+    }
 
 }
