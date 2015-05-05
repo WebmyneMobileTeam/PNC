@@ -72,8 +72,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         //btnLogin.setOnClickListener(loginClick);
         btnLogin.setOnClickListener(this);
 
-
-
     }
 
     private View.OnClickListener loginClick = new View.OnClickListener() {
@@ -219,7 +217,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
     public boolean passValidationProcess(){
         boolean ispassed = false;
-
+        
         if(edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()){
             ispassed = false;
         }else{

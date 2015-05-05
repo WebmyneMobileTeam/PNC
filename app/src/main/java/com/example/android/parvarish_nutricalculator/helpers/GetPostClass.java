@@ -136,7 +136,7 @@ public abstract class GetPostClass implements Interaction {
             super.onPostExecute(aVoid);
             Log.e("Response:", response.toString());
             if (response == null) {
-                error("Error");
+                error("Server Error");
             } else {
 
                 try{
@@ -146,6 +146,8 @@ public abstract class GetPostClass implements Interaction {
                     }else{
 
                         JSONObject object = jobj.getJSONObject("description");
+                        JSONObject objectError = object.getJSONObject("error");
+                        error(objectError.toString());
 
 
                     }
@@ -178,11 +180,24 @@ public abstract class GetPostClass implements Interaction {
             super.onPostExecute(aVoid);
             Log.e("Response:", response.toString());
             if (response == null) {
-                error("Error");
+                error("Server Error");
             } else {
-                response(response);
-            }
 
+                try{
+                    JSONObject jobj = new JSONObject(response);
+                    if(jobj.getString("message").equalsIgnoreCase("success")){
+                        response(jobj.getJSONObject("description").toString());
+                    }else{
+
+                        JSONObject object = jobj.getJSONObject("description");
+                        JSONObject objectError = object.getJSONObject("error");
+                        error(objectError.toString());
+
+
+                    }
+                }catch(Exception e){
+                }
+            }
         }
     }
 
