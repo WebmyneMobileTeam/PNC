@@ -96,7 +96,6 @@ public abstract class GetPostClass implements Interaction {
         String responseBody = null;
         JSONObject jObject = null;
         try {
-
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
             int responseCode = response.getStatusLine().getStatusCode();

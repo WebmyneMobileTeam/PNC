@@ -72,6 +72,8 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         //btnLogin.setOnClickListener(loginClick);
         btnLogin.setOnClickListener(this);
 
+
+
     }
 
     private View.OnClickListener loginClick = new View.OnClickListener() {
