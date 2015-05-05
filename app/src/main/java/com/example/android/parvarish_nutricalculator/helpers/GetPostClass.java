@@ -127,7 +127,6 @@ public abstract class GetPostClass implements Interaction {
                 e.printStackTrace();
                 error("Error");
             }
-
             return null;
         }
 
@@ -144,12 +143,8 @@ public abstract class GetPostClass implements Interaction {
                     if(jobj.getString("message").equalsIgnoreCase("success")){
                         response(jobj.getJSONObject("description").toString());
                     }else{
-
                         JSONObject object = jobj.getJSONObject("description");
-                        JSONObject objectError = object.getJSONObject("error");
-                        error(objectError.toString());
-
-
+                        error(object.toString());
                     }
                 }catch(Exception e){
                 }
@@ -190,8 +185,7 @@ public abstract class GetPostClass implements Interaction {
                     }else{
 
                         JSONObject object = jobj.getJSONObject("description");
-                        JSONObject objectError = object.getJSONObject("error");
-                        error(objectError.toString());
+                        error(object.toString());
 
 
                     }

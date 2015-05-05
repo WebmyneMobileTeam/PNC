@@ -113,6 +113,8 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                 loginButton.setPressed(false);
                 loginButton.invalidate();
 
+
+
             }
         });
     }
@@ -217,7 +219,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
     public boolean passValidationProcess(){
         boolean ispassed = false;
-        
+
         if(edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()){
             ispassed = false;
         }else{
