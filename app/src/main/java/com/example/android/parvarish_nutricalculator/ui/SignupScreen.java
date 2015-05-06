@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.facebook.login.LoginManager;
 
@@ -32,6 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import me.drakeet.library.UIButton;
 import pt.joaocruz04.lib.SOAPManager;
@@ -39,9 +46,11 @@ import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -97,6 +106,7 @@ public class SignupScreen extends ActionBarActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkValidation();
 
             }
         });
@@ -104,6 +114,81 @@ public class SignupScreen extends ActionBarActivity {
 
     }
 
+    private void checkValidation() {
+
+        if(isEmptyField(edUserName)){
+            Toast.makeText(SignupScreen.this,"Please Enter Username",Toast.LENGTH_SHORT).show();
+        } else if(isEmptyField(edPassword)){
+            Toast.makeText(SignupScreen.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
+        } else if(isEmptyField(edEmail)){
+            Toast.makeText(SignupScreen.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
+        } else if(isEmailMatch(edEmail)){
+            Toast.makeText(SignupScreen.this,"Please Enter Valid Email",Toast.LENGTH_SHORT).show();
+        } else if(isEmptyField(edMobile)){
+            Toast.makeText(SignupScreen.this,"Please Enter Mobile",Toast.LENGTH_SHORT).show();
+        } else if(isEmptyField(edCity)){
+            Toast.makeText(SignupScreen.this,"Please Enter City",Toast.LENGTH_SHORT).show();
+        } else {
+            registrationProcess();
+        }
+    }
+    public boolean isEmptyField(EditText param1) {
+
+        boolean isEmpty = false;
+        if (param1.getText() == null || param1.getText().toString().equalsIgnoreCase("")) {
+            isEmpty = true;
+        }
+        return isEmpty;
+    }
+
+    public boolean isPasswordMatch(EditText param1, EditText param2) {
+        boolean isMatch = false;
+        if (param1.getText().toString().equals(param2.getText().toString())) {
+            isMatch = true;
+        }
+        return isMatch;
+    }
+
+    public boolean isEmailMatch(EditText param1) {
+        // boolean isMatch = false;
+        Pattern pattern = Patterns.EMAIL_ADDRESS;
+        return pattern.matcher(param1.getText().toString()).matches();
+    }
+
+
+
+    private void registrationProcess() {
+
+        final ProgressDialog progressDialog=new ProgressDialog(SignupScreen.this);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+            List<NameValuePair> pairs = new ArrayList<>();
+            pairs.add(new BasicNameValuePair("email",edEmail.getText().toString().trim()));
+            pairs.add(new BasicNameValuePair("name",edUserName.getText().toString().trim()+""));
+            pairs.add(new BasicNameValuePair("dob",""));
+            pairs.add(new BasicNameValuePair("password",edPassword.getText().toString().trim()));
+            pairs.add(new BasicNameValuePair("city",edCity.getText().toString().trim()));
+            pairs.add(new BasicNameValuePair("mobile",edMobile.getText().toString().toString()));
+            pairs.add(new BasicNameValuePair("gender",""));
+            pairs.add(new BasicNameValuePair("profile_pic",""));
+            pairs.add(new BasicNameValuePair("fb_id",""));
+            pairs.add(new BasicNameValuePair("fb_email",""));
+
+            new GetPostClass(API.REGISTRATION,pairs, EnumType.POST) {
+                @Override
+                public void response(String response) {
+                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+                @Override
+                public void error(String error) {
+                    Toast.makeText(SignupScreen.this,error,Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            }.call();
+
+        
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
