@@ -89,7 +89,6 @@
             drakeet:color_pressed="#464646" />
     </LinearLayout>
 
-
     <com.facebook.login.widget.LoginButton
         android:visibility="gone"
         android:id="@+id/login_button"
