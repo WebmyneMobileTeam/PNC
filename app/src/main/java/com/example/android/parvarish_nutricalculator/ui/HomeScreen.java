@@ -194,10 +194,8 @@ public class HomeScreen extends ActionBarActivity {
     private void openSettings() {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
-
         String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
-
         ListPopupWindow popupWindow = new ListPopupWindow(HomeScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
@@ -208,7 +206,7 @@ public class HomeScreen extends ActionBarActivity {
         popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this, arrayList, drawableImage, true));
+        popupWindow.setAdapter(new SettingsAdapter(HomeScreen.this, arrayList, drawableImage,true));
         popupWindow.show();
     }
 

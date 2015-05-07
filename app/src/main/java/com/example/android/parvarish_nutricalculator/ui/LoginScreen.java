@@ -150,7 +150,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                                 e.printStackTrace();
                             }
 
-
 //                            pr
 //
 //
@@ -194,7 +193,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         switch (v.getId()) {
 
             case R.id.btnLogin:
-
                 loginProcess();
                 break;
         }

@@ -28,7 +28,6 @@
             android:layout_gravity="bottom"
             style="@style/both_match_wrap_content">
 
-
             <EditText
                 android:id="@+id/edUserNameLogin"
                 android:drawablePadding="16dp"
