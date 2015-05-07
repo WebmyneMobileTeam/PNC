@@ -14,11 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.helpers.User;
+import com.example.android.parvarish_nutricalculator.model.Login;
+import com.example.android.parvarish_nutricalculator.model.Profile;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -26,6 +29,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.GsonBuilder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -215,6 +219,28 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                 @Override
                 public void response(String response) {
                     progressDialog.dismiss();
+
+                    Log.e("login response",response);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString().trim());
+
+                        Login userLogin = new GsonBuilder().create().fromJson(response, Login.class);
+
+                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
+                        complexPreferences.putObject("current-user", userLogin);
+                        complexPreferences.commit();
+
+                        Log.e("sucness", "saved current user");
+
+                        Log.e("id",""+userLogin.data.id);
+
+                    }catch(Exception e){
+                        Log.e("excption s",e.toString());
+                    }
+
+
+
 //                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(LoginScreen.this,HomeScreen.class);
                     startActivity(i);

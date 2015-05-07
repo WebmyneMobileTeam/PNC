@@ -59,6 +59,7 @@
             android:layout_height="3dp"/>
 
         <ImageView
+            android:id="@+id/imgProfile"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/white_heart"

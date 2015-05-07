@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,21 +19,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.Login;
+import com.example.android.parvarish_nutricalculator.model.Profile;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProfileScreen extends ActionBarActivity {
 
+    private Button btnSave,btnChangePassword;
+    private EditText edSignUpCity,edSignUpMobile,edSignUpEmail,edSignUpPassword,edSignUpUserName;
+    private ImageView imgProfile;
+    private ProgressDialog progressDialog;
     private ListView profileList;
     private Toolbar toolbar;
+    Login currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +67,8 @@ public class ProfileScreen extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+
+
 
        /* profileList = (ListView)findViewById(R.id.profileList);
 
@@ -65,6 +89,58 @@ public class ProfileScreen extends ActionBarActivity {
         profileList.setAdapter(adp);*/
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
+        currentUser = complexPreferences.getObject("current-user", Login.class);
+
+        processfetchProfileDetails();
+
+    }
+
+    private void processfetchProfileDetails(){
+
+
+        progressDialog =new ProgressDialog(ProfileScreen.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+         new GetPostClass(API.GET_PROFILE+currentUser.data.id,EnumType.GET) {
+                @Override
+                public void response(String response) {
+                    progressDialog.dismiss();
+                    Log.e("profile response", response);
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString().trim());
+                        Profile userProfile = new GsonBuilder().create().fromJson(response, Profile.class);
+/*
+
+                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
+                        complexPreferences.putObject("current-user", userProfile);
+                        complexPreferences.commit();
+*/
+
+                        Log.e("sucness","saved profile");
+
+                    }catch(Exception e){
+                        Log.e("exc",e.toString());
+                    }
+
+                }
+
+                @Override
+                public void error(String error) {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProfileScreen.this, error, Toast.LENGTH_SHORT).show();
+                }
+            }.call();
+
+
+    }
 
 
     class CustomAdapter extends BaseAdapter{
