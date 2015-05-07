@@ -91,7 +91,11 @@ public class ProfileScreen extends ActionBarActivity {
 
 
     private void init(){
-
+        edSignUpCity = (EditText)findViewById(R.id.edSignUpCity);
+        edSignUpMobile= (EditText)findViewById(R.id.edSignUpCity);
+        edSignUpEmail= (EditText)findViewById(R.id.edSignUpCity);
+        edSignUpPassword= (EditText)findViewById(R.id.edSignUpCity);
+        edSignUpUserName = (EditText)findViewById(R.id.edSignUpCity);
     }
 
     @Override
