@@ -19,5 +19,8 @@ public class API {
 
     public static String FORGOT_PASSWORD = BASE_URL+"users/forgetPassword";
 
+    public static String ABOUT_DISCLAIMERS = BASE_URL+"admins/general";
+
+    public static String NUTRITIONAL_GUIDELINES = BASE_URL+"nutritional_guidelines/listing";
 
 }

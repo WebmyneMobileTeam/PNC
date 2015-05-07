@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,24 +22,37 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.AboutUs;
+import com.example.android.parvarish_nutricalculator.model.AboutUsData;
+import com.example.android.parvarish_nutricalculator.model.Profile;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AboutusScreen extends ActionBarActivity {
     private Toolbar toolbar;
-
-
+    private ProgressDialog progressDialog;
+    private TextView description,app_url,fb_url,fb_email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aboutus_screen);
-
+        description= (TextView) findViewById(R.id.description);
+        app_url= (TextView) findViewById(R.id.app_url);
+        fb_url= (TextView) findViewById(R.id.fb_url);
+        fb_email= (TextView) findViewById(R.id.fb_email);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
@@ -47,10 +61,45 @@ public class AboutusScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-
+        getAboutUsDetails();
     }
 
+    private void getAboutUsDetails() {
 
+
+        progressDialog =new ProgressDialog(AboutusScreen.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        new GetPostClass(API.ABOUT_DISCLAIMERS, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("profile response", response);
+
+                try {
+
+                    AboutUsData aboutUs = new GsonBuilder().create().fromJson(response.toString(), AboutUsData.class);
+                    description.setText(aboutUs.aboutUsConfig.aboutUs.about_us);
+                    app_url.setText(aboutUs.aboutUsConfig.aboutUs.app_url);
+                    fb_url.setText(aboutUs.aboutUsConfig.aboutUs.facebook_url);
+                    fb_email.setText(aboutUs.aboutUsConfig.aboutUs.feedback_email);
+
+                    Log.e("sucness","saved profile");
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(AboutusScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
 
 
     @Override
@@ -114,10 +163,10 @@ public class AboutusScreen extends ActionBarActivity {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height =  getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int)(height/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
+        popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(AboutusScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(AboutusScreen.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 
