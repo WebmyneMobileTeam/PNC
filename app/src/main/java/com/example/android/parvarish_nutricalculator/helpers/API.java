@@ -15,4 +15,7 @@ public class API {
     // Registration webservice.
     public static String REGISTRATION = BASE_URL+"users/register";
 
+    public static String FORGOT_PASSWORD = BASE_URL+"users/forgetPassword";
+
+
 }

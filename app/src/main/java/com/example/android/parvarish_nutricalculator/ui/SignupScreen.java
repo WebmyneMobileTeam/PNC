@@ -122,7 +122,7 @@ public class SignupScreen extends ActionBarActivity {
             Toast.makeText(SignupScreen.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
         } else if(isEmptyField(edEmail)){
             Toast.makeText(SignupScreen.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
-        } else if(isEmailMatch(edEmail)){
+        } else if(!isEmailMatch(edEmail)){
             Toast.makeText(SignupScreen.this,"Please Enter Valid Email",Toast.LENGTH_SHORT).show();
         } else if(isEmptyField(edMobile)){
             Toast.makeText(SignupScreen.this,"Please Enter Mobile",Toast.LENGTH_SHORT).show();
@@ -165,20 +165,22 @@ public class SignupScreen extends ActionBarActivity {
             List<NameValuePair> pairs = new ArrayList<>();
             pairs.add(new BasicNameValuePair("email",edEmail.getText().toString().trim()));
             pairs.add(new BasicNameValuePair("name",edUserName.getText().toString().trim()+""));
-            pairs.add(new BasicNameValuePair("dob",""));
+            pairs.add(new BasicNameValuePair("dob","2015-07-09"));
             pairs.add(new BasicNameValuePair("password",edPassword.getText().toString().trim()));
             pairs.add(new BasicNameValuePair("city",edCity.getText().toString().trim()));
             pairs.add(new BasicNameValuePair("mobile",edMobile.getText().toString().toString()));
-            pairs.add(new BasicNameValuePair("gender",""));
-            pairs.add(new BasicNameValuePair("profile_pic",""));
-            pairs.add(new BasicNameValuePair("fb_id",""));
-            pairs.add(new BasicNameValuePair("fb_email",""));
+            pairs.add(new BasicNameValuePair("gender","Male"));
+            pairs.add(new BasicNameValuePair("profile_pic","abc.jpg"));
+            pairs.add(new BasicNameValuePair("fb_id","12345"));
+            pairs.add(new BasicNameValuePair("fb_email","abc@gmail.com"));
 
             new GetPostClass(API.REGISTRATION,pairs, EnumType.POST) {
                 @Override
                 public void response(String response) {
-                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+                    Intent i=new Intent(SignupScreen.this,HomeScreen.class);
+                    startActivity(i);
                 }
                 @Override
                 public void error(String error) {

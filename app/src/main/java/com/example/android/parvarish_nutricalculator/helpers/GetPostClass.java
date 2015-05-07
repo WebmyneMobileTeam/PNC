@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * Created by Dhruvil on 04-05-2015.
  */
+
 public abstract class GetPostClass implements Interaction {
 
     public abstract void response(String response);
@@ -33,6 +34,7 @@ public abstract class GetPostClass implements Interaction {
     private String url;
     private EnumType type;
     private List<NameValuePair> pairs;
+
 
     public GetPostClass(String url, EnumType type) {
         this.url = url;
@@ -44,6 +46,7 @@ public abstract class GetPostClass implements Interaction {
         this.type = type;
         this.pairs = pairs;
     }
+
 
     public synchronized final GetPostClass call() {
 
@@ -131,21 +134,20 @@ public abstract class GetPostClass implements Interaction {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             Log.e("Response:", response.toString());
             if (response == null) {
                 error("Server Error");
             } else {
 
-                try {
+                try{
                     JSONObject jobj = new JSONObject(response);
-                    if (jobj.getString("message").equalsIgnoreCase("success")) {
+                    if(jobj.getString("message").equalsIgnoreCase("success")){
                         response(jobj.getJSONObject("description").toString());
-                    } else {
+                    }else{
                         JSONObject object = jobj.getJSONObject("description");
                         error(object.toString());
                     }
-                } catch (Exception e) {
+                }catch(Exception e){
                 }
             }
         }
@@ -176,18 +178,15 @@ public abstract class GetPostClass implements Interaction {
             if (response == null) {
                 error("Server Error");
             } else {
-
-                try {
+                try{
                     JSONObject jobj = new JSONObject(response);
-                    if (jobj.getString("message").equalsIgnoreCase("success")) {
+                    if(jobj.getString("message").equalsIgnoreCase("success")){
                         response(jobj.getJSONObject("description").toString());
-                    } else {
-
+                    }else{
                         JSONObject object = jobj.getJSONObject("description");
                         error(object.toString());
-
                     }
-                } catch (Exception e) {
+                }catch(Exception e){
                 }
             }
         }

@@ -36,15 +36,16 @@ import java.util.List;
 
 import me.drakeet.library.UIButton;
 
-public class LoginScreen extends ActionBarActivity implements View.OnClickListener {
+public class LoginScreen extends ActionBarActivity implements View.OnClickListener{
 
     private EditText edUserName;
     private EditText edPassword;
     private Button btnForgotPassword;
     private Button btnLogin;
     private UIButton btnFacebookLogin;
+    private ProgressDialog progressDialog;
 
-    //    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
     User user;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -52,14 +53,13 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login_screen);
-
-        if (PrefUtils.getCurrentUser(LoginScreen.this) != null) {
+        if(PrefUtils.getCurrentUser(LoginScreen.this) != null){
             Intent homeIntent = new Intent(LoginScreen.this, HomeScreen.class);
             startActivity(homeIntent);
             finish();
         }
+
         edPassword = (EditText) findViewById(R.id.edPasswordLogin);
         edUserName = (EditText) findViewById(R.id.edUserNameLogin);
         btnForgotPassword = (Button) findViewById(R.id.btnForgotPassword);
@@ -72,13 +72,19 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         btnFacebookLogin.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
         //btnLogin.setOnClickListener(loginClick);
         btnLogin.setOnClickListener(this);
-
+        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(LoginScreen.this,ForgotPasswordActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private View.OnClickListener loginClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent iHome = new Intent(LoginScreen.this, HomeScreen.class);
+            Intent iHome = new Intent(LoginScreen.this,HomeScreen.class);
             startActivity(iHome);
             finish();
         }
@@ -87,7 +93,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent iHome = new Intent(LoginScreen.this, StartScreen.class);
+        Intent iHome = new Intent(LoginScreen.this,StartScreen.class);
         startActivity(iHome);
         finish();
     }
@@ -96,16 +102,16 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
 
-        callbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions("public_profile", "email", "user_friends");
+        callbackManager=CallbackManager.Factory.create();
+        loginButton= (LoginButton)findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile", "email","user_friends");
         btnFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //progressDialog = new ProgressDialog(LoginScreen.this);
-                //progressDialog.setMessage("Loading...");
-                //progressDialog.show();
+//                progressDialog = new ProgressDialog(LoginScreen.this);
+//                progressDialog.setMessage("Loading...");
+//                progressDialog.show();
 
                 loginButton.performClick();
                 loginButton.setPressed(true);
@@ -113,6 +119,8 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                 loginButton.registerCallback(callbackManager, mCallBack);
                 loginButton.setPressed(false);
                 loginButton.invalidate();
+
+
 
             }
         });
@@ -123,6 +131,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
 
     private FacebookCallback<LoginResult> mCallBack = new FacebookCallback<LoginResult>() {
         @Override
@@ -144,22 +153,13 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                                 user.email = object.getString("email").toString();
                                 user.name = object.getString("name").toString();
                                 user.gender = object.getString("gender").toString();
-                                PrefUtils.setCurrentUser(user, LoginScreen.this);
+                                PrefUtils.setCurrentUser(user,LoginScreen.this);
 
-                            } catch (Exception e) {
+                            }catch (Exception e){
                                 e.printStackTrace();
                             }
-
-//                            pr
-//
-//
-//
-//
-//
-//
-//
-// ogressDialog.dismiss();
-                            Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
+//                            progressDialog.dismiss();
+                            Intent intent=new Intent(LoginScreen.this,HomeScreen.class);
                             startActivity(intent);
                             finish();
 //                                callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
@@ -177,7 +177,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         public void onCancel() {
 
 //            progressDialog.dismiss();
-
         }
 
         @Override
@@ -190,49 +189,56 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
+        switch (v.getId()){
 
             case R.id.btnLogin:
+
                 loginProcess();
                 break;
+
         }
     }
 
     private void loginProcess() {
 
-        if (passValidationProcess()) {
+        if(passValidationProcess()){
 
             List<NameValuePair> pairs = new ArrayList<>();
-            pairs.add(new BasicNameValuePair("email", edUserName.getText().toString()));
-            pairs.add(new BasicNameValuePair("fb_id", ""));
+            pairs.add(new BasicNameValuePair("email",edUserName.getText().toString()));
+            pairs.add(new BasicNameValuePair("fb_id",""));
             pairs.add(new BasicNameValuePair("password", edPassword.getText().toString()));
 
-            new GetPostClass(API.LOGIN, pairs, EnumType.POST) {
+            progressDialog =new ProgressDialog(LoginScreen.this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.show();
+            new GetPostClass(API.LOGIN,pairs,EnumType.POST) {
                 @Override
                 public void response(String response) {
-                    Toast.makeText(LoginScreen.this, response, Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+//                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
+                    Intent i=new Intent(LoginScreen.this,HomeScreen.class);
+                    startActivity(i);
                 }
-
                 @Override
                 public void error(String error) {
-                    Toast.makeText(LoginScreen.this, error, Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(LoginScreen.this,error,Toast.LENGTH_SHORT).show();
                 }
             }.call();
 
-        } else {
-            Toast.makeText(LoginScreen.this, "Enter credentials", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(LoginScreen.this,"Enter credentials",Toast.LENGTH_SHORT).show();
         }
     }
 
-    public boolean passValidationProcess() {
+    public boolean passValidationProcess(){
         boolean ispassed = false;
 
-        if (edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()) {
+        if(edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()){
             ispassed = false;
-        } else {
+        }else{
             ispassed = true;
         }
-
         return ispassed;
 
     }
