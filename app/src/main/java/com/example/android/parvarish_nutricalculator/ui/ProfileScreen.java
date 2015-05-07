@@ -68,7 +68,7 @@ public class ProfileScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-
+        init();
 
        /* profileList = (ListView)findViewById(R.id.profileList);
 
@@ -89,6 +89,10 @@ public class ProfileScreen extends ActionBarActivity {
         profileList.setAdapter(adp);*/
     }
 
+
+    private void init(){
+
+    }
 
     @Override
     protected void onResume() {
