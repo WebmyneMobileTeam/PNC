@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addBabyView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#fff"
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/imgBabyProfile"
         android:layout_weight="1"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/white_heart"
@@ -85,4 +87,21 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+    <LinearLayout
+        android:gravity="right"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btnAddBaby"
+            android:text="Add Baby"
+            style="@style/btn_addBaby" />
+    </LinearLayout>
 </LinearLayout>

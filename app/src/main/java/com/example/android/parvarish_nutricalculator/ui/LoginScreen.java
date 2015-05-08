@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
@@ -20,8 +17,7 @@ import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.helpers.User;
-import com.example.android.parvarish_nutricalculator.model.Login;
-import com.example.android.parvarish_nutricalculator.model.Profile;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -225,15 +221,15 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString().trim());
 
-                        Login userLogin = new GsonBuilder().create().fromJson(response, Login.class);
+                        userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
 
                         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
-                        complexPreferences.putObject("current-user", userLogin);
+                        complexPreferences.putObject("current-user", userUserModel);
                         complexPreferences.commit();
 
                         Log.e("sucness", "saved current user");
 
-                        Log.e("id",""+userLogin.data.id);
+                        Log.e("id",""+ userUserModel.data.id);
 
                     }catch(Exception e){
                         Log.e("excption s",e.toString());

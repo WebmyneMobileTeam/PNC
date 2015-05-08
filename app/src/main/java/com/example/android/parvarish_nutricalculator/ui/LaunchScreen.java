@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 
 public class LaunchScreen extends ActionBarActivity {
 
@@ -22,9 +24,21 @@ public class LaunchScreen extends ActionBarActivity {
             }
             @Override
             public void onFinish() {
-                Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
-                startActivity(iStartScreen);
-                finish();
+
+                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LaunchScreen.this, "user_pref", 0);
+                userModel currentUser = complexPreferences.getObject("current-user", userModel.class);
+
+                if(currentUser.data == null){
+                    Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
+                    startActivity(iStartScreen);
+                    finish();
+                }else{
+                    Intent iStartScreen = new Intent(LaunchScreen.this,HomeScreen.class);
+                    startActivity(iStartScreen);
+                    finish();
+                }
+
+
             }
         }.start();
 

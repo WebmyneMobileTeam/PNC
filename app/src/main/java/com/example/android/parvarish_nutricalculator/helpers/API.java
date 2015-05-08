@@ -19,6 +19,17 @@ public class API {
 
     public static String FORGOT_PASSWORD = BASE_URL+"users/forgetPassword";
 
+    public static String UPDATE_PROFILE = BASE_URL+"users/userEdit";
+
+
+    public static String GET_BABY_DETAILS = BASE_URL+"babies/listing/?user_id=";
+
+    public static String DELETE_BABY = BASE_URL+"babies/deletebaby?baby_id=";
+
+    public static String ADD_BABY = BASE_URL+"babies/addBabies";
+
+    public static String UPDATE_BABY = BASE_URL+"babies/editBabies";
+
     public static String ABOUT_DISCLAIMERS = BASE_URL+"admins/general";
 
     public static String NUTRITIONAL_GUIDELINES = BASE_URL+"nutritional_guidelines/listing";
