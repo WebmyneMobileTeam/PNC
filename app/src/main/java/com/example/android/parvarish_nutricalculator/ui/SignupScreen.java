@@ -191,7 +191,6 @@ public class SignupScreen extends ActionBarActivity {
                 }
             }.call();
 
-        
     }
 
     @Override
