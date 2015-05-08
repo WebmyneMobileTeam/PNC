@@ -32,7 +32,7 @@ import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.AboutUs;
 import com.example.android.parvarish_nutricalculator.model.AboutUsData;
-import com.example.android.parvarish_nutricalculator.model.Profile;
+
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
@@ -81,9 +81,9 @@ public class AboutusScreen extends ActionBarActivity {
 
                     AboutUsData aboutUs = new GsonBuilder().create().fromJson(response.toString(), AboutUsData.class);
                     description.setText(aboutUs.aboutUsConfig.aboutUs.about_us);
-                    app_url.setText(aboutUs.aboutUsConfig.aboutUs.app_url);
-                    fb_url.setText(aboutUs.aboutUsConfig.aboutUs.facebook_url);
-                    fb_email.setText(aboutUs.aboutUsConfig.aboutUs.feedback_email);
+                    app_url.setText("website: "+aboutUs.aboutUsConfig.aboutUs.app_url);
+                    fb_url.setText("facebook: "+aboutUs.aboutUsConfig.aboutUs.facebook_url);
+                    fb_email.setText("email: "+aboutUs.aboutUsConfig.aboutUs.feedback_email);
 
                     Log.e("sucness","saved profile");
 

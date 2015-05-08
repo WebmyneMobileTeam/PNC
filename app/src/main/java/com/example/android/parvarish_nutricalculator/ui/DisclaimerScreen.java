@@ -72,9 +72,9 @@ public class DisclaimerScreen extends ActionBarActivity {
 
                     AboutUsData aboutUs = new GsonBuilder().create().fromJson(response.toString(), AboutUsData.class);
                     description.setText(aboutUs.aboutUsConfig.aboutUs.disclaimer);
-                    app_url.setText(aboutUs.aboutUsConfig.aboutUs.app_url);
-                    fb_url.setText(aboutUs.aboutUsConfig.aboutUs.facebook_url);
-                    fb_email.setText(aboutUs.aboutUsConfig.aboutUs.feedback_email);
+                    app_url.setText("website: "+aboutUs.aboutUsConfig.aboutUs.app_url);
+                    fb_url.setText("facebook: "+aboutUs.aboutUsConfig.aboutUs.facebook_url);
+                    fb_email.setText("email: "+aboutUs.aboutUsConfig.aboutUs.feedback_email);
 
                     Log.e("sucness","saved profile");
 

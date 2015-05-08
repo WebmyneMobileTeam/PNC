@@ -85,6 +85,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         @Override
         public void onClick(View v) {
             Intent iHome = new Intent(LoginScreen.this,HomeScreen.class);
+            iHome.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(iHome);
             finish();
         }
@@ -160,6 +161,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             }
 //                            progressDialog.dismiss();
                             Intent intent=new Intent(LoginScreen.this,HomeScreen.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
 //                                callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
@@ -239,7 +241,9 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
 //                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
                     Intent i=new Intent(LoginScreen.this,HomeScreen.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                 }
                 @Override
                 public void error(String error) {

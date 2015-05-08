@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.facebook.login.LoginManager;
@@ -238,6 +239,9 @@ public class HomeScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(HomeScreen.this);
         LoginManager.getInstance().logOut();
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(HomeScreen.this, "user_pref", 0);
+        complexPreferences.clearObject();
+        complexPreferences.commit();
         Intent i = new Intent(HomeScreen.this, StartScreen.class);
         startActivity(i);
         finish();

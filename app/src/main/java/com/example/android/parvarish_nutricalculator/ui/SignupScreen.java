@@ -180,7 +180,9 @@ public class SignupScreen extends ActionBarActivity {
 //                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Intent i=new Intent(SignupScreen.this,HomeScreen.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                 }
                 @Override
                 public void error(String error) {

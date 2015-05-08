@@ -28,12 +28,13 @@ public class LaunchScreen extends ActionBarActivity {
                 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LaunchScreen.this, "user_pref", 0);
                 userModel currentUser = complexPreferences.getObject("current-user", userModel.class);
 
-                if(currentUser.data == null){
-                    Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
+                if(currentUser != null){
+                    Intent iStartScreen = new Intent(LaunchScreen.this,HomeScreen.class);
                     startActivity(iStartScreen);
                     finish();
+
                 }else{
-                    Intent iStartScreen = new Intent(LaunchScreen.this,HomeScreen.class);
+                    Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
                     startActivity(iStartScreen);
                     finish();
                 }
