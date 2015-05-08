@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.model.NutritionData;
 
 /**
  * Created by xitij on 17-03-2015.
@@ -44,5 +45,19 @@ public class PrefUtils {
         complexPreferences.clearObject();
         complexPreferences.commit();
     }
+
+
+    public static void setNutritionGuide(NutritionData currentUser, Context ctx){
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "nutrition_prefs", 0);
+        complexPreferences.putObject("nutrition_values", currentUser);
+        complexPreferences.commit();
+    }
+
+    public static NutritionData getNutritionGuide(Context ctx){
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "nutrition_prefs", 0);
+        NutritionData currentUser = complexPreferences.getObject("nutrition_values", NutritionData.class);
+        return currentUser;
+    }
+
 
 }

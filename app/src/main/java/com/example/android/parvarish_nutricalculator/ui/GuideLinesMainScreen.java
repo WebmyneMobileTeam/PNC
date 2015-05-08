@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,23 +20,30 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.AboutUsData;
+import com.example.android.parvarish_nutricalculator.model.NutritionDetailClass;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GuideLinesMainScreen extends ActionBarActivity implements View.OnClickListener {
-
+    private ProgressDialog progressDialog;
     private ImageView img_guidelinemainpage_energy;
     private ImageView img_guidelinemainpage_calcium;
     private ImageView img_guidelinemainpage_zinc;
     private ImageView img_guidelinemainpage_iron;
     private ImageView img_guidelinemainpage_foods;
-
+    NutritionDetailClass nutritionDetailClass;
     private Toolbar toolbar;
 
 
@@ -65,8 +73,40 @@ public class GuideLinesMainScreen extends ActionBarActivity implements View.OnCl
         img_guidelinemainpage_iron.setOnClickListener(this);
         img_guidelinemainpage_foods.setOnClickListener(this);
 
+        getNutritionDetails();
     }
 
+    private void getNutritionDetails() {
+
+        progressDialog =new ProgressDialog(GuideLinesMainScreen.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        new GetPostClass(API.NUTRITIONAL_GUIDELINES, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("profile response", response);
+
+                try {
+
+                    nutritionDetailClass = new GsonBuilder().create().fromJson(response.toString(), NutritionDetailClass.class);
+
+                    Log.e("sucness", "saved profile");
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(GuideLinesMainScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
 
 
     @Override
@@ -79,35 +119,35 @@ public class GuideLinesMainScreen extends ActionBarActivity implements View.OnCl
         switch (v.getId()) {
 
             case R.id.img_guidelinemainpage_calcium:
-
+                PrefUtils.setNutritionGuide(nutritionDetailClass.nutritionData.get(1),GuideLinesMainScreen.this);
                 iSublist.putExtra("who",1);
                 startActivity(iSublist);
 
                 break;
 
             case R.id.img_guidelinemainpage_energy:
-
+                PrefUtils.setNutritionGuide(nutritionDetailClass.nutritionData.get(0),GuideLinesMainScreen.this);
                 iSublist.putExtra("who",0);
                 startActivity(iSublist);
 
                 break;
 
             case R.id.img_guidelinemainpage_foods:
-
+                PrefUtils.setNutritionGuide(nutritionDetailClass.nutritionData.get(4),GuideLinesMainScreen.this);
                 iSublist.putExtra("who",4);
                 startActivity(iSublist);
 
                 break;
 
             case R.id.img_guidelinemainpage_iron:
-
+                PrefUtils.setNutritionGuide(nutritionDetailClass.nutritionData.get(3),GuideLinesMainScreen.this);
                 iSublist.putExtra("who",3);
                 startActivity(iSublist);
 
                 break;
 
             case R.id.img_guidelinemainpage_zinc:
-
+                PrefUtils.setNutritionGuide(nutritionDetailClass.nutritionData.get(2),GuideLinesMainScreen.this);
                 iSublist.putExtra("who",2);
                 startActivity(iSublist);
 

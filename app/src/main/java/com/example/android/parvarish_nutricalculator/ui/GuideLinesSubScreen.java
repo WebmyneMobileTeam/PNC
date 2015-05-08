@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.helpers.AdvancedSpannableString;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.NutritionData;
+import com.example.android.parvarish_nutricalculator.model.NutritionalSubOption;
 import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class GuideLinesSubScreen extends ActionBarActivity {
 
     private GridView imageList;
     private Toolbar toolbar;
+    private NutritionData nutritionData;
     private String colors[] = {"#0A82C8", "#EA0083", "#F7760E", "#00A045", "#CF332F"};
     private String topics[] = {"To meet Energy and Protein requirements,\nincrease intake of:",
             "To meet Calcium requirements,\nincrease intake of:",
@@ -48,6 +51,7 @@ public class GuideLinesSubScreen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_lines_sub_screen);
+        nutritionData=PrefUtils.getNutritionGuide(GuideLinesSubScreen.this);
         Bundle extra = getIntent().getExtras();
         selectedTopic = extra.getInt("who");
         txtGuideLineSubPageHeading = (TextView) findViewById(R.id.txtGuideLineSubPageHeading);
@@ -64,7 +68,7 @@ public class GuideLinesSubScreen extends ActionBarActivity {
 
         setupTopicHeading();
 
-        CustomImageAdapter adp = new CustomImageAdapter(GuideLinesSubScreen.this);
+        CustomImageAdapter adp = new CustomImageAdapter(GuideLinesSubScreen.this,nutritionData.nutritionalSubOptionArrayList);
         imageList.setAdapter(adp);
 
 
@@ -135,23 +139,25 @@ public class GuideLinesSubScreen extends ActionBarActivity {
     class CustomImageAdapter extends BaseAdapter {
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomImageAdapter(Context ctx){
+        ArrayList<NutritionalSubOption> nutritionData;
+        public CustomImageAdapter(Context ctx,ArrayList<NutritionalSubOption> nutritionData){
             this.ctx = ctx;
+            this.nutritionData=nutritionData;
         }
 
         @Override
         public int getCount() {
-            return 8;
+            return nutritionData.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return nutritionData.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
@@ -162,7 +168,8 @@ public class GuideLinesSubScreen extends ActionBarActivity {
 
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
+            TextView txtSubtitle= (TextView) view.findViewById(R.id.txtSubtitle);
+            txtSubtitle.setText(nutritionData.get(position).nutritional_guideline_id);
             imageView.setImageResource(R.mipmap.ic_launcher);
 
             return view;
