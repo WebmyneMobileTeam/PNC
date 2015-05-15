@@ -9,6 +9,10 @@ public class API {
     // Basic url for all api link
     public static String BASE_URL = "http://www.hackaholicit.com/parvarish/manager/";
 
+    public static String FRIENDS_STATUS_PENDING = "Pending";
+    public static String FRIENDS_STATUS_REJECTED = "Rejected";
+    public static String FRIENDS_STATUS_ACCEPTED = "Accepted";
+
     // Login webservice.
     public static String LOGIN = BASE_URL+"users/login";
 
@@ -33,5 +37,21 @@ public class API {
     public static String ABOUT_DISCLAIMERS = BASE_URL+"admins/general";
 
     public static String NUTRITIONAL_GUIDELINES = BASE_URL+"nutritional_guidelines/listing";
+
+
+    public static String FRIENDS_LISTING  = BASE_URL+"friends/listing/?user_id=";
+
+    public static String FRIENDS_INVITE  = BASE_URL+"friends/invite";
+
+    public static String FRIENDS_PENDING_REQUEST  = BASE_URL+"friends/statusListing?email=";
+
+    public static String FRIENDS_REQUEST_STATUS_UPDATE  = BASE_URL+"friends/statusUpdate?id=";
+
+    public static String FRIENDS_FEEDS_LISTING  = BASE_URL+"users/userfeeds/?user_id=";
+
+
+
+    public static String GLOSSARY_INGREDIENTS = BASE_URL+"ingredient_categories/listing";
+
 
 }

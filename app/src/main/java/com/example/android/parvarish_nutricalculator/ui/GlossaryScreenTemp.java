@@ -18,9 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,34 +32,31 @@ import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
-import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxGlossary;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class GlossaryScreen extends ActionBarActivity {
+public class GlossaryScreenTemp extends ActionBarActivity {
     private ProgressDialog progressDialog;
     private ListView glossaryList;
     private Toolbar toolbar;
     glossaryDescription gd;
     Button btnCategory;
-    CustomAdapter adp;
     CharSequence[] catg;
     LinearLayout linearSub;
     int ipos, jpos;
+    ArrayList<String> ingName;
+    public static String[] ingName2;
+
+
+    private static final String TAG_COUNTRIES_FRAGMENT = "tag_countries_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_glossary);
+        setContentView(R.layout.activity_glossarytemp);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -70,14 +65,16 @@ public class GlossaryScreen extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
 
+
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+      //  btnCategory = (Button) findViewById(R.id.btnCategory);
 
-        btnCategory = (Button) findViewById(R.id.btnCategory);
-        glossaryList = (ListView) findViewById(R.id.glossaryList);
 
-        fetchGlossaryList();
 
+    //    fetchGlossaryList();
+
+/*
 
         btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,12 +82,19 @@ public class GlossaryScreen extends ActionBarActivity {
                 processShowCategory();
             }
         });
+*/
+
+        getSupportFragmentManager().beginTransaction()   .add(R.id.container, new GlossaryScreenTempFragment(), TAG_COUNTRIES_FRAGMENT)
+                .commit();
+
 
 
     }
 
+
+
     private void fetchGlossaryList() {
-        progressDialog = new ProgressDialog(GlossaryScreen.this);
+        progressDialog = new ProgressDialog(GlossaryScreenTemp.this);
         progressDialog.setMessage("Loading ...");
         progressDialog.show();
 
@@ -107,166 +111,53 @@ public class GlossaryScreen extends ActionBarActivity {
                 }
 
 
-                adp = new CustomAdapter(GlossaryScreen.this, gd);
-                glossaryList.setAdapter(adp);
+                String categoryTxt = btnCategory.getText().toString().toLowerCase();
+
+                ingName = new ArrayList<String>();
+                for (int i = 0; i < gd.data.size(); i++) {
+                    if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {
+
+                        ingName2 = new String[gd.data.get(i).Ingredient.size()];
+                        for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
+
+                            ingName2[j] = gd.data.get(i).Ingredient.get(j).name;
+                            ingName.add(gd.data.get(i).Ingredient.get(j).name);
+                        }
+
+                    }
+                }
+
+
+
+
             }
 
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(GlossaryScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(GlossaryScreenTemp.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
     }
 
-
     private void processShowCategory() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(GlossaryScreen.this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(GlossaryScreenTemp.this);
         builder.setTitle("Select Category");
         builder.setItems(catg, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 btnCategory.setText(catg[item]);
-                glossaryList.invalidateViews();
-                adp.notifyDataSetInvalidated();
+
+
+                GlossaryScreenTempFragment.mAdapter.notifyDataSetChanged();
+        //        glossaryList.invalidateViews();
+               // mad.notifyDataSetInvalidated();*/
             }
         });
         builder.show();
     }
-
-
-    class CustomAdapter extends BaseAdapter {
-        LayoutInflater layoutInflator;
-        private Context ctx;
-        private glossaryDescription gdObject;
-        private HashMap<String, String> values;
-        Map<String, String> tempList;
-
-        public CustomAdapter(Context ctx, glossaryDescription tempgd) {
-            this.ctx = ctx;
-            this.gdObject = tempgd;
-        }
-
-        @Override
-        public int getCount() {
-
-
-            values = new HashMap<String, String>();
-            int Size = 0;
-            String categoryTxt = btnCategory.getText().toString().toLowerCase();
-            Log.e("button naem", categoryTxt);
-            for (int i = 0; i < gdObject.data.size(); i++) {
-                if (categoryTxt.equalsIgnoreCase(gdObject.data.get(i).IngredientCategory.name)) {
-
-
-                    for (int j = 0; j < gdObject.data.get(i).Ingredient.size(); j++) {
-                        // tempList = new HashMap<String,String>();
-                        //  tempList.put("values",gdObject.data.get(i).Ingredient.get(j).name);
-                        values.put(String.valueOf(gdObject.data.get(i).Ingredient.get(j).name.charAt(0)).toUpperCase(), gdObject.data.get(i).Ingredient.get(j).name);
-                    }
-                    //values.put(String.valueOf(gdObject.data.get(i).Ingredient.get(j).name.charAt(0)).toUpperCase(),tempList);
-                }
-            }
-
-
-            Size = values.size();
-            return Size;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = convertView;
-            view = layoutInflator.inflate(R.layout.glossary_list_item_view, parent, false);
-
-            TextView txtLetter = (TextView) view.findViewById(R.id.txtLetter);
-            linearSub = (LinearLayout) view.findViewById(R.id.linearSub);
-
-
-            Set<String> keys = values.keySet();
-            List<String> siteIdList = new ArrayList<>(keys);
-            Collections.sort(siteIdList);
-            txtLetter.setText(siteIdList.get(position));
-
-            String categoryTxt = btnCategory.getText().toString().toLowerCase();
-
-
-            for (int i = 0; i < gdObject.data.size(); i++) {
-                if (categoryTxt.equalsIgnoreCase(gdObject.data.get(i).IngredientCategory.name)) {
-
-                    for (int j = 0; j < gdObject.data.get(i).Ingredient.size(); j++) {
-                        String charchter = String.valueOf(gdObject.data.get(i).Ingredient.get(j).name.charAt(0)).toUpperCase();
-
-                        if (siteIdList.get(position).equalsIgnoreCase(charchter)) {
-
-                            ipos = i;
-                            jpos = position;
-                            View newIngrident = ((LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_item_glossary, linearSub, false);
-                            TextView txtIngName = (TextView) newIngrident.findViewById(R.id.txtIngName);
-                            txtIngName.setText(gdObject.data.get(i).Ingredient.get(j).name);
-
-                            //   txtIngName.setOnClickListener(myClickListener);
-
-
-                            txtIngName.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(GlossaryScreen.this, "clicked " + gdObject.data.get(ipos).Ingredient.get(jpos).name, Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            linearSub.addView(newIngrident);
-
-
-                        }
-
-                    }
-                }
-            }
-
-
-
-
-
-/*
-            String categoryTxt =  btnCategory.getText().toString().toLowerCase();
-            for(int i=0;i<gdObject.data.size();i++) {
-                if(categoryTxt.equalsIgnoreCase(gdObject.data.get(i).IngredientCategory.name)){
-                    txtLetter.setText(String.valueOf(gdObject.data.get(i).Ingredient.get(position).name.charAt(0)));
-
-                    View newIngrident = ((LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.list_item_glossary, linearSub, false);
-                    TextView txtIngName = (TextView)newIngrident.findViewById(R.id.txtIngName);
-                    txtIngName.setText(gdObject.data.get(i).Ingredient.get(position).name);
-                    linearSub.addView(newIngrident,i);
-                }
-            }
-*/
-
-
-            return view;
-        }
-    }
-
-    public View.OnClickListener myClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int pos = linearSub.indexOfChild(v);
-
-
-            Toast.makeText(GlossaryScreen.this, "clicked " + pos, Toast.LENGTH_SHORT).show();
-        }
-    };
 
 
     @Override
@@ -302,7 +193,7 @@ public class GlossaryScreen extends ActionBarActivity {
         String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
 
-        ListPopupWindow popupWindow = new ListPopupWindow(GlossaryScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(GlossaryScreenTemp.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
@@ -312,7 +203,7 @@ public class GlossaryScreen extends ActionBarActivity {
         popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(GlossaryScreen.this, arrayList, drawableImage, true));
+        popupWindow.setAdapter(new SettingsAdapter(GlossaryScreenTemp.this, arrayList, drawableImage, true));
         popupWindow.show();
     }
 
@@ -321,7 +212,7 @@ public class GlossaryScreen extends ActionBarActivity {
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(GlossaryScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(GlossaryScreenTemp.this);
 
         popupWindow.setListSelector(new ColorDrawable());
         popupWindow.setAnchorView(menuItemView);
@@ -333,7 +224,7 @@ public class GlossaryScreen extends ActionBarActivity {
         popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(GlossaryScreen.this, arrayList, drawableImage, false));
+        popupWindow.setAdapter(new MoreAdapter(GlossaryScreenTemp.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 
@@ -342,9 +233,9 @@ public class GlossaryScreen extends ActionBarActivity {
     private void logoutFromApp() {
 
         Log.e("click", "logout");
-        PrefUtils.clearCurrentUser(GlossaryScreen.this);
+        PrefUtils.clearCurrentUser(GlossaryScreenTemp.this);
         LoginManager.getInstance().logOut();
-        Intent i = new Intent(GlossaryScreen.this, StartScreen.class);
+        Intent i = new Intent(GlossaryScreenTemp.this, StartScreen.class);
         startActivity(i);
         finish();
     }
@@ -407,11 +298,11 @@ public class GlossaryScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(GlossaryScreen.this, DisclaimerScreen.class);
+                            Intent i = new Intent(GlossaryScreenTemp.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(GlossaryScreen.this, AboutusScreen.class);
+                            Intent i2 = new Intent(GlossaryScreenTemp.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -491,11 +382,11 @@ public class GlossaryScreen extends ActionBarActivity {
                     switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(GlossaryScreen.this, GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(GlossaryScreenTemp.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(GlossaryScreen.this, GlossaryScreen.class);
+                            Intent i = new Intent(GlossaryScreenTemp.this, GlossaryScreenTemp.class);
                             startActivity(i);
                             break;
                     }

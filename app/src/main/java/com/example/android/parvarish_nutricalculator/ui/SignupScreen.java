@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -179,6 +180,12 @@ public class SignupScreen extends ActionBarActivity {
                 public void response(String response) {
 //                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+
+                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("isUserLogin", true);
+                    editor.commit();
+
                     Intent i=new Intent(SignupScreen.this,HomeScreen.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);

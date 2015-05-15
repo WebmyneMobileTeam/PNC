@@ -22,6 +22,9 @@ public class PrefUtils {
         return isLight;
     }*/
 
+
+
+
     public static Typeface getTypeFace(Context ctx){
         Typeface typeface = null;
         typeface = Typeface.createFromAsset(ctx.getAssets(),"Oswald-Regular.ttf");

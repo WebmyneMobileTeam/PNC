@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -82,8 +82,8 @@
             <Button
                 android:layout_marginRight="4dp"
                 android:layout_weight="1"
-                android:id="@+id/btnLogin"
-                android:text="CEREALS"
+                android:id="@+id/btnCategory"
+                android:text="Cereals"
                 android:textSize="@dimen/normal_text"
                 android:textColor="#FFFfff"
                 style="@style/button_addmeal" />
@@ -91,14 +91,15 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
+            android:layout_marginTop="8dp"
+
             android:background="#fff"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
 
             <ListView
+                android:listSelector="@android:color/transparent"
                 android:dividerHeight="0dp"
                 android:divider="@null"
                 android:id="@+id/glossaryList"

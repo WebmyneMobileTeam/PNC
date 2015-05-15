@@ -49,7 +49,7 @@
         <LinearLayout
             android:id="@+id/linearTopGuidelines"
             android:layout_marginTop="16dp"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -65,7 +65,7 @@
                 android:gravity="center"
                 android:text="NUTRITIONAL GUIDELINES"
                 android:textColor="#000000"
-                android:textSize="18sp"
+                android:textSize="@dimen/big_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

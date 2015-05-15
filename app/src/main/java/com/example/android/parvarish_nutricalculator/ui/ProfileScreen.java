@@ -189,6 +189,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
             for(int i=0;i<babySize;i++){
               View   newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
               addBabyLinearMain.addView(newbabyView,i);
+
             }
             // add extra baby view for adding new babay
             View newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
@@ -270,21 +271,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     }
 
-private View.OnClickListener myAddBabyClick = new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        EditText edBabyName =  (EditText)v.findViewById(R.id.edBabyName);
-        EditText edBabyDOB =  (EditText)v.findViewById(R.id.edBabyDOB);
-
-        if(isEmptyField(edBabyName)){
-            Toast.makeText(ProfileScreen.this,"Please Enter baby name !!!",Toast.LENGTH_SHORT).show();
-        }else if(isEmptyField(edBabyDOB)){
-            Toast.makeText(ProfileScreen.this,"Please Enter baby name !!!",Toast.LENGTH_SHORT).show();
-        }else {
-            //processAddbaby();
-        }
-    }
-};
 
 
 private View.OnClickListener myBabyClick = new View.OnClickListener() {

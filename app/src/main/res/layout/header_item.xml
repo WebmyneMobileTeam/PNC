@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp"
+    android:background="@drawable/square_background_redcolor"
+    android:id="@+id/text"
+    android:textColor="#ffffff"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="80dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+
+    android:layoutDirection="locale"
+    android:textDirection="locale"
+    android:textSize="28sp"
+    app:slm_headerDisplay="inline|sticky"
+    app:slm_isHeader="true"
+    app:slm_section_headerMarginStart="56dip"
+    tools:text="Header Item"
+    />

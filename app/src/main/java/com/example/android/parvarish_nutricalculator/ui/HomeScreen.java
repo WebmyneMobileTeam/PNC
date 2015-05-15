@@ -393,7 +393,7 @@ public class HomeScreen extends ActionBarActivity {
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(HomeScreen.this, GlossaryScreen.class);
+                            Intent i = new Intent(HomeScreen.this, GlossaryScreenTemp.class);
                             startActivity(i);
                             break;
                     }

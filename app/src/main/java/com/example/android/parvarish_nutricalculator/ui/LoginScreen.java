@@ -2,6 +2,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -228,6 +229,11 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
                         complexPreferences.putObject("current-user", userUserModel);
                         complexPreferences.commit();
+
+                        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean("isUserLogin", true);
+                        editor.commit();
 
                         Log.e("sucness", "saved current user");
 

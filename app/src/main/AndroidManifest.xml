@@ -57,6 +57,10 @@
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
+            android:name=".ui.GlossaryScreenTemp"
+            android:label="@string/title_activity_home_screen" >
+        </activity>
+        <activity
             android:name=".ui.FriendsScreen"
             android:label="@string/title_activity_home_screen" >
         </activity>

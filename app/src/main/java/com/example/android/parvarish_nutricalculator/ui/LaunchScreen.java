@@ -1,6 +1,7 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -25,14 +26,13 @@ public class LaunchScreen extends ActionBarActivity {
             @Override
             public void onFinish() {
 
-                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LaunchScreen.this, "user_pref", 0);
-                userModel currentUser = complexPreferences.getObject("current-user", userModel.class);
+                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                boolean isLogin = preferences.getBoolean("isUserLogin", false);
 
-                if(currentUser != null){
+              if(isLogin){
                     Intent iStartScreen = new Intent(LaunchScreen.this,HomeScreen.class);
                     startActivity(iStartScreen);
                     finish();
-
                 }else{
                     Intent iStartScreen = new Intent(LaunchScreen.this,StartScreen.class);
                     startActivity(iStartScreen);
