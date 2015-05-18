@@ -78,6 +78,7 @@
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".ui.ProfileScreen"
             android:label="@string/title_activity_profile_screen" >
         </activity>
