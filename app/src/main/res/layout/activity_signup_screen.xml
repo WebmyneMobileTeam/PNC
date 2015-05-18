@@ -6,9 +6,53 @@
     xmlns:drakeet="http://schemas.android.com/apk/res-auto"
     tools:context=".StartScreen">
 
-    <FrameLayout
-        android:layout_above="@+id/bottomstartlinear"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_below="@+id/toolbar"
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:background="@drawable/leftred_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="SIGN UP"
+            android:textColor="#000000"
+            android:textSize="@dimen/big_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:background="@drawable/rightred_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_button_darkred"></View>
+</LinearLayout>
+
+
+
+<FrameLayout
+        android:layout_above="@+id/bottomstartlinear"
+        android:layout_below="@+id/top"
         style="@style/both_match_parent">
 
 
