@@ -100,8 +100,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(AddRecipeManualScreen.this);
-            txt.setPadding(16,16,16,16);
-            txt.setTextSize(18);
+            txt.setPadding(12,12,12,12);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
@@ -112,8 +112,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
             TextView txt = new TextView(AddRecipeManualScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setPadding(16,16,16,16);
-            txt.setTextSize(18);
+            txt.setPadding(12,12,12,12);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));

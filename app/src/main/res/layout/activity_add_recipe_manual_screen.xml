@@ -99,19 +99,19 @@
                         android:layout_height="match_parent" />
                 </FrameLayout>
 
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:text="For"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
                 <LinearLayout
-                   android:paddingLeft="16dp"
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <TextView
-
-                        android:text="For"
-                        android:textColor="@android:color/black"
-                        android:textSize="22sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
                     <Spinner
                         android:id="@+id/forSpinner"
                         android:gravity="center"
@@ -130,6 +130,7 @@
 
                 </LinearLayout>
                 <EditText
+
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -158,8 +159,8 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:id="@+id/linearTable"
 
                 android:layout_height="wrap_content"

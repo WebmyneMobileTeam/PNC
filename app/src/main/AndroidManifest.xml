@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".ui.LaunchScreen"
-            android:label="@string/title_activity_launch_screen" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

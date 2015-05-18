@@ -53,7 +53,7 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
         linearTable= (LinearLayout) findViewById(R.id.linearTable);
-        spinnerList.add("Select Baby");
+        spinnerList.add("Select");
         spinnerList.add("one");
         spinnerList.add("two");
         spinnerList.add("three");
@@ -77,12 +77,12 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
 
-        private final Context activity;
+        private Context activity;
         private ArrayList<String> asr;
 
         public CustomSpinnerAdapter(Context context, ArrayList<String> asr) {
             this.asr = asr;
-            activity = context;
+            this.activity = context;
         }
 
         public int getCount() {
@@ -101,8 +101,8 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
             TextView txt = new TextView(ImportRecipeFromWebScreen.this);
-            txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setPadding(12,12,12,12);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
@@ -112,8 +112,8 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         public View getView(int i, View view, ViewGroup viewgroup) {
             TextView txt = new TextView(ImportRecipeFromWebScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setPadding(12, 12,12,12);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));

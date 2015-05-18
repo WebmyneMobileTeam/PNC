@@ -35,4 +35,6 @@
     <dimen name="dimens_text1">16dp</dimen>
     <dimen name="dimens_text2">12dp</dimen>
 
+    <dimen name="spinner_text">14sp</dimen>
+
 </resources>

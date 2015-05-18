@@ -93,7 +93,11 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         init();
 
 
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
+        currentUser = complexPreferences.getObject("current-user", userModel.class);
 
+
+        processfetchProfileDetails();
 
        /* profileList = (ListView)findViewById(R.id.profileList);
 
@@ -112,16 +116,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         profileList.addFooterView(footerView);
         CustomAdapter adp = new CustomAdapter(ProfileScreen.this);
         profileList.setAdapter(adp);*/
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
-        currentUser = complexPreferences.getObject("current-user", userModel.class);
-
-        processfetchProfileDetails();
     }
 
     private void init(){

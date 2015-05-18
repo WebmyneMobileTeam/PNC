@@ -140,7 +140,7 @@ android:layout_height="match_parent">
 
                         android:layout_margin="16dp"
 
-                        android:textSize="18sp"
+                        android:textSize="@dimen/spinner_text"
                         android:textColor="@android:color/black"
                         android:textColorHint="@android:color/black"
                         android:background="@drawable/spinner_bg_white"
@@ -178,8 +178,8 @@ android:layout_height="match_parent">
 
             <LinearLayout
                 android:orientation="vertical"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:id="@+id/linearTable"
 
                 android:layout_height="wrap_content"
