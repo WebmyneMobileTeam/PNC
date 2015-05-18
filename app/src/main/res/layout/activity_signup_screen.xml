@@ -139,6 +139,8 @@
 
 
                     <EditText
+                        android:maxLength="11"
+                        android:inputType="number"
                         android:id="@+id/edSignUpMobile"
                         android:layout_marginTop="4dp"
                         android:drawablePadding="16dp"
@@ -148,6 +150,7 @@
 
 
                     <EditText
+                        android:inputType="text"
                         android:id="@+id/edSignUpCity"
                         android:layout_marginTop="4dp"
                         android:drawablePadding="16dp"

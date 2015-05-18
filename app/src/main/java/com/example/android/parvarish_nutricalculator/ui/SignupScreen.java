@@ -11,7 +11,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,6 +113,21 @@ public class SignupScreen extends ActionBarActivity {
                 checkValidation();
 
             }
+        });
+
+        edCity.setFilters(new InputFilter[]{
+                new InputFilter() {
+                    public CharSequence filter(CharSequence src, int start,
+                                               int end, Spanned dst, int dstart, int dend) {
+                        if (src.equals("")) { // for backspace
+                            return src;
+                        }
+                        if (src.toString().matches("[a-zA-Z ]+")) {
+                            return src;
+                        }
+                        return "";
+                    }
+                }
         });
 
 
