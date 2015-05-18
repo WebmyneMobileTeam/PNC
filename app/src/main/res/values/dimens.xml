@@ -39,6 +39,8 @@
 
     <dimen name="default_header_margin">56dp</dimen>
     <dimen name="grid_column_width">96dp</dimen>
+    <dimen name="dimens_text1">8dp</dimen>
+    <dimen name="dimens_text2">6dp</dimen>
 
 
 </resources>

@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -239,6 +240,13 @@ public class HomeScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(HomeScreen.this);
         LoginManager.getInstance().logOut();
+
+
+        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isUserLogin", false);
+        editor.commit();
+
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(HomeScreen.this, "user_pref", 0);
         complexPreferences.clearObject();
         complexPreferences.commit();

@@ -30,4 +30,9 @@
     <dimen name="guide_main_page_item_width">340dp</dimen>
     <dimen name="guide_main_page_item_height">100dp</dimen>
     <dimen name="guide_item_marginleftright">60dp</dimen>
+
+
+    <dimen name="dimens_text1">16dp</dimen>
+    <dimen name="dimens_text2">12dp</dimen>
+
 </resources>

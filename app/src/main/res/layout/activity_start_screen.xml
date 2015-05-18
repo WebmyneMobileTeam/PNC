@@ -42,10 +42,43 @@
         <!--layout="@layout/app_bar"></include>-->
 
     <LinearLayout
+        android:layout_above="@+id/bottomstartlinear"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:textSize="@dimen/dimens_text1"
+            android:text="FOR BABIES BETWEEN 6 TO 24 MONTHS"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:singleLine="true"
+            android:layout_marginRight="5dp"
+            android:gravity="right"
+            android:textSize="@dimen/dimens_text2"
+            android:text="Always consult your pediatritian for Nutrition related quries"
+            android:textColor="#000000"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/bottomstartlinear"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         style="@style/both_match_wrap_content">
+
+
+
 
         <me.drakeet.library.UIButton
             android:id="@+id/btnSignUpStartScreen"
