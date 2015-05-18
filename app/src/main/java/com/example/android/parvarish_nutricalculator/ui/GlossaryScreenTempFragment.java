@@ -8,9 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +27,7 @@ import com.google.gson.GsonBuilder;
 import com.tonicartos.superslim.LayoutManager;
 
 import java.util.ArrayList;
-
+import android.util.Log;
 public class GlossaryScreenTempFragment extends Fragment {
     private ProgressDialog progressDialog;
     private ListView glossaryList;
@@ -37,7 +39,8 @@ public class GlossaryScreenTempFragment extends Fragment {
     int ipos, jpos;
     ArrayList<String> ingName;
     String[] ingName2;
-
+    String[] ingNameSearch;
+    EditText edSearch;
 
     private static final String KEY_HEADER_POSITIONING = "key_header_mode";
 
@@ -56,8 +59,7 @@ public class GlossaryScreenTempFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v =  inflater.inflate(R.layout.fragment_main, container, false);
         btnCategory =  (Button)v.findViewById(R.id.btnCategory);
-
-
+        edSearch =  (EditText)v.findViewById(R.id.edSearch);
         return v;
     }
 
@@ -89,7 +91,66 @@ public class GlossaryScreenTempFragment extends Fragment {
             }
         });
 
+
+       edSearch.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+           public boolean onTouch(View v, MotionEvent event) {
+               final int DRAWABLE_LEFT = 0;
+               final int DRAWABLE_TOP = 1;
+               final int DRAWABLE_RIGHT = 2;
+               final int DRAWABLE_BOTTOM = 3;
+
+               if(event.getAction() == MotionEvent.ACTION_UP) {
+                   if(event.getRawX() >= (edSearch.getRight() - edSearch.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                       if(edSearch.getText().toString().trim().length()==0){
+                           Toast.makeText(getActivity(),"Please Enter any word for search !!!",Toast.LENGTH_SHORT).show();
+                       }else {
+                           processSearchData(edSearch.getText().toString().trim());
+                       }
+
+                       return true;
+                   }
+               }
+
+               return false;
+           }
+       });
+
     }
+
+
+    private  void processSearchData(String searchString){
+         boolean isSearchItemFind = false;
+        String categoryTxt = btnCategory.getText().toString().toLowerCase();
+        for (int i = 0; i < gd.data.size(); i++) {
+            if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {
+
+                ingNameSearch = new String[1];
+                int k=0;
+                for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
+
+                    if(gd.data.get(i).Ingredient.get(j).name.equalsIgnoreCase(searchString)) {
+                        isSearchItemFind = true;
+                        ingNameSearch[k] = gd.data.get(i).Ingredient.get(j).name;
+                        k++;
+                    }
+
+                }
+
+            }
+        }
+
+        if(isSearchItemFind) {
+            mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay, ingNameSearch);
+            mAdapter.setMarginsFixed(mAreMarginsFixed);
+            mAdapter.setHeaderDisplay(mHeaderDisplay);
+            mViews.setAdapter(mAdapter);
+        }else{
+            Toast.makeText(getActivity(),"No Result found !!!",Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -103,6 +164,7 @@ public class GlossaryScreenTempFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading ...");
         progressDialog.show();
+
 
         new GetPostClass(API.GLOSSARY_INGREDIENTS, EnumType.GET) {
             @Override
@@ -118,7 +180,6 @@ public class GlossaryScreenTempFragment extends Fragment {
 
 
                 String categoryTxt = btnCategory.getText().toString().toLowerCase();
-                //String categoryTxt = "Cereals";
                 ingName = new ArrayList<String>();
                 for (int i = 0; i < gd.data.size(); i++) {
                     if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {

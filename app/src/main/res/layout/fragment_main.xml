@@ -63,7 +63,7 @@
                 android:padding="8dp"
                 android:textColorHint="#000000"
                 android:layout_marginLeft="16dp"
-                android:id="@+id/edUserNameLogin"
+                android:id="@+id/edSearch"
                 android:drawablePadding="16dp"
                 android:hint="Search Ingredients"
                 android:drawableRight="@drawable/icon_search"

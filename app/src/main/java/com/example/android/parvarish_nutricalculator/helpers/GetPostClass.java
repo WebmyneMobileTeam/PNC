@@ -134,7 +134,7 @@ public abstract class GetPostClass implements Interaction {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.e("Response:", response.toString());
+           // Log.e("Response:", response.toString());
             if (response == null) {
                 error("Server Error");
             } else {
