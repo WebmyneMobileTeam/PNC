@@ -20,9 +20,21 @@
             style="@style/both_match_parent">
 
             <ImageView
+                android:id="@+id/imgProfile"
                 style="@style/both_wrap_content"
                 android:src="@drawable/white_heart"
                 android:layout_centerInParent="true" />
+
+            <TextView
+                android:gravity="center"
+                android:textColor="#fff"
+                android:layout_marginTop="8dp"
+                android:layout_below="@+id/imgProfile"
+                android:id="@+id/txtName"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
 
         <RelativeLayout

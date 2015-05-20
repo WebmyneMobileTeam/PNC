@@ -135,6 +135,13 @@ public class SignupScreen extends ActionBarActivity {
 
     private void checkValidation() {
 
+//        else if(isEmptyField(edMobile)){
+//            Toast.makeText(SignupScreen.this,"Please Enter Mobile",Toast.LENGTH_SHORT).show();
+//        } else if(isEmptyField(edCity)){
+//            Toast.makeText(SignupScreen.this,"Please Enter City",Toast.LENGTH_SHORT).show();
+//        }
+
+
         if(isEmptyField(edUserName)){
             Toast.makeText(SignupScreen.this,"Please Enter Username",Toast.LENGTH_SHORT).show();
         } else if(isEmptyField(edPassword)){
@@ -143,11 +150,7 @@ public class SignupScreen extends ActionBarActivity {
             Toast.makeText(SignupScreen.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
         } else if(!isEmailMatch(edEmail)){
             Toast.makeText(SignupScreen.this,"Please Enter Valid Email",Toast.LENGTH_SHORT).show();
-        } else if(isEmptyField(edMobile)){
-            Toast.makeText(SignupScreen.this,"Please Enter Mobile",Toast.LENGTH_SHORT).show();
-        } else if(isEmptyField(edCity)){
-            Toast.makeText(SignupScreen.this,"Please Enter City",Toast.LENGTH_SHORT).show();
-        } else {
+        }  else {
             registrationProcess();
         }
     }

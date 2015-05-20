@@ -15,6 +15,7 @@
         style="@style/imageViewHome" />
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/itemTextHome"
         style="@style/normalTextView"
         android:text="Text" />

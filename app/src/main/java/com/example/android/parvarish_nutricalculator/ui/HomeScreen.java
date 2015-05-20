@@ -31,6 +31,7 @@ import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.helpers.User;
 import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import java.util.Arrays;
 
 public class HomeScreen extends ActionBarActivity {
 
+    private TextView txtName;
     private RelativeLayout relTopProfile;
     private String[] names1 = {"My Recipes", "Profiles", "Add Recipe"};
     private String[] names2 = {"Diary", "Friends", "Welcome\nTour"};
@@ -46,16 +48,21 @@ public class HomeScreen extends ActionBarActivity {
     private LinearLayout linearFirst;
     private LinearLayout linearSecond;
     private Toolbar toolbar;
+    private User user;
     ListPopupWindow popupWindow1,popupWindow2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        if (PrefUtils.getCurrentUser(HomeScreen.this) != null) {
-            Toast.makeText(HomeScreen.this, "welcome " + PrefUtils.getCurrentUser(HomeScreen.this).name, Toast.LENGTH_LONG).show();
-        }
+        txtName= (TextView) findViewById(R.id.txtName);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(HomeScreen.this, "user_pref", 0);
+        user=complexPreferences.getObject("current-user", User.class);
 
+        if (user != null) {
+            Toast.makeText(HomeScreen.this, "welcome " +user.name, Toast.LENGTH_LONG).show();
+        }
+        txtName.setText(user.name+"");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
