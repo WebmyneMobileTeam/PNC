@@ -44,6 +44,10 @@
     <dimen name="dimens_text1">8dp</dimen>
     <dimen name="dimens_text2">6dp</dimen>
     <dimen name="spinner_text">10sp</dimen>
+    <dimen name="editext_ing">16sp</dimen>
+    <dimen name="image_height">32dp</dimen>
+    <dimen name="image_width">32dp</dimen>
 
-
+    <dimen name="cancel_height">20dp</dimen>
+    <dimen name="cancel_width">20dp</dimen>
 </resources>

@@ -55,6 +55,7 @@
                 android:background="#ccc"/>
 
             <LinearLayout
+                android:gravity="center"
                 android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -72,9 +73,9 @@
 
                     android:textColorHint="#000000"
                     android:layout_marginLeft="16dp"
-                    android:id="@+id/etSearchFriend"
+                    android:id="@+id/etSearchRecipe"
                     android:drawablePadding="16dp"
-                    android:hint="Search Friend"
+                    android:hint="Search Recipe"
                     android:drawableRight="@drawable/icon_search"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
@@ -104,6 +105,8 @@
                 android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></ListView>
+            <include layout="@layout/empty_myrecipe"/>
+
         </LinearLayout>
 
         <Button

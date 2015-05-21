@@ -22,11 +22,8 @@
         <activity
             android:name=".ui.LaunchScreen"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity
             android:name=".ui.LoginScreen"
@@ -102,6 +99,19 @@
             android:name=".ui.AddRecipeManualScreen"
             android:label="@string/title_activity_add_recipe_manual_screen" >
         </activity>
+
+        <activity
+            android:name=".ui.WalkThorugh"
+            android:label="@string/title_activity_add_recipe_manual_screen" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

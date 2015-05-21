@@ -270,6 +270,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 private View.OnClickListener myBabyClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             int pos = addBabyLinearMain.indexOfChild(v);
 
             currBabyId = cuurentBaby.data.get(pos).Baby.id;
@@ -343,11 +344,14 @@ private void processAddbaby(String edBabyName,String edBabyDOB){
 private void processAdd(String edBabyName,String edBabyDOB){
         List<NameValuePair> pairs = new ArrayList<>();
 
-        pairs.add(new BasicNameValuePair("user_id",currentUser.data.id));
+         Log.e("dob",edBabyDOB);
+
+        pairs.add(new BasicNameValuePair("user_id", currentUser.data.id));
         pairs.add(new BasicNameValuePair("baby_name",edBabyName));
         pairs.add(new BasicNameValuePair("baby_dob",edBabyDOB));
         pairs.add(new BasicNameValuePair("photo_url",""));
 
+         Log.e("rewuest",""+ pairs.toString());
 
         progressDialog2 =new ProgressDialog(ProfileScreen.this);
         progressDialog2.setMessage("Adding Baby Details...");
@@ -467,11 +471,11 @@ private void processfetchProfileDetails(){
         List<NameValuePair> pairs = new ArrayList<>();
 
         pairs.add(new BasicNameValuePair("user_id",currentUser.data.id));
-      //  pairs.add(new BasicNameValuePair("email",edSignUpEmail.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("email",edSignUpEmail.getText().toString().trim()));
         pairs.add(new BasicNameValuePair("name", edSignUpUserName.getText().toString().trim()));
 
         pairs.add(new BasicNameValuePair("dob",currentUser.data.dob));
-        pairs.add(new BasicNameValuePair("password",currentUser.data.password));
+        pairs.add(new BasicNameValuePair("password",edSignUpPassword.getText().toString().trim()));
         pairs.add(new BasicNameValuePair("city", edSignUpCity.getText().toString().trim()));
 
 

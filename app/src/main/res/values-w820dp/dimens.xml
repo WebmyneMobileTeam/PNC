@@ -10,4 +10,5 @@
     <dimen name="dimens_text1">32dp</dimen>
     <dimen name="dimens_text2">24dp</dimen>
     <dimen name="spinner_text">18sp</dimen>
+    <dimen name="editext_ing">20sp</dimen>
 </resources>

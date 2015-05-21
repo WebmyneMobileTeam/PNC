@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,35 +10,59 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
+import com.example.android.parvarish_nutricalculator.helpers.IngredientAdapter;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.babyModel;
+import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
+import com.example.android.parvarish_nutricalculator.model.myrecipedata;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 public class MyRecipeListScreen extends ActionBarActivity {
-
+    private ProgressDialog progressDialog;
     private Spinner forSpinner;
     ArrayList<String> spinnerList=new ArrayList<>();
     private ListView myRecipeList;
-
+    userModel currentUser;
     private Toolbar toolbar;
+    myrecipeModel myrecipe;
+    List<String> recpname;
+    List<String> babyAge;
+    CustomAdapter adp;
+    EditText etSearchRecipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,19 +77,130 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+        init();
 
-        myRecipeList= (ListView) findViewById(R.id.myRecipeList);
 
-        CustomAdapter adp = new CustomAdapter(MyRecipeListScreen.this);
-        myRecipeList.setAdapter(adp);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeListScreen.this, "user_pref", 0);
+        currentUser = complexPreferences.getObject("current-user", userModel.class);
+
+        fetchMyRecpie();
+
+
+
         spinnerList.add("Sort");
-        spinnerList.add("one");
-        spinnerList.add("two");
-        spinnerList.add("three");
-        spinnerList.add("four");
+        spinnerList.add("Baby name Ascending");
+        spinnerList.add("Baby name Descending");
+
         CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(MyRecipeListScreen.this,spinnerList);
         forSpinner= (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
+
+
+        forSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+
+                } else {
+                   // adp.sorting(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        etSearchRecipe.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (etSearchRecipe.getRight() - etSearchRecipe.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+
+                        if (etSearchRecipe.getText().toString().trim().length() == 0) {
+                            Toast.makeText(MyRecipeListScreen.this, "Please Enter any word for search !!!", Toast.LENGTH_SHORT).show();
+                        } else {
+                                adp.filter(etSearchRecipe.getText().toString().trim());
+                        }
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        });
+
+    }
+
+
+
+
+    private void processSort(int pos){
+        int ASC = 1;
+        int DSC = 2;
+
+
+
+        if(ASC == pos){
+            Collections.sort(recpname);
+            adp.notifyDataSetInvalidated();
+            myRecipeList.invalidateViews();
+        }else{
+            Collections.sort(recpname,Collections.reverseOrder());
+            adp.notifyDataSetInvalidated();
+            myRecipeList.invalidateViews();
+        }
+    }
+
+    private void init(){
+        etSearchRecipe = (EditText)findViewById(R.id.etSearchRecipe);
+        myRecipeList= (ListView) findViewById(R.id.myRecipeList);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
+        myRecipeList.setEmptyView(emptyView);
+
+
+    }
+
+    private void fetchMyRecpie(){
+
+        progressDialog =new ProgressDialog(MyRecipeListScreen.this);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
+        new GetPostClass(API.MY_RECIPE+currentUser.data.id, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("my recipe response", response);
+
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
+
+                    adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
+                    myRecipeList.setAdapter(adp);
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(MyRecipeListScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+
 
     }
 
@@ -96,8 +232,9 @@ public class MyRecipeListScreen extends ActionBarActivity {
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(MyRecipeListScreen.this);
-            txt.setPadding(16,16,16,16);
+            txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(18);
+            txt.setSingleLine(true);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
@@ -110,6 +247,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16,16,16,16);
             txt.setTextSize(18);
+            txt.setSingleLine(true);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));
@@ -117,16 +255,27 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
     }
 
+
+
+
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomAdapter(Context ctx){
+
+        List<myrecipedata> ValuesSearch;
+        ArrayList<myrecipedata> arraylist;
+
+        public CustomAdapter(Context ctx,ArrayList<myrecipedata> obj){
             this.ctx = ctx;
+            this.ValuesSearch = obj;
+
+            arraylist = new ArrayList<myrecipedata>();
+            arraylist.addAll(ValuesSearch);
         }
 
         @Override
         public int getCount() {
-            return 10;
+            return ValuesSearch.size();
         }
 
         @Override
@@ -140,11 +289,63 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
-            view = layoutInflator.inflate(R.layout.friend_feed_item_view, parent, false);
+            view = layoutInflator.inflate(R.layout.myrecipe_feed_item_view, parent, false);
+
+            ImageView imgDelete = (ImageView)view.findViewById(R.id.imgDelete);
+            TextView txtBabyage = (TextView)view.findViewById(R.id.txtBabyage);
+            TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+
+            txtrecipeName.setText(ValuesSearch.get(position).name);
+            txtBabyage.setText(ValuesSearch.get(position).age_group);
+
+
+            imgDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             return view;
+        }
+
+        // Filter Class
+        public void filter(String charText) {
+
+            charText = charText.toLowerCase(Locale.getDefault());
+
+            ValuesSearch.clear();
+            if (charText.length() == 0) {
+                ValuesSearch.addAll(arraylist);
+
+            } else {
+                for ( myrecipedata obj: arraylist) {
+                    if (charText.length() != 0 && obj.name.toLowerCase(Locale.getDefault()).contains(charText)) {
+                        ValuesSearch.add(obj);
+                    }
+
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        // Filter Class
+        public void sorting(int pos) {
+            int ASC = 1;
+            int DSC = 2;
+            ValuesSearch.clear();
+            ValuesSearch.addAll(arraylist);
+            if(pos ==1){
+                Collections.sort(ValuesSearch,Collections.reverseOrder());
+            }else{
+                Collections.sort(ValuesSearch,Collections.reverseOrder());
+            }
+
+
+            notifyDataSetChanged();
         }
     }
 

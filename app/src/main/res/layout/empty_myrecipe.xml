@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.BaseActivity">
+    <TextView
+        android:gravity="center"
+
+        android:textStyle="bold"
+        android:textSize="@dimen/big_text"
+        android:text="No recpies saved yet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
