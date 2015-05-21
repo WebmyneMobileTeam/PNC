@@ -160,6 +160,15 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
+
+                            ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
+                            complexPreferences.putObject("current-user", user);
+                            complexPreferences.commit();
+
+                            SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("isUserLogin", true);
+                            editor.commit();
 //                            progressDialog.dismiss();
                             Intent intent=new Intent(LoginScreen.this,HomeScreen.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
