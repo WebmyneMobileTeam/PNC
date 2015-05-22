@@ -46,6 +46,9 @@ public class WalkThorugh extends FragmentActivity {
         imageCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(WalkThorugh.this, HomeScreen.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }
         });

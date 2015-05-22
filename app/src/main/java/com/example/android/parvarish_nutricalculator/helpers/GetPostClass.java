@@ -73,27 +73,7 @@ public abstract class GetPostClass implements Interaction {
         JSONObject jObject = null;
         try {
 
-
-
-
-            jObject.put("name","this is test");
-            jObject.put("user_id","8");
-            jObject.put("method","");
-            jObject.put("ingredients_details","");
-            jObject.put("sanjeev_kapoor_receipe","No");
-            jObject.put("regional_food_receipe","No");
-            jObject.put("age_group","6-8 months");
-            jObject.put("no_of_servings","");
-            jObject.put("photo_url","");
-            jObject.put("baby_id","38");
-
-
-
-            StringEntity se = new StringEntity("json="+jObject.toString());
-            httppost.addHeader("content-type", "application/json");
-            httppost.setEntity(se);
-
-          //  httppost.setEntity(new UrlEncodedFormEntity(params));
+            httppost.setEntity(new UrlEncodedFormEntity(params));
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
             int responseCode = response.getStatusLine().getStatusCode();

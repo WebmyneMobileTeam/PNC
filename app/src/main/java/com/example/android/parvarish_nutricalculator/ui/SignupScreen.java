@@ -193,7 +193,7 @@ public class SignupScreen extends ActionBarActivity {
             pairs.add(new BasicNameValuePair("mobile",edMobile.getText().toString().toString()));
             pairs.add(new BasicNameValuePair("gender","Male"));
             pairs.add(new BasicNameValuePair("profile_pic","abc.jpg"));
-            pairs.add(new BasicNameValuePair("fb_id","12345"));
+            pairs.add(new BasicNameValuePair("fb_id",""));
             pairs.add(new BasicNameValuePair("fb_email","abc@gmail.com"));
 
             new GetPostClass(API.REGISTRATION,pairs, EnumType.POST) {
@@ -207,10 +207,21 @@ public class SignupScreen extends ActionBarActivity {
                     editor.putBoolean("isUserLogin", true);
                     editor.commit();
 
-                    Intent i=new Intent(SignupScreen.this,HomeScreen.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    finish();
+                    SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
+                    boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
+
+                    if(isFristTime){
+                        Intent intent = new Intent(SignupScreen.this, WalkThorugh.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(SignupScreen.this, HomeScreen.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
                 @Override
                 public void error(String error) {

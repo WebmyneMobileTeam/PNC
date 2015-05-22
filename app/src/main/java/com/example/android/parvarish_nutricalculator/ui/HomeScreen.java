@@ -56,6 +56,14 @@ public class HomeScreen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         txtName= (TextView) findViewById(R.id.txtName);
+
+        //setting the device not to open walk thorugh
+        SharedPreferences preferences = getSharedPreferences("firstTime", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("firstTime", false);
+        editor.commit();
+        //end coding walk thorugh
+
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(HomeScreen.this, "user_pref", 0);
         user=complexPreferences.getObject("current-user", User.class);
 

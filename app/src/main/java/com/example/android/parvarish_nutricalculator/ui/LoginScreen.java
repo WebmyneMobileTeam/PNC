@@ -55,6 +55,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
+
         if(PrefUtils.getCurrentUser(LoginScreen.this) != null){
             Intent homeIntent = new Intent(LoginScreen.this, HomeScreen.class);
             startActivity(homeIntent);
@@ -81,20 +82,24 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
             }
         });
     }
+/*
 
     private View.OnClickListener loginClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             Intent iHome = new Intent(LoginScreen.this,HomeScreen.class);
             iHome.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(iHome);
             finish();
         }
     };
+*/
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         Intent iHome = new Intent(LoginScreen.this,StartScreen.class);
         startActivity(iHome);
         finish();
@@ -170,10 +175,22 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             editor.putBoolean("isUserLogin", true);
                             editor.commit();
 //                            progressDialog.dismiss();
-                            Intent intent=new Intent(LoginScreen.this,HomeScreen.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            finish();
+
+
+                            SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
+                            boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
+
+                            if(isFristTime){
+                                Intent intent = new Intent(LoginScreen.this, WalkThorugh.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }else {
+                                Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
 //                                callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
                         }
                     });
@@ -254,11 +271,24 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
 
 
-//                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
-                    Intent i=new Intent(LoginScreen.this,HomeScreen.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    finish();
+                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
+
+                    SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
+                    boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
+
+                    if(isFristTime){
+                        Intent intent = new Intent(LoginScreen.this, WalkThorugh.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                    }
+
+
                 }
                 @Override
                 public void error(String error) {
