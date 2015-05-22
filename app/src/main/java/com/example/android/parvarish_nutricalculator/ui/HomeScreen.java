@@ -135,6 +135,8 @@ public class HomeScreen extends ActionBarActivity {
                     startActivity(i);
                     break;
                 case 2:
+                    Intent intent = new Intent(HomeScreen.this, WalkThorugh.class);
+                    startActivity(intent);
                     break;
 
             }

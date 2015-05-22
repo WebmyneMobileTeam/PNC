@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,15 +27,12 @@ import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
-import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.freindMainModel;
 import com.example.android.parvarish_nutricalculator.model.freindsubModel;
-import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
-import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
@@ -46,19 +42,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class FriendsScreen extends ActionBarActivity {
+public class FriendsPendingRequestScreen extends ActionBarActivity {
     private ProgressDialog progressDialog;
-    private ListView friendList;
-    private Toolbar toolbar;
     userModel currentUser;
     CustomAdapter adp;
-    freindMainModel friendobj;
+    private ListView friendList;
+    private Toolbar toolbar;
     EditText etSearchFreind;
     ImageView imgAddFreind,imgPendingReq;
+    freindMainModel friendobj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_freinds_screen);
+        setContentView(R.layout.activity_freinds_pending_screen);
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,87 +65,41 @@ public class FriendsScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-
         init();
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(FriendsScreen.this, "user_pref", 0);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(FriendsPendingRequestScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
-        fetchFreindsScreen();
+        fetchPendingFreindRequest();
 
-
-
-        friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CustomDialog customDialog = new CustomDialog(FriendsScreen.this, "See Friend's Feed", "Unfriend", android.R.style.Theme_Translucent_NoTitleBar);
-                customDialog.show();
-                customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
-                    @Override
-                    public void topButton() {
-                        Intent i = new Intent(FriendsScreen.this, FriendsFeedsScreen.class);
-                        startActivity(i);
-                    }
-
-                    @Override
-                    public void bottomButton() {
-
-                    }
-                });
-            }
-        });
-
-
-        imgPendingReq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i =  new Intent(FriendsScreen.this,FriendsPendingRequestScreen.class);
-                startActivity(i);
-            }
-        });
-
-
-        etSearchFreind.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (etSearchFreind.getRight() - etSearchFreind.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                        if (etSearchFreind.getText().toString().trim().length() == 0) {
-                            Toast.makeText(FriendsScreen.this, "Please Enter any word for search !!!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            adp.filter(etSearchFreind.getText().toString().trim());
-                        }
-
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-        });
 
     }
 
-    private void fetchFreindsScreen(){
-        progressDialog =new ProgressDialog(FriendsScreen.this);
+    private void init(){
+        friendList = (ListView)findViewById(R.id.friendList);
+
+        etSearchFreind = (EditText)findViewById(R.id.etSearchFreind);
+        imgAddFreind = (ImageView)findViewById(R.id.imgAddFreind);
+        imgPendingReq = (ImageView)findViewById(R.id.imgPendingReq);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_friendspendinglist,null, false);
+        friendList.setEmptyView(emptyView);
+
+    }
+
+    private void fetchPendingFreindRequest(){
+        progressDialog =new ProgressDialog(FriendsPendingRequestScreen.this);
         progressDialog.setMessage("Loading ...");
         progressDialog.show();
-        new GetPostClass(API.FRIENDS_LISTING+currentUser.data.id, EnumType.GET) {
+        new GetPostClass(API.FRIENDS_PENDING_REQUEST+currentUser.data.email+"&status=pending", EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
-                Log.e("my freinds response", response);
+                Log.e("freinds pending res", response);
 
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     friendobj = new GsonBuilder().create().fromJson(response, freindMainModel.class);
-                    adp = new CustomAdapter(FriendsScreen.this,friendobj.data);
+                    adp = new CustomAdapter(FriendsPendingRequestScreen.this,friendobj.data);
                     friendList.setAdapter(adp);
 
 
@@ -162,25 +112,11 @@ public class FriendsScreen extends ActionBarActivity {
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(FriendsScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FriendsPendingRequestScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
     }
-
-    private void init(){
-        friendList = (ListView)findViewById(R.id.friendList);
-
-        etSearchFreind = (EditText)findViewById(R.id.etSearchFreind);
-        imgAddFreind = (ImageView)findViewById(R.id.imgAddFreind);
-        imgPendingReq = (ImageView)findViewById(R.id.imgPendingReq);
-
-        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
-        friendList.setEmptyView(emptyView);
-
-
-    }
-
 
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
@@ -189,13 +125,13 @@ public class FriendsScreen extends ActionBarActivity {
         List<freindsubModel> ValuesSearch;
         ArrayList<freindsubModel> arraylist;
 
-
         public CustomAdapter(Context ctx,ArrayList<freindsubModel> obj){
             this.ctx = ctx;
             this.ValuesSearch = obj;
             arraylist = new ArrayList<freindsubModel>();
             arraylist.addAll(ValuesSearch);
         }
+
 
         @Override
         public int getCount() {
@@ -216,14 +152,13 @@ public class FriendsScreen extends ActionBarActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
-            view = layoutInflator.inflate(R.layout.friend_list_item_with_delete, parent, false);
+            view = layoutInflator.inflate(R.layout.friend_list_item_with_select_delete, parent, false);
 
             TextView txtName = (TextView)view.findViewById(R.id.txtName);
-            ImageView imgDel = (ImageView)view.findViewById(R.id.imgDel);
-            ImageView imgProfile= (ImageView)view.findViewById(R.id.imgProfile);
+            ImageView imgStatusAccept = (ImageView)view.findViewById(R.id.imgStatusAccept);
+            ImageView imgStatusReject = (ImageView)view.findViewById(R.id.imgStatusReject);
 
             txtName.setText(ValuesSearch.get(position).FriendUser.name);
-
             return view;
         }
 
@@ -281,7 +216,7 @@ public class FriendsScreen extends ActionBarActivity {
         String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
 
-        ListPopupWindow popupWindow = new ListPopupWindow(FriendsScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(FriendsPendingRequestScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
@@ -291,7 +226,7 @@ public class FriendsScreen extends ActionBarActivity {
         popupWindow.setWidth((int)(width/1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(FriendsScreen.this,arrayList,drawableImage,true));
+        popupWindow.setAdapter(new SettingsAdapter(FriendsPendingRequestScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
     }
 
@@ -300,7 +235,7 @@ public class FriendsScreen extends ActionBarActivity {
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(FriendsScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(FriendsPendingRequestScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());
         popupWindow.setAnchorView(menuItemView);
@@ -312,7 +247,7 @@ public class FriendsScreen extends ActionBarActivity {
         popupWindow.setWidth((int)(width/1.5));
         popupWindow.setHeight((int)(height/1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(FriendsScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(FriendsPendingRequestScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
 
 
@@ -321,9 +256,9 @@ public class FriendsScreen extends ActionBarActivity {
     private void logoutFromApp() {
 
         Log.e("click", "logout");
-        PrefUtils.clearCurrentUser(FriendsScreen.this);
+        PrefUtils.clearCurrentUser(FriendsPendingRequestScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(FriendsScreen.this,StartScreen.class);
+        Intent i= new Intent(FriendsPendingRequestScreen.this,StartScreen.class);
         startActivity(i);
         finish();
     }
@@ -385,11 +320,11 @@ public class FriendsScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(FriendsScreen.this,DisclaimerScreen.class);
+                            Intent i = new Intent(FriendsPendingRequestScreen.this,DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(FriendsScreen.this,AboutusScreen.class);
+                            Intent i2 = new Intent(FriendsPendingRequestScreen.this,AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -469,11 +404,11 @@ public class FriendsScreen extends ActionBarActivity {
                     switch (position){
 
                         case 5:
-                            Intent iGuide = new Intent(FriendsScreen.this,GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(FriendsPendingRequestScreen.this,GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(FriendsScreen.this,GlossaryScreen.class);
+                            Intent i = new Intent(FriendsPendingRequestScreen.this,GlossaryScreen.class);
                             startActivity(i);
                             break;
                     }
