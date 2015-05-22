@@ -1,16 +1,23 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Base64DataException;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -47,6 +54,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,8 +65,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public class ProfileScreen extends ActionBarActivity implements View.OnClickListener{
 
+
+public class ProfileScreen extends ActionBarActivity implements View.OnClickListener{
+    private static final int CAMERA_REQUEST = 500;
+    private static final int GALLERY_REQUEST = 300;
+    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
     private Button btnSave,btnChangePassword;
     private EditText edSignUpCity,edSignUpMobile,edSignUpEmail,edSignUpPassword,edSignUpUserName;
     private ImageView imgProfile;
@@ -68,7 +82,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     String currentDate;
     babyModel cuurentBaby;
-
+    Bitmap thumbnail;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     LinearLayout addBabyLinearMain;
@@ -99,6 +113,31 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
         processfetchProfileDetails();
 
+        imgProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileScreen.this);
+                builder.setTitle("Upload Picture");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (items[item].equals("Take Photo")) {
+                            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(takePicture, CAMERA_REQUEST);
+                            Log.e("Camera ", "exit");
+
+                        } else if (items[item].equals("Choose from Gallery")) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto , GALLERY_REQUEST);
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+
        /* profileList = (ListView)findViewById(R.id.profileList);
 
         // Setting on Touch Listener for handling the touch inside ScrollView
@@ -118,7 +157,24 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         profileList.setAdapter(adp);*/
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
+
+                thumbnail = (Bitmap) data.getExtras().get("data");
+                imgProfile.setImageBitmap(thumbnail);
+
+            }
+        }
+    }
+
     private void init(){
+        imgProfile = (ImageView)findViewById(R.id.imgProfile);
+
         btnSave = (Button)findViewById(R.id.btnSave);
         btnChangePassword = (Button)findViewById(R.id.btnChangePassword);
 
@@ -132,6 +188,8 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         edSignUpUserName = (EditText)findViewById(R.id.edSignUpUserName);
 
         addBabyLinearMain = (LinearLayout)findViewById(R.id.addBabyLinearMain);
+
+
 
 
     }
@@ -430,6 +488,15 @@ private void processfetchProfileDetails(){
         edSignUpEmail.setText(userProfile.data.email);
         edSignUpPassword.setText(userProfile.data.password);
         edSignUpUserName.setText(userProfile.data.name);
+
+        try {
+
+            byte[] decodedString = Base64.decode(userProfile.data.profile_pic, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            imgProfile.setImageBitmap(decodedByte);
+        }catch(Exception e){
+            Log.e("exc",e.toString());
+        }
     }
 
     @Override
@@ -468,6 +535,14 @@ private void processfetchProfileDetails(){
 
     private void processUpdateProfile(){
 
+
+        //complete code to save image on server
+      /*  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String  encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+*/
         List<NameValuePair> pairs = new ArrayList<>();
 
         pairs.add(new BasicNameValuePair("user_id",currentUser.data.id));
