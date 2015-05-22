@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -64,6 +65,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
     List<String> babyAge;
     CustomAdapter adp;
     EditText etSearchRecipe;
+    Button btnAddRecipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +105,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
                 if (position == 0) {
 
                 } else {
-                   adp.sorting(position);
+                    adp.sorting(position);
                 }
             }
 
@@ -128,7 +130,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
                         if (etSearchRecipe.getText().toString().trim().length() == 0) {
                             Toast.makeText(MyRecipeListScreen.this, "Please Enter any word for search !!!", Toast.LENGTH_SHORT).show();
                         } else {
-                                adp.filter(etSearchRecipe.getText().toString().trim());
+                            adp.filter(etSearchRecipe.getText().toString().trim());
                         }
 
                         return true;
@@ -139,29 +141,22 @@ public class MyRecipeListScreen extends ActionBarActivity {
             }
         });
 
+
+        btnAddRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyRecipeListScreen.this,AddRecipeManualScreen.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 
 
-
-    private void processSort(int pos){
-        int ASC = 1;
-        int DSC = 2;
-
-
-
-        if(ASC == pos){
-            Collections.sort(recpname);
-            adp.notifyDataSetInvalidated();
-            myRecipeList.invalidateViews();
-        }else{
-            Collections.sort(recpname,Collections.reverseOrder());
-            adp.notifyDataSetInvalidated();
-            myRecipeList.invalidateViews();
-        }
-    }
 
     private void init(){
+        btnAddRecipe = (Button)findViewById(R.id.btnAddRecipe);
         etSearchRecipe = (EditText)findViewById(R.id.etSearchRecipe);
         myRecipeList= (ListView) findViewById(R.id.myRecipeList);
         View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
