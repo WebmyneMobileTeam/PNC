@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.model.NutritionData;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 
 /**
  * Created by xitij on 17-03-2015.
@@ -31,15 +32,15 @@ public class PrefUtils {
         return  typeface;
     }
 
-    public static void setCurrentUser(User currentUser, Context ctx){
+    public static void setCurrentUser(userModel currentUser, Context ctx){
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
         complexPreferences.putObject("current_user_value", currentUser);
         complexPreferences.commit();
     }
 
-    public static User getCurrentUser(Context ctx){
+    public static userModel getCurrentUser(Context ctx){
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ctx, "user_prefs", 0);
-        User currentUser = complexPreferences.getObject("current_user_value", User.class);
+        userModel currentUser = complexPreferences.getObject("current_user_value", userModel.class);
         return currentUser;
     }
 

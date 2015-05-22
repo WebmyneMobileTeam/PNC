@@ -155,20 +155,20 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                                 GraphResponse response) {
 
                             Log.e("response: ", response + "");
+                            userModel userUserModel = new userModel();
                             try {
-                                user = new User();
-                                user.facebookID = object.getString("id").toString();
-                                user.email = object.getString("email").toString();
-                                user.name = object.getString("name").toString();
-                                user.gender = object.getString("gender").toString();
-                                PrefUtils.setCurrentUser(user,LoginScreen.this);
+                                userUserModel.data.fb_id = object.getString("id").toString();
+                                userUserModel.data.email = object.getString("email").toString();
+                                userUserModel.data.name = object.getString("name").toString();
+                                userUserModel.data.gender = object.getString("gender").toString();
+                                PrefUtils.setCurrentUser(userUserModel,LoginScreen.this);
 
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
 
                             ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
-                            complexPreferences.putObject("current-user", user);
+                            complexPreferences.putObject("current-user", userUserModel);
                             complexPreferences.commit();
 
                             SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
@@ -272,7 +272,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
 
 
-                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
 
                     SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
                     boolean isFristTime = preferences1.getBoolean("isFirstTime", true);

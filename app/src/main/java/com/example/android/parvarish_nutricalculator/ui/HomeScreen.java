@@ -32,6 +32,7 @@ import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.helpers.User;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
@@ -50,27 +51,22 @@ public class HomeScreen extends ActionBarActivity {
     private Toolbar toolbar;
     private User user;
     ListPopupWindow popupWindow1,popupWindow2;
-
+    userModel usermodel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         txtName= (TextView) findViewById(R.id.txtName);
 
-        //setting the device not to open walk thorugh
-        SharedPreferences preferences = getSharedPreferences("firstTime", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("firstTime", false);
-        editor.commit();
-        //end coding walk thorugh
+
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(HomeScreen.this, "user_pref", 0);
-        user=complexPreferences.getObject("current-user", User.class);
-
-        if (user != null) {
-            Toast.makeText(HomeScreen.this, "welcome " +user.name, Toast.LENGTH_LONG).show();
-        }
-        txtName.setText(user.name+"");
+        usermodel =complexPreferences.getObject("current-user", userModel.class);
+/*
+        if (usermodel != null) {
+            Toast.makeText(HomeScreen.this, "welcome " +usermodel.data.name, Toast.LENGTH_LONG).show();
+        }*/
+        txtName.setText(usermodel.data.name+"");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
@@ -423,6 +419,12 @@ public class HomeScreen extends ActionBarActivity {
                             popupWindow2.dismiss();
                             Intent i = new Intent(HomeScreen.this, GlossaryScreenTemp.class);
                             startActivity(i);
+                            break;
+                        case 7:
+                            Intent intent = new Intent(HomeScreen.this, WalkThorugh.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }

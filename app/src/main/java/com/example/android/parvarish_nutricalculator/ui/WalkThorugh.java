@@ -4,6 +4,7 @@ import android.app.ActionBar;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -36,6 +37,20 @@ public class WalkThorugh extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
+
+
+
+        //setting the device not to open walk thorugh
+        SharedPreferences preferences = getSharedPreferences("firstTime", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isFirstTime", false);
+        editor.commit();
+        //end coding walk thorugh
+
+
+
+
+
 
         image1 = (ImageView) findViewById(R.id.image1);
         image2 = (ImageView) findViewById(R.id.image2);
