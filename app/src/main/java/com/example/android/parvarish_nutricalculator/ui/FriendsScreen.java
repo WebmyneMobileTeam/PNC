@@ -48,8 +48,9 @@ public class FriendsScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-        friendList = (ListView)findViewById(R.id.friendList);
-        
+
+        init();
+
         CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
         friendList.setAdapter(adp);
 
@@ -74,6 +75,16 @@ public class FriendsScreen extends ActionBarActivity {
         });
 
     }
+
+    private void init(){
+        friendList = (ListView)findViewById(R.id.friendList);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
+        friendList.setEmptyView(emptyView);
+
+
+    }
+
+
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
         private Context ctx;
@@ -83,7 +94,7 @@ public class FriendsScreen extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return 10;
+            return 0;
         }
 
         @Override
