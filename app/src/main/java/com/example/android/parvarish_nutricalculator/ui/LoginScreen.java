@@ -56,6 +56,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
+
         if(PrefUtils.getCurrentUser(LoginScreen.this) != null){
             Intent homeIntent = new Intent(LoginScreen.this, HomeScreen.class);
             startActivity(homeIntent);
