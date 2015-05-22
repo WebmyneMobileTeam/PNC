@@ -48,6 +48,7 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,7 +103,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
                 if (position == 0) {
 
                 } else {
-                   // adp.sorting(position);
+                   adp.sorting(position);
                 }
             }
 
@@ -336,17 +337,31 @@ public class MyRecipeListScreen extends ActionBarActivity {
         public void sorting(int pos) {
             int ASC = 1;
             int DSC = 2;
-            ValuesSearch.clear();
-            ValuesSearch.addAll(arraylist);
+            //ValuesSearch.clear();
+            //ValuesSearch.addAll(arraylist);
             if(pos ==1){
-                Collections.sort(ValuesSearch,Collections.reverseOrder());
+                Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
+                    @Override
+                    public int compare(myrecipedata object1, myrecipedata object2) {
+                        return object1.name.compareTo(object2.name);
+                    }
+                });
             }else{
-                Collections.sort(ValuesSearch,Collections.reverseOrder());
+                Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
+                    @Override
+                    public int compare(myrecipedata object1, myrecipedata object2) {
+                        return object2.name.compareTo(object1.name);
+                    }
+                });
             }
 
 
             notifyDataSetChanged();
         }
+
+
+
+
     }
 
     @Override
@@ -576,6 +591,12 @@ public class MyRecipeListScreen extends ActionBarActivity {
                         case 6:
                             Intent i = new Intent(MyRecipeListScreen.this,GlossaryScreen.class);
                             startActivity(i);
+                            break;
+                        case 7:
+                            Intent intent = new Intent(MyRecipeListScreen.this, WalkThorugh.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }
