@@ -1,46 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:gravity="center"
-    android:paddingTop="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/spOne"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:textSize="@dimen/spinner_text"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/black"
-        android:background="@drawable/spinner_bg_gray"
+    <LinearLayout
         android:layout_weight="1"
-        android:layout_height="wrap_content" />
-    <Spinner
-        android:id="@+id/spTwo"
-        android:gravity="center"
+        android:paddingTop="8dp"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_marginLeft="8dp"
-        android:textSize="@dimen/spinner_text"
-        android:textColor="@android:color/black"
-        android:textColorHint="@android:color/black"
-        android:background="@drawable/spinner_bg_gray"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <Spinner
+            android:singleLine="true"
+            android:id="@+id/spOne"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/spinner_text"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:background="@drawable/spinner_bg_gray"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <Spinner
+            android:singleLine="true"
+            android:id="@+id/spTwo"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:textSize="@dimen/spinner_text"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black"
+            android:background="@drawable/spinner_bg_gray"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
-    <EditText
-       android:drawableRight="@drawable/ic_icon_delete"
-        android:hint="Ingredient"
+    <AutoCompleteTextView
         android:layout_marginLeft="8dp"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp"
+        android:drawableRight="@drawable/ic_icon_delete"
+        android:hint="Ingredient"
         android:id="@+id/etIngredient"
-        android:textSize="@dimen/spinner_text"
+        android:textSize="@dimen/editext_ing"
         android:background="@drawable/spinner_bg_gray"
         android:gravity="center"
         android:padding="12dp"
         android:layout_width="match_parent"
-
+        android:layout_gravity="center"
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/black"
-        android:layout_weight="1"
         android:layout_height="wrap_content" />
 </LinearLayout>
