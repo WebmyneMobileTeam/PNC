@@ -38,6 +38,8 @@ import com.example.android.parvarish_nutricalculator.model.freindsubModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.userModel;
+import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxAddFreind;
+import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxEditBaby;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
@@ -99,6 +101,14 @@ public class FriendsScreen extends ActionBarActivity {
             }
         });
 
+
+        imgAddFreind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialogBoxAddFreind cdbox = new CustomDialogBoxAddFreind(FriendsScreen.this,currentUser.data.id);
+                cdbox.show();
+            }
+        });
 
         imgPendingReq.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +187,8 @@ public class FriendsScreen extends ActionBarActivity {
 
         View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
         friendList.setEmptyView(emptyView);
+
+
 
 
     }

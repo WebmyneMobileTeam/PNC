@@ -76,23 +76,46 @@
                 android:layout_weight="1"
                  />
 
-            <ImageView
-                android:id="@+id/imgPendingReq"
-                android:scaleType="fitXY"
-                android:layout_margin="4dp"
-                android:layout_gravity="center"
-                android:background="@drawable/icon_zerofreind"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:id="@+id/imgAddFreind"
-                android:scaleType="fitXY"
-                android:layout_margin="4dp"
-                android:layout_gravity="center"
-                android:background="@drawable/icon_addfreind"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgPendingReq"
+                    android:scaleType="fitXY"
+                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_zerofreind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textColor="@color/color_button_darkred"
+                    android:text="Friend\nRequests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgAddFreind"
+                    android:scaleType="fitXY"
+                    android:layout_margin="4dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_addfreind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textColor="@color/color_button_darkred"
+                    android:text="Add\n Friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
 
         </LinearLayout>
