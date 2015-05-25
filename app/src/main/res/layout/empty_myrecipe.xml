@@ -9,7 +9,7 @@
 
         android:textStyle="bold"
         android:textSize="@dimen/big_text"
-        android:text="No recpies saved yet"
+        android:text="No recipes saved yet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

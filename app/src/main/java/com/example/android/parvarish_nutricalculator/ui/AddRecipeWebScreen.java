@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,22 +24,33 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClickListener {
-
+    private ProgressDialog progressDialog;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner SpRecipie;
     private Button btnImport;
     private Toolbar toolbar;
     ImageView img1, img2, img3, img4;
-
+    userModel currentUser;
+    sanjeevmainModel sajneevObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +63,13 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
             setSupportActionBar(toolbar);
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+
+
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeWebScreen.this, "user_pref", 0);
+        currentUser = complexPreferences.getObject("current-user", userModel.class);
+
+        fetchSanjeevKapoorRecpiesDetails();
 
         spinnerList.add("Select Baby");
         spinnerList.add("one");
@@ -81,17 +100,67 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         });
     }
 
+    void fetchSanjeevKapoorRecpiesDetails(){
+
+        progressDialog =new ProgressDialog(AddRecipeWebScreen.this);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
+
+        new GetPostClass(API.SANJEEV_KAPOOR_RECIPE, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("sanjeev kapoor response", response);
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    sajneevObj = new GsonBuilder().create().fromJson(response, sanjeevmainModel.class);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeWebScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("sanjeev-recipe", sajneevObj);
+                    complexPreferences.commit();
+
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(AddRecipeWebScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
 
             case R.id.img1:
+                Intent i1 = new Intent(AddRecipeWebScreen.this, SanjeevKapoorScreen.class);
+                i1.putExtra("Title", "8-10 MONTHS");
+                startActivity(i1);
+                break;
             case R.id.img2:
+                Intent i2 = new Intent(AddRecipeWebScreen.this, SanjeevKapoorScreen.class);
+                i2.putExtra("Title","6-8 MONTHS");
+                startActivity(i2);
+                break;
             case R.id.img3:
+                Intent i3 = new Intent(AddRecipeWebScreen.this, SanjeevKapoorScreen.class);
+                i3.putExtra("Title","10-12 MONTHS");
+                startActivity(i3);
+                break;
             case R.id.img4:
-                Intent i = new Intent(AddRecipeWebScreen.this, SanjeevKapoorScreen.class);
-                startActivity(i);
+                Intent i4 = new Intent(AddRecipeWebScreen.this, SanjeevKapoorScreen.class);
+                i4.putExtra("Title","12-24 MONTHS");
+                startActivity(i4);
                 break;
 
         }

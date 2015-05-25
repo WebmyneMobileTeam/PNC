@@ -255,7 +255,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     private void fillBabyDetails(){
 
-        dateFormatter = new SimpleDateFormat("yyyy-dd-MM", Locale.US);
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         int babySize = cuurentBaby.data.size();
 
         for(int i=0;i<=babySize;i++){

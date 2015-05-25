@@ -32,6 +32,8 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
+    private TextView txtServing,txtAgeGroup,txtTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +49,23 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+        init();
+
+
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
         addTableView();
 
 
+    }
+
+    void init(){
+        txtServing = (TextView)findViewById(R.id.txtServing);
+        txtAgeGroup = (TextView)findViewById(R.id.txtAgeGroup);
+        txtTitle = (TextView)findViewById(R.id.txtTitle);
+
+        txtTitle.setText(getIntent().getStringExtra("Title"));
+        txtServing.setText("Servings : " + getIntent().getStringExtra("serving"));
+        txtAgeGroup.setText("Age of Baby : " + getIntent().getStringExtra("agegroup"));
     }
 
     private void addTableView() {
@@ -72,7 +87,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         ArrayList<String> values = new ArrayList<>();
         values.add("Nutrients");
         values.add("ICMR Recommandation");
-        values.add("Values");
+        values.add("Recipe Values");
 
         tableView.addRow(values, "#000000");
         tableView.addDivider();

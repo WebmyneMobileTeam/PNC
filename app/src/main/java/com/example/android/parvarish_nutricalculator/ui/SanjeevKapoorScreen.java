@@ -24,8 +24,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
@@ -33,8 +36,12 @@ import java.util.Arrays;
 
 public class SanjeevKapoorScreen extends ActionBarActivity {
 
-    private GridView imageList;
+    private ArrayList<String> recipeNames;
+    sanjeevmainModel sajneevObj;
+    private TextView txtTitle;
+    private GridView sanjeevList;
     private Toolbar toolbar;
+    String ageGroup;
     public Integer[] mThumbIds = {
             R.drawable.d_one, R.drawable.d_two,
             R.drawable.d_three, R.drawable.d_four,
@@ -56,33 +63,80 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-        imageList = (GridView)findViewById(R.id.imageList);
+        init();
 
-        CustomImageAdapter adp = new CustomImageAdapter(SanjeevKapoorScreen.this);
-        imageList.setAdapter(adp);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SanjeevKapoorScreen.this, "user_pref", 0);
+        sajneevObj = complexPreferences.getObject("sanjeev-recipe", sanjeevmainModel.class);
 
 
-        imageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent i= new Intent(SanjeevKapoorScreen.this,SanjeevKumarEditRecipeScreen.class);
-                    startActivity(i);
-            }
-        });
+        setGridView();
+
+
+
 
 
 
     }
+
+    void setGridView(){
+        recipeNames = new ArrayList<String>();
+        ageGroup = getIntent().getStringExtra("Title");
+
+        for(int i=0;i<sajneevObj.data.size();i++){
+            if(sajneevObj.data.get(i).Recipe.age_group.equalsIgnoreCase(ageGroup)){
+                recipeNames.add(sajneevObj.data.get(i).Recipe.name);
+            }
+        }
+
+        CustomImageAdapter adp = new CustomImageAdapter(SanjeevKapoorScreen.this,recipeNames);
+        sanjeevList.setAdapter(adp);
+
+
+
+        sanjeevList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ArrayList<String> tempName = new ArrayList<String>();
+                ArrayList<String> tempServing = new ArrayList<String>();
+                ArrayList<String> tempAgeGroup = new ArrayList<String>();
+
+                for(int i=0;i<sajneevObj.data.size();i++){
+                    if(sajneevObj.data.get(i).Recipe.age_group.equalsIgnoreCase(ageGroup)){
+                        tempName.add(sajneevObj.data.get(i).Recipe.name);
+                        tempServing.add(sajneevObj.data.get(i).Recipe.no_of_servings);
+                        tempAgeGroup.add(sajneevObj.data.get(i).Recipe.age_group);
+                    }
+                }
+
+                Intent i= new Intent(SanjeevKapoorScreen.this,SanjeevKumarEditRecipeScreen.class);
+                i.putExtra("Title",tempName.get(position));
+                i.putExtra("serving",tempServing.get(position));
+                i.putExtra("agegroup",tempAgeGroup.get(position));
+                startActivity(i);
+            }
+        });
+    }
+
+    void init(){
+        txtTitle = (TextView)findViewById(R.id.txtTitle);
+        txtTitle.setText(getIntent().getStringExtra("Title"));
+        sanjeevList = (GridView)findViewById(R.id.imageList);
+
+    }
+
     class CustomImageAdapter extends BaseAdapter{
+        ArrayList<String> valueNames;
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomImageAdapter(Context ctx){
+        public CustomImageAdapter(Context ctx,ArrayList<String> names){
             this.ctx = ctx;
+            this.valueNames = names;
         }
 
         @Override
         public int getCount() {
-            return 8;
+            return valueNames.size();
         }
 
         @Override
@@ -100,11 +154,13 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
             view = layoutInflator.inflate(R.layout.grid_item_view, parent, false);
-
+            TextView txtTitle = (TextView)view.findViewById(R.id.txtTitle);
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            imageView.setImageResource(mThumbIds[position]);
+
+            txtTitle.setText(valueNames.get(position));
+            imageView.setImageResource(R.mipmap.ic_launcher);
 
             return view;
 
