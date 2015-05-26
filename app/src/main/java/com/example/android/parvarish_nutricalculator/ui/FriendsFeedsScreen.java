@@ -84,6 +84,7 @@ public class FriendsFeedsScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(FriendsFeedsScreen.this, ViewFriendsRecipe.class);
+                i.putExtra("pos",position);
                 startActivity(i);
             }
         });
@@ -109,12 +110,16 @@ public class FriendsFeedsScreen extends ActionBarActivity {
 
                try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
-                    frndfeedObj = new GsonBuilder().create().fromJson(response, freindFeedsMainModel.class);
+                   frndfeedObj = new GsonBuilder().create().fromJson(response, freindFeedsMainModel.class);
 
-                    txtUserName.setText(frndfeedObj.data.User.name);
+                   ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(FriendsFeedsScreen.this, "user_pref", 0);
+                   complexPreferences.putObject("current-frnd-recipe", frndfeedObj);
+                   complexPreferences.commit();
 
-                    adp = new CustomAdapter(FriendsFeedsScreen.this,frndfeedObj.data.Recipe);
-                    listFeeds.setAdapter(adp);
+                   txtUserName.setText(frndfeedObj.data.User.name);
+
+                   adp = new CustomAdapter(FriendsFeedsScreen.this,frndfeedObj.data.Recipe);
+                   listFeeds.setAdapter(adp);
 
 
                 }catch(Exception e){

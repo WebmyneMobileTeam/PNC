@@ -23,7 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.freindFeedsMainModel;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 
@@ -31,9 +34,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ViewFriendsRecipe extends ActionBarActivity {
-
+    int list_position;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
+    private TextView txtTitle,txtIng,txtMethod,btnSaveRecipe,btnEditRecipe;
+    freindFeedsMainModel frndfeedObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +53,32 @@ public class ViewFriendsRecipe extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+        init();
+
+
+
 
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
         addTableView();
 
+
+    }
+
+    private void init(){
+
+        list_position = getIntent().getIntExtra("pos",0);
+        list_position -=1; // bcz position must be with zero
+
+        txtTitle = (TextView)findViewById(R.id.txtTitle);
+        txtIng  = (TextView)findViewById(R.id.txtIng);
+        txtMethod = (TextView)findViewById(R.id.txtMethod);
+        btnSaveRecipe = (TextView)findViewById(R.id.btnSaveRecipe);
+        btnEditRecipe = (TextView)findViewById(R.id.btnEditRecipe);
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ViewFriendsRecipe.this, "user_pref", 0);
+        frndfeedObj = complexPreferences.getObject("current-frnd-recipe", freindFeedsMainModel.class);
+
+        txtTitle.setText(frndfeedObj.data.Recipe.get(list_position).name);
 
     }
 

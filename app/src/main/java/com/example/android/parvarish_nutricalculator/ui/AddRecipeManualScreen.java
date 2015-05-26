@@ -171,67 +171,53 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     }
 
     private void processSubmitRecipeToServer(){
+        JSONObject userJSONObject = new JSONObject();
+       try {
 
-       try{
-
-           JSONObject userJSONObject = new JSONObject();
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
-           userJSONObject.put("method","");
+           userJSONObject.put("method", "");
            userJSONObject.put("ingredients_details", etIngDetails.getText().toString().trim());
            userJSONObject.put("sanjeev_kapoor_receipe", "No");
            userJSONObject.put("regional_food_receipe", "No");
            userJSONObject.put("age_group", "6-8 months");
            userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
            userJSONObject.put("photo_url", "");
-           userJSONObject.put("baby_id",cuurentBaby.data.get(forSpinner.getSelectedItemPosition()).Baby.id);
+           userJSONObject.put("baby_id", cuurentBaby.data.get(forSpinner.getSelectedItemPosition()-1).Baby.id);
 
            JSONArray array = new JSONArray();
-
-           for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
-
-               LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
-
+           for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
+               LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(k);
                LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
-             /*  Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
-               Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
-*/
-               Spinner tempspOne = (Spinner) linearTableAdded.findViewById(R.id.spOne);
-               Spinner tempspTwo = (Spinner) linearTableAdded.findViewById(R.id.spOne);
-
-
                AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
 
 
-               Log.e("spinner1 Value",tempspOne.getSelectedItem().toString());
-               Log.e("spinner2 Value",tempspTwo.getSelectedItem().toString());
+               Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
+               Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
+
+               Log.e("spinner1 Value", tempspOne.getSelectedItem().toString());
+               Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
                Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
 
+                JSONObject ingreditent = new JSONObject();
+                       for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
+                           String value = entry.getValue();
+                           if (value.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
+                               String key = entry.getKey();
+                                  ingreditent.put("ingredient_id", key);
+                           }
 
-               JSONObject ingreditent = new JSONObject();
-
-               for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
-                    String value = entry.getValue();
-
-                   if(value.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
-                       String key = entry.getKey();
-                       ingreditent.put("ingredient_id", key);
-                   }
-
-               }
+                       }
                ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
                ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
 
                array.put(ingreditent);
+               // end of main for loop
            }
 
+           userJSONObject.put("recipe_ingredient", array);
 
-
-           userJSONObject.put("recipe_ingredient",array);
-
-
-
-           JSONPost json = new JSONPost();
+            JSONPost json = new JSONPost();
            json.POST(AddRecipeManualScreen.this, API.ADD_RECIPE, userJSONObject.toString(),"Saving Recipe...");
            json.setPostResponseListener(new POSTResponseListener() {
                @Override
@@ -257,7 +243,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
 
        }catch (Exception e){
-            Log.e("Exception",e.toString());
+           Log.e("Exception",e.toString());
        }
     }
 
