@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,24 +22,42 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.freindFeedsMainModel;
+import com.example.android.parvarish_nutricalculator.model.freindMainModel;
+import com.example.android.parvarish_nutricalculator.model.freindfeedssubModel;
+import com.example.android.parvarish_nutricalculator.model.freindsubModel;
+import com.example.android.parvarish_nutricalculator.model.recipeSubData;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public class FriendsFeedsScreen extends ActionBarActivity {
-
+    private ProgressDialog progressDialog;
+    userModel currentUser;
+    private String userID;
     private ListView listFeeds;
     private Toolbar toolbar;
+    freindFeedsMainModel frndfeedObj;
+    CustomAdapter adp;
+    TextView txtUserName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.friends_feed);
-        listFeeds = (ListView)findViewById(R.id.listFeeds);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -48,18 +67,19 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-      /*  View headerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
-        View footerView = ((LayoutInflater) FriendsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
-        profileList.addHeaderView(headerView);
-        profileList.addFooterView(footerView);
-        CustomAdapter adp = new CustomAdapter(FriendsScreen.this);
-        profileList.setAdapter(adp);*/
+
+        init();
+
+        userID = getIntent().getStringExtra("userid");
+
+
+       // txtUserName.setText(currentUser.data.name);
+
+        fetchFriendsFeeds();
 
         View headerView = ((LayoutInflater) FriendsFeedsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friends_feed_item_view_header, null, false);
         listFeeds.addHeaderView(headerView);
 
-        CustomAdapter adp = new CustomAdapter(FriendsFeedsScreen.this);
-        listFeeds.setAdapter(adp);
         listFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,16 +89,63 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         });
     }
 
+
+    void init(){
+        txtUserName = (TextView)findViewById(R.id.txtUserName);
+        listFeeds = (ListView)findViewById(R.id.listFeeds);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
+        listFeeds.setEmptyView(emptyView);
+    }
+
+    private void fetchFriendsFeeds(){
+        progressDialog =new ProgressDialog(FriendsFeedsScreen.this);
+        progressDialog.setMessage("Loading ...");
+        progressDialog.show();
+        new GetPostClass(API.FRIENDS_FEEDS_LISTING+userID, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("frn feed res", response);
+
+               try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    frndfeedObj = new GsonBuilder().create().fromJson(response, freindFeedsMainModel.class);
+
+                    txtUserName.setText(frndfeedObj.data.User.name);
+
+                    adp = new CustomAdapter(FriendsFeedsScreen.this,frndfeedObj.data.Recipe);
+                    listFeeds.setAdapter(adp);
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(FriendsFeedsScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
     class CustomAdapter extends BaseAdapter{
+        List<recipeSubData> ValuesSearch;
+        ArrayList<recipeSubData> arraylist;
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomAdapter(Context ctx){
+        public CustomAdapter(Context ctx,ArrayList<recipeSubData> obj){
             this.ctx = ctx;
+            this.ValuesSearch = obj;
+            arraylist = new ArrayList<recipeSubData>();
+            arraylist.addAll(ValuesSearch);
         }
 
         @Override
         public int getCount() {
-            return 10;
+            return ValuesSearch.size();
         }
 
         @Override
@@ -96,7 +163,33 @@ public class FriendsFeedsScreen extends ActionBarActivity {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
             view = layoutInflator.inflate(R.layout.friend_feed_item_view, parent, false);
+
+            TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+            TextView txtBabyage = (TextView)view.findViewById(R.id.txtBabyage);
+
+            txtrecipeName.setText(ValuesSearch.get(position).name);
+
             return view;
+        }
+
+        // Filter Class
+        public void filter(String charText) {
+
+            charText = charText.toLowerCase(Locale.getDefault());
+
+            ValuesSearch.clear();
+            if (charText.length() == 0) {
+                ValuesSearch.addAll(arraylist);
+
+            } else {
+                for ( recipeSubData obj: arraylist) {
+                    if (charText.length() != 0 && obj.name.toLowerCase(Locale.getDefault()).contains(charText)) {
+                        ValuesSearch.add(obj);
+                    }
+
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 

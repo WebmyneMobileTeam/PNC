@@ -27,11 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -192,15 +195,29 @@ public class SignupScreen extends ActionBarActivity {
             pairs.add(new BasicNameValuePair("city",edCity.getText().toString().trim()));
             pairs.add(new BasicNameValuePair("mobile",edMobile.getText().toString().toString()));
             pairs.add(new BasicNameValuePair("gender","Male"));
-            pairs.add(new BasicNameValuePair("profile_pic","abc.jpg"));
+            pairs.add(new BasicNameValuePair("profile_pic",""));
             pairs.add(new BasicNameValuePair("fb_id",""));
-            pairs.add(new BasicNameValuePair("fb_email","abc@gmail.com"));
+            pairs.add(new BasicNameValuePair("fb_email",""));
 
             new GetPostClass(API.REGISTRATION,pairs, EnumType.POST) {
                 @Override
                 public void response(String response) {
 //                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
+
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(response.toString().trim());
+                        userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
+
+                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SignupScreen.this, "user_pref", 0);
+                        complexPreferences.putObject("current-user", userUserModel);
+                        complexPreferences.commit();
+                    }catch (Exception e){
+                        Log.e("exc","in json parsing");
+                    }
+
+
 
                     SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();

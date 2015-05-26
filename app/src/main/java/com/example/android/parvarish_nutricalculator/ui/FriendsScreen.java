@@ -1,7 +1,9 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -83,19 +85,21 @@ public class FriendsScreen extends ActionBarActivity {
 
         friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CustomDialog customDialog = new CustomDialog(FriendsScreen.this, "See Friend's Feed", "Unfriend", android.R.style.Theme_Translucent_NoTitleBar);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final CustomDialog customDialog = new CustomDialog(FriendsScreen.this, "See Friend's Feed", "Unfriend", android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
                 customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                     @Override
                     public void topButton() {
                         Intent i = new Intent(FriendsScreen.this, FriendsFeedsScreen.class);
+                        i.putExtra("userid",friendobj.data.get(position).FriendUser.id);
                         startActivity(i);
                     }
 
                     @Override
                     public void bottomButton() {
-
+                        showalert("Are you sure want to delete this request ?",friendobj.data.get(position).Friend.id);
+                        customDialog.dismiss();
                     }
                 });
             }
@@ -144,6 +148,66 @@ public class FriendsScreen extends ActionBarActivity {
 
         });
 
+    }
+
+
+    void showalert(String msg,final String idd){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FriendsScreen.this);
+        // set title
+        //   alertDialogBuilder.setTitle(msg);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+                            processRejectRequest(idd);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    void processRejectRequest(final String id){
+
+        progressDialog =new ProgressDialog(FriendsScreen.this);
+        progressDialog.setMessage("Updating request ...");
+        progressDialog.show();
+        new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE+id+"&status=Rejected", EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("freinds pending res", response);
+
+                try {
+                    Toast.makeText(FriendsScreen.this,"Friend request rejected sucessfully",Toast.LENGTH_LONG).show();
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(FriendsScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
     }
 
     private void fetchFreindsScreen(){
@@ -225,7 +289,7 @@ public class FriendsScreen extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final  int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
             view = layoutInflator.inflate(R.layout.friend_list_item_with_delete, parent, false);
@@ -235,6 +299,15 @@ public class FriendsScreen extends ActionBarActivity {
             ImageView imgProfile= (ImageView)view.findViewById(R.id.imgProfile);
 
             txtName.setText(ValuesSearch.get(position).FriendUser.name);
+
+
+            imgDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showalert("Are you sure want to delete this request ?", ValuesSearch.get(position).Friend.id);
+                }
+            });
+
 
             return view;
         }

@@ -22,11 +22,10 @@
 
         <TextView
             android:textStyle="bold"
-            android:id="@+id/txtName"
+            android:id="@+id/txtUserName"
             android:padding="16dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Richa Sharma"
             android:textColor="#ffffff"
             android:textSize="18sp"
             android:layout_width="wrap_content"
@@ -43,5 +42,5 @@
         android:layout_height="match_parent">
 
         </ListView>
-
+    <include layout="@layout/empty_myrecipe"/>
 </LinearLayout>

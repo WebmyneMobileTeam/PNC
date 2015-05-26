@@ -1,7 +1,9 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.text.method.CharacterPickerDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -73,6 +76,8 @@ public class FriendsPendingRequestScreen extends ActionBarActivity {
         fetchPendingFreindRequest();
 
 
+
+
     }
 
     private void init(){
@@ -118,6 +123,102 @@ public class FriendsPendingRequestScreen extends ActionBarActivity {
 
     }
 
+
+    void showalert(String msg,final int mode,final String idd){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FriendsPendingRequestScreen.this);
+        // set title
+     //   alertDialogBuilder.setTitle(msg);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+                        if(mode==0){
+                            processAcceptRequest(idd);
+                        }else{
+                            processRejectRequest(idd);
+                        }
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    void processAcceptRequest(final String id){
+
+        progressDialog =new ProgressDialog(FriendsPendingRequestScreen.this);
+        progressDialog.setMessage("Updating request ...");
+        progressDialog.show();
+        Log.e("link->", API.FRIENDS_REQUEST_STATUS_UPDATE + id + "&status=Accepted");
+
+        new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE+id+"&status=Accepted", EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("freinds pending res", response);
+
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                  Toast.makeText(FriendsPendingRequestScreen.this,"Friend request accepted sucessfully",Toast.LENGTH_LONG).show();
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(FriendsPendingRequestScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
+    void processRejectRequest(final String id){
+
+        progressDialog =new ProgressDialog(FriendsPendingRequestScreen.this);
+        progressDialog.setMessage("Updating request ...");
+        progressDialog.show();
+        new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE+id+"&status=Rejected", EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("freinds pending res", response);
+
+                try {
+                    Toast.makeText(FriendsPendingRequestScreen.this,"Friend request rejected sucessfully",Toast.LENGTH_LONG).show();
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(FriendsPendingRequestScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
         private Context ctx;
@@ -149,7 +250,7 @@ public class FriendsPendingRequestScreen extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
             view = layoutInflator.inflate(R.layout.friend_list_item_with_select_delete, parent, false);
@@ -158,7 +259,22 @@ public class FriendsPendingRequestScreen extends ActionBarActivity {
             ImageView imgStatusAccept = (ImageView)view.findViewById(R.id.imgStatusAccept);
             ImageView imgStatusReject = (ImageView)view.findViewById(R.id.imgStatusReject);
 
-            txtName.setText(ValuesSearch.get(position).FriendUser.name);
+            txtName.setText(ValuesSearch.get(position).User.name);
+
+
+            imgStatusAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showalert("Are you sure want to accept this request ?", 0,ValuesSearch.get(position).Friend.id);
+                }
+            });
+
+            imgStatusReject.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showalert("Are you sure want to delete this request ?",1,ValuesSearch.get(position).Friend.id);
+                }
+            });
             return view;
         }
 
@@ -173,7 +289,7 @@ public class FriendsPendingRequestScreen extends ActionBarActivity {
 
             } else {
                 for ( freindsubModel obj: arraylist) {
-                    if (charText.length() != 0 && obj.FriendUser.name.toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (charText.length() != 0 && obj.User.name.toLowerCase(Locale.getDefault()).contains(charText)) {
                         ValuesSearch.add(obj);
                     }
 

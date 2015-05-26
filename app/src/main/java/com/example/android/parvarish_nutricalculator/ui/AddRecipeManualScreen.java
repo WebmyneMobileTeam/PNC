@@ -187,13 +187,18 @@ public class AddRecipeManualScreen extends ActionBarActivity {
            userJSONObject.put("baby_id",cuurentBaby.data.get(forSpinner.getSelectedItemPosition()).Baby.id);
 
            JSONArray array = new JSONArray();
+
            for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
+
                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
 
                LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
-
-               Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
+             /*  Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
                Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
+*/
+               Spinner tempspOne = (Spinner) linearTableAdded.findViewById(R.id.spOne);
+               Spinner tempspTwo = (Spinner) linearTableAdded.findViewById(R.id.spOne);
+
 
                AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
 
