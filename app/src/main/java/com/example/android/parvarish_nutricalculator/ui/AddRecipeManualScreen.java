@@ -174,6 +174,9 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         JSONObject userJSONObject = new JSONObject();
        try {
 
+           int babyspinnerPos = forSpinner.getSelectedItemPosition();
+
+
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
            userJSONObject.put("method", "");
@@ -183,7 +186,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
            userJSONObject.put("age_group", "6-8 months");
            userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
            userJSONObject.put("photo_url", "");
-           userJSONObject.put("baby_id", cuurentBaby.data.get(forSpinner.getSelectedItemPosition()-1).Baby.id);
+           userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos-1).Baby.id);
 
            JSONArray array = new JSONArray();
            for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
