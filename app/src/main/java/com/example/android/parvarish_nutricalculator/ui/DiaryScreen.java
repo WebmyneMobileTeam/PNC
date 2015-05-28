@@ -1,12 +1,14 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
@@ -23,27 +25,42 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.API;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.babyModel;
+import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
+import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBox;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DiaryScreen extends ActionBarActivity {
-
+    private ProgressDialog progressDialog,progressDialog2;
+    userModel currentUser;
+    babyModel cuurentBaby;
     ArrayList<String> spinnerList = new ArrayList<>();
+    ArrayList<String> spinnerListServings = new ArrayList<>();
     private Spinner SpBaby;
     private ListView listdiary;
-    private Button btnCalculate;
+    private Button btnCalculate,btnAddMeal;
     private Toolbar toolbar;
+    LinearLayout linearTable, linearTableAdded;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,22 +74,9 @@ public class DiaryScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-
-
-        spinnerList.add("Select Baby");
-        spinnerList.add("Add New Baby");
-        spinnerList.add("one");
-        spinnerList.add("two");
-        spinnerList.add("three");
-        spinnerList.add("four");
-
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerList);
-        SpBaby = (Spinner) findViewById(R.id.SpBaby);
-        listdiary = (ListView) findViewById(R.id.listdiary);
-
-        SpBaby.setAdapter(customSpinnerAdapter);
-
-        btnCalculate = (Button) findViewById(R.id.btnCalculate);
+        init();
+        callAsyncTaskForWebService();
+        processAddTopTable();
 
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {
@@ -83,63 +87,180 @@ public class DiaryScreen extends ActionBarActivity {
             }
         });
 
-        SpBaby.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        btnAddMeal.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) {
-                    CustomDialogBox cdbox = new CustomDialogBox(DiaryScreen.this);
-                    cdbox.show();
+            public void onClick(View v) {
+                Spinner tempServing = (Spinner) linearTable.findViewById(R.id.spServings);
+                TextView txtrecipeName = (TextView) linearTable.findViewById(R.id.txtrecipeName);
+                TextView txtDishNo = (TextView) linearTable.findViewById(R.id.txtDishNo);
 
+
+                if (tempServing.getSelectedItemPosition() == 0) {
+                    Toast.makeText(DiaryScreen.this, "Please select No. of Servings !!!", Toast.LENGTH_LONG).show();
+                } else if (txtrecipeName.getText().toString().equalsIgnoreCase("Recipe name")) {
+                    Toast.makeText(DiaryScreen.this, "Please select recipe !!!", Toast.LENGTH_LONG).show();
                 } else {
+                    processAddBottomTable();
+                    tempServing.setSelection(0);
+                    txtrecipeName.setText("Recipe name");
+                    txtDishNo.setText("Dish no.");
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
 
-        View headerView = ((LayoutInflater) DiaryScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.diary_list_header_item, null, false);
-        View footerView = ((LayoutInflater) DiaryScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.diary_list_footer_item, null, false);
-        listdiary.addHeaderView(headerView);
-        listdiary.addFooterView(footerView);
-        CustomListAdapter adp = new CustomListAdapter(DiaryScreen.this);
-        listdiary.setAdapter(adp);
+
 
     }
 
-    class CustomListAdapter extends BaseAdapter {
-        LayoutInflater layoutInflator;
-        private Context ctx;
+    void init(){
 
-        public CustomListAdapter(Context ctx) {
-            this.ctx = ctx;
+        spinnerListServings.add("Servings");
+        spinnerListServings.add("1");
+        spinnerListServings.add("2");
+        spinnerListServings.add("3");
+        spinnerListServings.add("4");
+        spinnerListServings.add("5");
+
+
+
+        linearTable = (LinearLayout) findViewById(R.id.linearTable);
+        linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
+
+        SpBaby = (Spinner) findViewById(R.id.SpBaby);
+        btnAddMeal= (Button) findViewById(R.id.btnAddMeal);
+        btnCalculate = (Button) findViewById(R.id.btnCalculate);
+
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
+        currentUser = complexPreferences.getObject("current-user", userModel.class);
+
+    }
+
+    void callAsyncTaskForWebService(){
+        processFetchBabydetails();
+        fetchMyRecipe();
+    }
+
+
+
+
+    void processAddTopTable(){
+        View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTable, false);
+        TextView txtDishNo = (TextView)view.findViewById(R.id.txtrecipeName);
+        TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
+
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
+        spServings.setAdapter(customSpinnerAdapter);
+
+        txtrecipeName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMyRecipe();
+            }
+        });
+
+        linearTable.addView(view);
+    }
+
+    void processAddBottomTable(){
+        View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTableAdded, false);
+        TextView txtDishNo = (TextView)view.findViewById(R.id.txtrecipeName);
+        TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
+        linearTableAdded.addView(view);
+    }
+
+    private void processFetchBabydetails(){
+        progressDialog = new ProgressDialog(DiaryScreen.this);
+        progressDialog.setMessage("Loading Details...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        //API.GET_BABY_DETAILS+currentUser.data.id
+        new GetPostClass(API.GET_BABY_DETAILS + currentUser.data.id, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                Log.e("baby response", response);
+                progressDialog.dismiss();
+
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    cuurentBaby = new GsonBuilder().create().fromJson(response, babyModel.class);
+                    Log.e("baby size", "" + cuurentBaby.data.size());
+
+                    addBabyInSpinner();
+
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(DiaryScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+
+    }
+
+    void addBabyInSpinner(){
+
+        int babySize = cuurentBaby.data.size();
+        if (babySize == 0) {
+            spinnerList.add("No Baby added");
+        } else {
+            spinnerList.add("Select Baby");
+            for (int i = 0; i < babySize; i++) {
+                spinnerList.add(cuurentBaby.data.get(i).Baby.baby_name);
+            }
+
         }
 
-        @Override
-        public int getCount() {
-            return 10;
-        }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerList);
+        SpBaby.setAdapter(customSpinnerAdapter);
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+    }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = convertView;
-            view = layoutInflator.inflate(R.layout.diary_list_item_view, parent, false);
-            return view;
-        }
+    private void fetchMyRecipe(){
+        progressDialog2 = new ProgressDialog(DiaryScreen.this);
+        progressDialog2.setMessage("Loading Details...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
+        new GetPostClass(API.MY_RECIPE+currentUser.data.id, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                Log.e("my recipe response", response);
+                progressDialog2.dismiss();
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    /*myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
+
+                    adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
+                    myRecipeList.setAdapter(adp);
+*/
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog2.dismiss();
+                Toast.makeText(DiaryScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
+    private void showMyRecipe(){
+
     }
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
@@ -167,6 +288,7 @@ public class DiaryScreen extends ActionBarActivity {
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(DiaryScreen.this);
             txt.setPadding(16, 16, 16, 16);
+            txt.setSingleLine(true);
             txt.setTextSize(18);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
@@ -180,6 +302,7 @@ public class DiaryScreen extends ActionBarActivity {
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(18);
+            txt.setSingleLine(true);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));
