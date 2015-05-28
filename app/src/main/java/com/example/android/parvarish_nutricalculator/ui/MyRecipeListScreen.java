@@ -1,7 +1,9 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
@@ -145,8 +148,35 @@ public class MyRecipeListScreen extends ActionBarActivity {
         btnAddRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MyRecipeListScreen.this,AddRecipeManualScreen.class);
+                Intent i = new Intent(MyRecipeListScreen.this, AddRecipeManualScreen.class);
                 startActivity(i);
+            }
+        });
+
+
+        myRecipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final CustomDialog customDialog = new CustomDialog(MyRecipeListScreen.this, "View Recipe", "Edit Recipe", android.R.style.Theme_Translucent_NoTitleBar);
+                customDialog.show();
+                customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
+                    @Override
+                    public void topButton() {
+                        customDialog.dismiss();
+                       /* Intent i = new Intent(MyRecipeListScreen.this, AddRecipeWebScreen.class);
+                        startActivity(i);*/
+                    }
+
+                    @Override
+                    public void bottomButton() {
+                        customDialog.dismiss();
+                       /* Intent i = new Intent(MyRecipeListScreen.this, AddRecipeManualScreen.class);
+                        startActivity(i);
+*/
+                    }
+                });
+
             }
         });
 
@@ -301,7 +331,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                        showDeleteAlert("Are you sure want to delete this request ?",ValuesSearch.get(position).id);
                 }
             });
 
@@ -358,6 +388,69 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
 
     }
+
+
+    void showDeleteAlert(String msg,final String recpieID){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MyRecipeListScreen.this);
+        // set title
+        //   alertDialogBuilder.setTitle(msg);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(msg)
+                .setCancelable(false)
+                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+
+                        processDeleteRecipe(recpieID);
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+
+    }
+
+    void processDeleteRecipe(final String id){
+
+        progressDialog =new ProgressDialog(MyRecipeListScreen.this);
+        progressDialog.setMessage("Deleting recipe ...");
+        progressDialog.show();
+
+        new GetPostClass(API.DELETE_RECIPE+id, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("recipe del res", response);
+
+                try {
+                    Toast.makeText(MyRecipeListScreen.this,"Recipe deleted sucessfully",Toast.LENGTH_LONG).show();
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(MyRecipeListScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call2();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

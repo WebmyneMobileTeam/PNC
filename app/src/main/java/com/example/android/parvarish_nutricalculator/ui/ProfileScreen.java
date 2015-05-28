@@ -577,6 +577,14 @@ private void processfetchProfileDetails(){
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString().trim());
 
+                    userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", userUserModel);
+                    complexPreferences.commit();
+
+
+
                  //   userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
 
                   /*  ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);

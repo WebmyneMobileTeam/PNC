@@ -28,10 +28,10 @@
             <TextView
                 android:gravity="center"
                 android:textColor="#fff"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:layout_below="@+id/imgProfile"
                 android:id="@+id/txtName"
-                android:textSize="18sp"
+                android:textSize="@dimen/big_text"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

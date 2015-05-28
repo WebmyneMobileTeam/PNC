@@ -49,6 +49,15 @@ public abstract class GetPostClass implements Interaction {
     }
 
 
+    public synchronized final GetPostClass call2() {
+
+                new OperationGet2().execute();
+
+        return this;
+
+    }
+
+
     public synchronized final GetPostClass call() {
 
         switch (type) {
@@ -154,6 +163,37 @@ public abstract class GetPostClass implements Interaction {
             }
         }
     }
+
+    public class OperationGet2 extends AsyncTask<Void, Void, Void> {
+
+        String response = null;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                response = httpGet(url);
+            } catch (Exception e) {
+                e.printStackTrace();
+                error("Error");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Log.e("Response:", response.toString());
+            if (response == null) {
+                error("Server Error");
+            } else {
+                response(response.toString());
+            }
+        }
+    }
+
+
 
 
     public class OperationPost extends AsyncTask<Void, Void, Void> {

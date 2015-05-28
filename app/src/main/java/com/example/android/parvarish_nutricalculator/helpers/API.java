@@ -56,5 +56,7 @@ public class API {
 
     public static String MY_RECIPE = BASE_URL+"users/userfeeds/?user_id=";
 
+    public static String DELETE_RECIPE = BASE_URL+"recipes/deleteRecipes?recipe_id=";
+
     public static String SANJEEV_KAPOOR_RECIPE = BASE_URL+"recipes/sanjeev";
 }
