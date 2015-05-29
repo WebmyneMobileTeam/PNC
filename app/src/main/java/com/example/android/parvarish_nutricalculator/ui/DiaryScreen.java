@@ -18,10 +18,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -60,7 +62,7 @@ public class DiaryScreen extends ActionBarActivity {
     private Button btnCalculate,btnAddMeal;
     private Toolbar toolbar;
     LinearLayout linearTable, linearTableAdded;
-
+    CharSequence[] myRecipes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,8 +151,8 @@ public class DiaryScreen extends ActionBarActivity {
 
     void processAddTopTable(){
         View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTable, false);
-        TextView txtDishNo = (TextView)view.findViewById(R.id.txtrecipeName);
-        TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
+        final TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
         Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
@@ -159,7 +161,7 @@ public class DiaryScreen extends ActionBarActivity {
         txtrecipeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMyRecipe();
+                showMyRecipe(txtrecipeName);
             }
         });
 
@@ -167,12 +169,53 @@ public class DiaryScreen extends ActionBarActivity {
     }
 
     void processAddBottomTable(){
+
         View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTableAdded, false);
-        TextView txtDishNo = (TextView)view.findViewById(R.id.txtrecipeName);
-        TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
+        final TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
         Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
+
+        int counter = linearTableAdded.getChildCount();
+        counter+=1;
+        txtDishNo.setText("Dish " + counter);
+
+        txtrecipeName.setOnTouchListener(myTextListener);
+
+
+
         linearTableAdded.addView(view);
     }
+
+    View.OnTouchListener myTextListener = new View.OnTouchListener() {
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+
+            TextView edIng;
+            for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
+                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
+                final int pos = i;
+                edIng = (TextView) mainLiner.findViewById(R.id.txtrecipeName);
+
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (edIng.getRight() - edIng.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        linearTableAdded.removeViewAt(i);
+
+                    }
+                }
+            }
+
+
+            return false;
+        }
+    };
+
+
 
     private void processFetchBabydetails(){
         progressDialog = new ProgressDialog(DiaryScreen.this);
@@ -239,11 +282,13 @@ public class DiaryScreen extends ActionBarActivity {
                 progressDialog2.dismiss();
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
-                    /*myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
+                    myrecipeModel myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
 
-                    adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
-                    myRecipeList.setAdapter(adp);
-*/
+                    myRecipes = new CharSequence[myrecipe.data.Recipe.size()];
+                    for (int i = 0; i < myrecipe.data.Recipe.size(); i++) {
+                        myRecipes[i] = myrecipe.data.Recipe.get(i).name;
+                    }
+
 
                 }catch(Exception e){
                     Log.e("exc",e.toString());
@@ -259,8 +304,18 @@ public class DiaryScreen extends ActionBarActivity {
         }.call();
     }
 
-    private void showMyRecipe(){
+    private void showMyRecipe(final TextView txtrecipeName){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DiaryScreen.this);
+        builder.setTitle("Select Recipe");
+        builder.setItems(myRecipes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                txtrecipeName.setText(myRecipes[item]);
+              //  processUpdateData();
 
+            }
+        });
+        builder.show();
     }
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
