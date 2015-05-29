@@ -27,7 +27,10 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.CalculateNutrition;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.diaryModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBox;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
@@ -37,8 +40,8 @@ import java.util.Arrays;
 
 public class DiaryResult extends ActionBarActivity {
 
-
-    private LinearLayout linearTableDetails;
+    diaryModel dm;
+    private LinearLayout linearTableDetails,linearRecipeNames;
     private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +57,43 @@ public class DiaryResult extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryResult.this, "user_pref", 0);
+        dm = complexPreferences.getObject("current-diary", diaryModel.class);
 
-        linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
+
+        init();
+        addRecipeNames();
+
+
         addTableView();
 
 
     }
+
+    void init(){
+        linearRecipeNames = (LinearLayout)findViewById(R.id.linearRecipeNames);
+        linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
+    }
+
+    void addRecipeNames(){
+
+        for(int i=0;i<dm.diarysubModel.size();i++){
+            View view = getLayoutInflater().inflate(R.layout.diaryresultitem, linearRecipeNames, false);
+            TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+            txtrecipeName.setText(dm.diarysubModel.get(i).recipeMainData.name);
+
+            linearRecipeNames.addView(view,i);
+        }
+
+    }
+
     private void addTableView() {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        CalculateNutrition cn = new CalculateNutrition();
+        cn.CalculateEnergy();
+
 
         MyTableView tableView = new MyTableView(DiaryResult.this);
         tableView.setPadding(8,8,8,8);
@@ -88,17 +119,41 @@ public class DiaryResult extends ActionBarActivity {
         tableView.addDivider();
 
         ArrayList<String> values2 = new ArrayList<>();
-        values2.add("Energy");
+        values2.add("Energy (kcal)");
         values2.add("174");
-        values2.add("6.733(Approx)");
+        values2.add("672(Approx)");
         values2.add("97%");
 
+        ArrayList<String> values3 = new ArrayList<>();
+        values3.add("Protein (gm)");
+        values3.add("14.9");
+        values3.add("14.9 (Approx)");
+        values3.add("97%");
+
+        ArrayList<String> values4 = new ArrayList<>();
+        values4.add("Fat (gm)");
+        values4.add("174");
+        values4.add("9.8");
+        values4.add("97%");
+
+        ArrayList<String> values5 = new ArrayList<>();
+        values5.add("Calcium (mg)");
+        values5.add("174");
+        values5.add("500");
+        values5.add("97%");
+
+        ArrayList<String> values6 = new ArrayList<>();
+        values6.add("Iron (mg)");
+        values6.add("174");
+        values6.add("5");
+        values6.add("97%");
+
         tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
+        tableView.addRow(values3, "#ffffff");
+        tableView.addRow(values4, "#ffffff");
+        tableView.addRow(values5, "#ffffff");
+        tableView.addRow(values6, "#ffffff");
+
 
     }
 
