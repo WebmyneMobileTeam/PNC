@@ -242,28 +242,32 @@ public class DiaryScreen extends ActionBarActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
         diaryModel dm = complexPreferences.getObject("current-diary", diaryModel.class);
 
-        if(dm.diarysubModel.size()!=0){
-            for(int i=0;i<dm.diarysubModel.size();i++ ){
+        try {
+            if (dm.diarysubModel.size() != 0) {
+                for (int i = 0; i < dm.diarysubModel.size(); i++) {
 
-                View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTableAdded, false);
+                    View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTableAdded, false);
 
-                TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
-                final TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
-                Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
+                    TextView txtDishNo = (TextView) view.findViewById(R.id.txtDishNo);
+                    final TextView txtrecipeName = (TextView) view.findViewById(R.id.txtrecipeName);
+                    Spinner spServings = (Spinner) view.findViewById(R.id.spServings);
 
-                CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
-                spServings.setAdapter(customSpinnerAdapter);
+                    CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
+                    spServings.setAdapter(customSpinnerAdapter);
 
-                Log.e("rec id - ", "" + dm.diarysubModel.get(i).recipeID);
+                    Log.e("rec id - ", "" + dm.diarysubModel.get(i).recipeID);
 
-                spServings.setSelection(dm.diarysubModel.get(i).noServings);
-                txtDishNo.setText("Dish " + (i + 1));
-                txtrecipeName.setFocusable(false);
+                    spServings.setSelection(dm.diarysubModel.get(i).noServings);
+                    txtDishNo.setText("Dish " + (i + 1));
+                    txtrecipeName.setFocusable(false);
 
-                txtrecipeName.setText(dm.diarysubModel.get(i).recipeMainData.name);
-                txtrecipeName.setOnTouchListener(myTextListener);
-                linearTableAdded.addView(view,i);
+                    txtrecipeName.setText(dm.diarysubModel.get(i).recipeMainData.name);
+                    txtrecipeName.setOnTouchListener(myTextListener);
+                    linearTableAdded.addView(view, i);
+                }
             }
+        }catch (Exception e){
+            Log.e("exc in diary",e.toString());
         }
 
     }

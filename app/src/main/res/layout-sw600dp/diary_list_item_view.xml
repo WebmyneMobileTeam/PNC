@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.ProfileScreen">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtDishNo"
+            android:singleLine="true"
+            android:layout_margin="4dp"
+            android:textSize="@dimen/normal_text"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:background="#C5C5C5"
+            android:text="Dish no."
+            android:textColor="#000000"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+       <Spinner
+           android:layout_weight="1"
+           android:id="@+id/spServings"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"></Spinner>
+
+    </LinearLayout>
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/txtrecipeName"
+        android:drawableRight="@drawable/ic_icon_delete"
+        android:singleLine="true"
+        android:layout_margin="4dp"
+        android:textSize="@dimen/normal_text"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:background="@color/color_button_darkred"
+        android:padding="10dp"
+        android:text="Recipe name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+</LinearLayout>

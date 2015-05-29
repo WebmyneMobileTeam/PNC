@@ -58,5 +58,7 @@ public class API {
 
     public static String DELETE_RECIPE = BASE_URL+"recipes/deleteRecipes?recipe_id=";
 
+    public static String VIEW_RECIPE = BASE_URL+"recipes/listing?recipe_id=";
+
     public static String SANJEEV_KAPOOR_RECIPE = BASE_URL+"recipes/sanjeev";
 }

@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,24 +26,36 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.CalculateNutrition;
+import com.example.android.parvarish_nutricalculator.helpers.EnumType;
+import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.diaryModel;
+import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
+import com.example.android.parvarish_nutricalculator.model.recipeData;
+import com.example.android.parvarish_nutricalculator.model.recipeModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBox;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DiaryResult extends ActionBarActivity {
-
+    ProgressDialog progressDialog,progressDialog2;
     diaryModel dm;
     private LinearLayout linearTableDetails,linearRecipeNames;
     private Toolbar toolbar;
+    recipeModel myrecipe;
+    glossaryDescription ingdredient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +76,7 @@ public class DiaryResult extends ActionBarActivity {
 
         init();
         addRecipeNames();
-
-
-        addTableView();
-
+        callAsyncTaskForWebService();
 
     }
 
@@ -75,14 +85,24 @@ public class DiaryResult extends ActionBarActivity {
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
     }
 
+    void callAsyncTaskForWebService(){
+        for(int i=0;i<dm.diarysubModel.size();i++){
+                fetchRecipe(dm.diarysubModel.get(i).recipeID);
+        }
+
+        fetchIngredientsdetails();
+
+    }
+
     void addRecipeNames(){
 
         for(int i=0;i<dm.diarysubModel.size();i++){
             View view = getLayoutInflater().inflate(R.layout.diaryresultitem, linearRecipeNames, false);
+
             TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
             txtrecipeName.setText(dm.diarysubModel.get(i).recipeMainData.name);
 
-            linearRecipeNames.addView(view,i);
+            linearRecipeNames.addView(view, i);
         }
 
     }
@@ -91,9 +111,7 @@ public class DiaryResult extends ActionBarActivity {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        CalculateNutrition cn = new CalculateNutrition();
-        cn.CalculateEnergy();
-
+      //  CalcualateNutritionResult();
 
         MyTableView tableView = new MyTableView(DiaryResult.this);
         tableView.setPadding(8,8,8,8);
@@ -156,6 +174,104 @@ public class DiaryResult extends ActionBarActivity {
 
 
     }
+
+    void CalcualateNutritionResult(){
+
+        CalculateNutrition cn = new CalculateNutrition();
+
+        for(int i=0;i<dm.diarysubModel.size();i++){
+           // cn.CalculateEnergy(myrecipe.data.get(i).RecipeIngredient.get(0).quantity,myrecipe.data.get(i).RecipeIngredient.get(0).unit);
+        }
+        String energy="";String protein="";String fat="";String calcium="";String iron="";
+
+        for(int a=0;a<ingdredient.data.size();a++){
+            for(int b=0;b<ingdredient.data.get(a).Ingredient.size();b++){
+                for(int i=0;i<myrecipe.data.size();i++){
+                    for(int j=0;j<myrecipe.data.get(i).RecipeIngredient.size();j++) {
+                        if (myrecipe.data.get(i).RecipeIngredient.get(j).ingredient_id.equalsIgnoreCase(ingdredient.data.get(a).Ingredient.get(b).id)) {
+                            energy = ingdredient.data.get(a).Ingredient.get(b).energy;
+                            protein = ingdredient.data.get(a).Ingredient.get(b).protein;
+                            fat = ingdredient.data.get(a).Ingredient.get(b).fat;
+                            calcium = ingdredient.data.get(a).Ingredient.get(b).calcium;
+                            iron = ingdredient.data.get(a).Ingredient.get(b).iron;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        Log.e("energy - ",energy);
+        Log.e("protein - ",protein);
+        Log.e("fat - ",fat);
+        Log.e("calcium - ",calcium);
+        Log.e("iorn - ",iron);
+
+    }
+
+    private void fetchIngredientsdetails(){
+        progressDialog = new ProgressDialog(DiaryResult.this);
+        progressDialog.setMessage("Loading Details...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        new GetPostClass(API.GLOSSARY_INGREDIENTS, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                Log.e("ingridents response", response);
+                progressDialog.dismiss();
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
+                    ingdredient = new GsonBuilder().create().fromJson(response, glossaryDescription.class);
+                    addTableView();
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(DiaryResult.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
+    private void fetchRecipe(String recipeID){
+        progressDialog2 = new ProgressDialog(DiaryResult.this);
+        progressDialog2.setMessage("Loading Details...");
+        progressDialog2.setCancelable(false);
+        progressDialog2.show();
+        new GetPostClass(API.VIEW_RECIPE+recipeID, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                Log.e("view recipe response", response);
+                progressDialog2.dismiss();
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
+                    myrecipe = new GsonBuilder().create().fromJson(response, recipeModel.class);
+/*
+                    myRecipes = new CharSequence[myrecipe.data.Recipe.size()];
+                    for (int i = 0; i < myrecipe.data.Recipe.size(); i++) {
+                        myRecipes[i] = myrecipe.data.Recipe.get(i).name;
+                    }*/
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog2.dismiss();
+                Toast.makeText(DiaryResult.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

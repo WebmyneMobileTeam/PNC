@@ -1,0 +1,148 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    xmlns:drakeet="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.android.parvarish_nutricalculator.ui.ProfileScreen">
+
+    <include layout="@layout/app_bar"></include>
+
+    <ScrollView
+        android:id="@+id/linearSearch"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/btnCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:background="@drawable/leftred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/header_text"
+                android:text="MY DIARY" />
+
+            <ImageView
+                android:background="@drawable/rightred_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:background="#d1d1d1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp" />
+
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginRight="16dp"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:id="@+id/SpBaby"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:background="@drawable/spinner_bg_white"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:scaleType="fitXY"
+
+                android:gravity="center_vertical"
+                android:layout_gravity="center|center_vertical"
+                android:background="@drawable/reset"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:textSize="@dimen/normal_text"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Enter all food items in your baby's diet today"
+            android:textColor="#000000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+         <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/linearTable"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+        <Button
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="#fff"
+            android:layout_margin="16dp"
+            android:id="@+id/btnAddMeal"
+            android:text="Add Meals"
+            style="@style/btn_addBaby" />
+
+        <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/linearTableAdded"
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:padding="8dp"
+        android:id="@+id/btnCalculate"
+        android:text="Calculate Today's Nutrition Score"
+        android:layout_alignParentBottom="true"
+        style="@style/full_button_red" />
+</RelativeLayout>
