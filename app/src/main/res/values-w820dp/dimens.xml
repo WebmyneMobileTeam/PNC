@@ -11,4 +11,8 @@
     <dimen name="dimens_text2">24dp</dimen>
     <dimen name="spinner_text">18sp</dimen>
     <dimen name="editext_ing">20sp</dimen>
+
+
+    <dimen name="nutrition_text">170dp</dimen>
+    <dimen name="nutrition_image">100dp</dimen>
 </resources>

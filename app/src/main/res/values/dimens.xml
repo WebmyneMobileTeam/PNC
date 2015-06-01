@@ -50,4 +50,6 @@
 
     <dimen name="cancel_height">20dp</dimen>
     <dimen name="cancel_width">20dp</dimen>
+    <dimen name="nutrition_text">100dp</dimen>
+    <dimen name="nutrition_image">50dp</dimen>
 </resources>

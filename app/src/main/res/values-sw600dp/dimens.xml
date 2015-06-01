@@ -37,4 +37,8 @@
 
     <dimen name="spinner_text">14sp</dimen>
     <dimen name="editext_ing">18sp</dimen>
+
+
+    <dimen name="nutrition_text">150dp</dimen>
+    <dimen name="nutrition_image">80dp</dimen>
 </resources>

@@ -6,6 +6,9 @@ package com.example.android.parvarish_nutricalculator.helpers;
 public class API {
 
 
+
+    public static String BASE_URL_IMAGE_FETCH = "http://www.hackaholicit.com/parvarish/files/profile/";
+
     // Basic url for all api link
     public static String BASE_URL = "http://www.hackaholicit.com/parvarish/manager/";
 

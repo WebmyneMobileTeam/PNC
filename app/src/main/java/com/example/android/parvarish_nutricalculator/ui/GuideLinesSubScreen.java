@@ -22,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.AdvancedSpannableString;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.NutritionData;
@@ -167,10 +169,19 @@ public class GuideLinesSubScreen extends ActionBarActivity {
             view = layoutInflator.inflate(R.layout.nutrition_grid_item_view, parent, false);
 
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             TextView txtSubtitle= (TextView) view.findViewById(R.id.txtSubtitle);
-            txtSubtitle.setText(nutritionData.get(position).nutritional_guideline_id);
-            imageView.setImageResource(R.mipmap.ic_launcher);
+
+
+            txtSubtitle.setText(nutritionData.get(position).name);
+
+           // Log.e("id",nutritionData.get(position).nutritional_guideline_id);
+            Log.e("photi url",nutritionData.get(position).photo_url);
+
+            Glide.with(GuideLinesSubScreen.this)
+                    .load(API.BASE_URL_IMAGE_FETCH+nutritionData.get(position).photo_url)
+                    .into(imageView);
+            //imageView.setImageResource(R.mipmap.ic_launcher);
 
             return view;
 

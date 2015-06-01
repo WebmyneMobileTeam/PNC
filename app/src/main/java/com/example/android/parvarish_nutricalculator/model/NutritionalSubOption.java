@@ -9,12 +9,16 @@ public class NutritionalSubOption {
 
     @SerializedName("id")
     public String id;
-    @SerializedName("name")
-    public String nutritional_guideline_id;
+
     @SerializedName("nutritional_guideline_id")
-    public String photo_url;
+    public String nutritional_guideline_id;
+
     @SerializedName("photo_url")
+    public String photo_url;
+
+    @SerializedName("name")
     public String name;
+
     @SerializedName("created")
     public String created;
     @SerializedName("modified")
