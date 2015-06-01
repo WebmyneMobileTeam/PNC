@@ -32,6 +32,8 @@ import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.regionalmainModel;
+import com.example.android.parvarish_nutricalculator.model.regionalsubModel;
 import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
@@ -43,14 +45,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClickListener {
-    private ProgressDialog progressDialog;
-    ArrayList<String> spinnerList = new ArrayList<>();
-    private Spinner SpRecipie;
+    private ProgressDialog progressDialog,progressDialog2;
+
+    private Spinner SpRegionalRecipie;
     private Button btnImport;
     private Toolbar toolbar;
     ImageView img1, img2, img3, img4;
     userModel currentUser;
     sanjeevmainModel sajneevObj;
+    regionalmainModel regionalObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,22 +67,14 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+        SpRegionalRecipie = (Spinner) findViewById(R.id.SpRegionalRecipie);
 
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeWebScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
-        fetchSanjeevKapoorRecpiesDetails();
+        callWebServices();
 
-        spinnerList.add("Select Baby");
-        spinnerList.add("one");
-        spinnerList.add("two");
-        spinnerList.add("three");
-        spinnerList.add("four");
-
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(AddRecipeWebScreen.this, spinnerList);
-        SpRecipie = (Spinner) findViewById(R.id.SpRecipie);
-        SpRecipie.setAdapter(customSpinnerAdapter);
 
         img1 = (ImageView) findViewById(R.id.img1);
         img2 = (ImageView) findViewById(R.id.img2);
@@ -99,6 +94,58 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
             }
         });
     }
+
+    void callWebServices(){
+        fetchSanjeevKapoorRecpiesDetails();
+        fetchRegionalWebService();
+
+    }
+
+
+
+    void fetchRegionalWebService(){
+
+        progressDialog2 =new ProgressDialog(AddRecipeWebScreen.this);
+        progressDialog2.setMessage("Loading ...");
+        progressDialog2.show();
+
+        new GetPostClass(API.REGIONAL_RECIPE, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog2.dismiss();
+                Log.e("regional response", response);
+
+                try {
+
+                    regionalObj = new GsonBuilder().create().fromJson(response, regionalmainModel.class);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeWebScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("regional-recipe", regionalObj);
+                    complexPreferences.commit();
+
+                   ArrayList<String> spinnerList =  new ArrayList<String>();
+                    for(int i=0;i<regionalObj.data.size();i++){
+                        spinnerList.add(regionalObj.data.get(i).Recipe.name);
+                    }
+
+                    CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(AddRecipeWebScreen.this, spinnerList);
+                    SpRegionalRecipie.setAdapter(customSpinnerAdapter);
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog2.dismiss();
+                Toast.makeText(AddRecipeWebScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
+    }
+
+
 
     void fetchSanjeevKapoorRecpiesDetails(){
 

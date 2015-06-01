@@ -155,6 +155,7 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
             View view = convertView;
             view = layoutInflator.inflate(R.layout.grid_item_view, parent, false);
             TextView txtTitle = (TextView)view.findViewById(R.id.txtTitle);
+
             ImageView imageView = (ImageView)view.findViewById(R.id.image);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 

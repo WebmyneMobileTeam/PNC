@@ -1,10 +1,13 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ListPopupWindow;
@@ -17,8 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,12 +37,16 @@ import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.NutritionData;
 import com.example.android.parvarish_nutricalculator.model.NutritionalSubOption;
 import com.facebook.login.LoginManager;
+import com.vipul.hp_hp.library.Layout_to_Image;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GuideLinesSubScreen extends ActionBarActivity {
 
+    private Button btnSaveImageNutritionGuidelines;
     private GridView imageList;
     private Toolbar toolbar;
     private NutritionData nutritionData;
@@ -57,6 +68,7 @@ public class GuideLinesSubScreen extends ActionBarActivity {
         Bundle extra = getIntent().getExtras();
         selectedTopic = extra.getInt("who");
         txtGuideLineSubPageHeading = (TextView) findViewById(R.id.txtGuideLineSubPageHeading);
+        btnSaveImageNutritionGuidelines = (Button)findViewById(R.id.btnSaveImageNutritionGuidelines);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -72,6 +84,52 @@ public class GuideLinesSubScreen extends ActionBarActivity {
 
         CustomImageAdapter adp = new CustomImageAdapter(GuideLinesSubScreen.this,nutritionData.nutritionalSubOptionArrayList);
         imageList.setAdapter(adp);
+
+
+
+        btnSaveImageNutritionGuidelines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processSaveImageTOSDCard();
+            }
+        });
+    }
+
+    private void processSaveImageTOSDCard(){
+
+        RelativeLayout r1 = (RelativeLayout)findViewById(R.id.mainRelative);
+        View v1 = r1.getRootView();
+
+
+        v1.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v1.getDrawingCache());
+        v1.setDrawingCacheEnabled(false);
+
+
+// storing the image to sd card
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        // File directory = cw.getDir("Krishna", Context.MODE_PRIVATE);
+        // Create imageDir
+        String root = Environment.getExternalStorageDirectory().toString();
+        String filepath = root+"/Parvarish App/";
+
+
+        File directory = new File(filepath);
+        directory.mkdirs();
+        File mypath=new File(directory,"Nutrition Guidelines2"+".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Toast.makeText(GuideLinesSubScreen.this,"Image saved to SD card.",Toast.LENGTH_LONG).show();
+            fos.close();
+        } catch (Exception e) {
+            Log.e("exc",toString());
+            e.printStackTrace();
+        }
+
 
 
     }

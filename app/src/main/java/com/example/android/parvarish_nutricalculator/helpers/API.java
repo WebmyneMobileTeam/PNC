@@ -64,4 +64,6 @@ public class API {
     public static String VIEW_RECIPE = BASE_URL+"recipes/listing?recipe_id=";
 
     public static String SANJEEV_KAPOOR_RECIPE = BASE_URL+"recipes/sanjeev";
+
+    public static String REGIONAL_RECIPE = BASE_URL+"recipes/regional";
 }

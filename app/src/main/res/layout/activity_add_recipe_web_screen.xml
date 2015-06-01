@@ -59,6 +59,7 @@
                 android:background="#ccc" />
 
             <TextView
+                android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Enter the URL of any recipe above, or browse recipes from some popular baby food recipe sites listed below."
                 android:layout_width="match_parent"
@@ -115,13 +116,14 @@
             </LinearLayout>
 
             <TextView
+                android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Calculate a regional baby-food recipe."
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <Spinner
-                android:id="@+id/SpRecipie"
+                android:id="@+id/SpRegionalRecipie"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_marginTop="16dp"
@@ -164,6 +166,7 @@
             </LinearLayout>
 
             <TextView
+                android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Calculate a popular Parvarish Sanjeev Kapoor recipe."
                 android:layout_width="match_parent"
