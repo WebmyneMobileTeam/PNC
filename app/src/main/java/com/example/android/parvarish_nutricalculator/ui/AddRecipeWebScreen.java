@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -54,6 +55,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
     userModel currentUser;
     sanjeevmainModel sajneevObj;
     regionalmainModel regionalObj;
+    boolean importFromRegional;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +91,17 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         btnImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(AddRecipeWebScreen.this, ImportRecipeFromWebScreen.class);
-                startActivity(i);
+
+                if(importFromRegional){
+                    Intent i = new Intent(AddRecipeWebScreen.this, AddRegionalManualScreen.class);
+                    i.putExtra("pos",SpRegionalRecipie.getSelectedItemPosition());
+                    startActivity(i);
+                }else{
+                    Intent i = new Intent(AddRecipeWebScreen.this, ImportRecipeFromWebScreen.class);
+                    startActivity(i);
+                }
+
+
             }
         });
     }
@@ -124,12 +135,30 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
                     complexPreferences.commit();
 
                    ArrayList<String> spinnerList =  new ArrayList<String>();
+                    spinnerList.add(0,"Select recipe");
                     for(int i=0;i<regionalObj.data.size();i++){
                         spinnerList.add(regionalObj.data.get(i).Recipe.name);
                     }
 
+
                     CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(AddRecipeWebScreen.this, spinnerList);
                     SpRegionalRecipie.setAdapter(customSpinnerAdapter);
+
+                    SpRegionalRecipie.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                           if(position==0)
+                               importFromRegional = false;
+                            else
+                               importFromRegional = true;
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
 
                 }catch(Exception e){
                     Log.e("exc",e.toString());

@@ -31,6 +31,11 @@
             </intent-filter>
 
         </activity>
+
+        <activity
+            android:name=".ui.AddRegionalManualScreen"
+            android:label="@string/title_activity_login_screen" >
+        </activity>
         <activity
             android:name=".ui.LoginScreen"
             android:label="@string/title_activity_login_screen" >

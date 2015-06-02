@@ -97,6 +97,8 @@ public class WalkThorugh extends FragmentActivity {
 
       //  indicator.setStrokeColor(Color.parseColor("#FF0000"));
 
+
+
     }
 
     private int getItem(int i){

@@ -86,9 +86,6 @@ public class DiaryResult extends ActionBarActivity {
     }
 
     void callAsyncTaskForWebService(){
-        for(int i=0;i<dm.diarysubModel.size();i++){
-                fetchRecipe(dm.diarysubModel.get(i).recipeID);
-        }
 
         fetchIngredientsdetails();
 
@@ -184,7 +181,14 @@ public class DiaryResult extends ActionBarActivity {
         }
         String energy="";String protein="";String fat="";String calcium="";String iron="";
 
-        for(int a=0;a<ingdredient.data.size();a++){
+
+      /*  for(int i=0;i<dm.diarysubModel.size();i++){
+            for(int j=0;j<dm.diarysubModel.get(i).recipeMainData.)
+        }
+*/
+
+
+      /*  for(int a=0;a<ingdredient.data.size();a++){
             for(int b=0;b<ingdredient.data.get(a).Ingredient.size();b++){
                 for(int i=0;i<myrecipe.data.size();i++){
                     for(int j=0;j<myrecipe.data.get(i).RecipeIngredient.size();j++) {
@@ -199,7 +203,7 @@ public class DiaryResult extends ActionBarActivity {
 
                 }
             }
-        }
+        }*/
 
         Log.e("energy - ",energy);
         Log.e("protein - ",protein);
@@ -238,39 +242,7 @@ public class DiaryResult extends ActionBarActivity {
         }.call();
     }
 
-    private void fetchRecipe(String recipeID){
-        progressDialog2 = new ProgressDialog(DiaryResult.this);
-        progressDialog2.setMessage("Loading Details...");
-        progressDialog2.setCancelable(false);
-        progressDialog2.show();
-        new GetPostClass(API.VIEW_RECIPE+recipeID, EnumType.GET) {
-            @Override
-            public void response(String response) {
-                Log.e("view recipe response", response);
-                progressDialog2.dismiss();
-                try {
-                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
-                    myrecipe = new GsonBuilder().create().fromJson(response, recipeModel.class);
-/*
-                    myRecipes = new CharSequence[myrecipe.data.Recipe.size()];
-                    for (int i = 0; i < myrecipe.data.Recipe.size(); i++) {
-                        myRecipes[i] = myrecipe.data.Recipe.get(i).name;
-                    }*/
 
-
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
-                }
-
-            }
-
-            @Override
-            public void error(String error) {
-                progressDialog2.dismiss();
-                Toast.makeText(DiaryResult.this, error, Toast.LENGTH_SHORT).show();
-            }
-        }.call();
-    }
 
 
     @Override

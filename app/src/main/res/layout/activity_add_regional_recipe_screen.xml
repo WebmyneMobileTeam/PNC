@@ -35,7 +35,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
-                    android:text="ENTER RECIPE"
+                    android:text="ENTER REGIONAL RECIPE"
                     android:textColor="#000000"
                     android:textSize="@dimen/big_text"
                     android:layout_width="wrap_content"
@@ -94,8 +94,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                     <ImageView
-
-                        android:src="@drawable/circle_with_camera"
+                        android:id="@+id/imgRecipe"
+                        android:background="@drawable/circle_with_camera"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </FrameLayout>
@@ -116,9 +116,7 @@
                     <Spinner
                         android:id="@+id/forSpinner"
                         android:gravity="center"
-
                         android:layout_width="wrap_content"
-
                         android:layout_margin="16dp"
 
                         android:textSize="18sp"
@@ -131,7 +129,7 @@
 
                 </LinearLayout>
                 <EditText
-
+                    android:singleLine="true"
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -198,7 +196,6 @@
                 android:textColorHint="#000"
                 android:layout_margin="16dp"
                 android:background="#ccc"
-                android:lines="6"
                 android:gravity="top|left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

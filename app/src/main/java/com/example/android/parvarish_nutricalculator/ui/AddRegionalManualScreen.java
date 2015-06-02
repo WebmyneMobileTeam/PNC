@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.os.StrictMode;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,8 +26,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -34,40 +33,37 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
-import com.example.android.parvarish_nutricalculator.helpers.IngredientAdapter;
 import com.example.android.parvarish_nutricalculator.helpers.JSONPost;
 import com.example.android.parvarish_nutricalculator.helpers.POSTResponseListener;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.regionalmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public class AddRecipeManualScreen extends ActionBarActivity {
+public class AddRegionalManualScreen extends ActionBarActivity {
     private ProgressDialog progressDialog,progressDialog2;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner forSpinner;
     private Spinner spOne, spTwo;
     AutoCompleteTextView etIngname;
+    ImageView imgRecipe;
     LinearLayout linearTable, linearTableAdded;
     private Toolbar toolbar;
     userModel currentUser;
@@ -79,10 +75,12 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     EditText etRecpieName,etIngDetails,etNoofServings;
     HashMap<String,String> ingHashMap;
     ArrayList<String> IngredientNames;
+    int Objpos;
+    regionalmainModel regionalObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_recipe_manual_screen);
+        setContentView(R.layout.activity_add_regional_recipe_screen);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -94,6 +92,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         init();
         processfetchBabyDetails();
+
 
 
         btnAddIng.setOnClickListener(new View.OnClickListener() {
@@ -114,9 +113,9 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
 
                 if (spOne.getSelectedItemPosition() == 0 || spTwo.getSelectedItemPosition() == 0) {
-                    Toast.makeText(AddRecipeManualScreen.this, "Please select Quantity and Unit first !!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRegionalManualScreen.this, "Please select Quantity and Unit first !!!", Toast.LENGTH_LONG).show();
                 } else if (nameIng.toString().trim().length() == 0) {
-                    Toast.makeText(AddRecipeManualScreen.this, "Please enter ingredient name !!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRegionalManualScreen.this, "Please enter ingredient name !!!", Toast.LENGTH_LONG).show();
                 } else {
                     posi = tempspOne.getSelectedItemPosition();
                     posj = tempspTwo.getSelectedItemPosition();
@@ -139,13 +138,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
                 int totalIng = linearTableAdded.getChildCount();
 
                 if (etRecpieName.toString().trim().length() == 0) {
-                    Toast.makeText(AddRecipeManualScreen.this, "Please enter Recipe name !!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRegionalManualScreen.this, "Please enter Recipe name !!!", Toast.LENGTH_LONG).show();
                 }else if(forSpinner.getSelectedItemPosition()==0){
-                   Toast.makeText(AddRecipeManualScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
+                   Toast.makeText(AddRegionalManualScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
                }else if(etNoofServings.toString().trim().length() == 0){
-                    Toast.makeText(AddRecipeManualScreen.this, "Please enter No. of servings !!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRegionalManualScreen.this, "Please enter No. of servings !!!", Toast.LENGTH_LONG).show();
                 }else if(totalIng == 0){
-                    Toast.makeText(AddRecipeManualScreen.this, "Please add Ingredients !!!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddRegionalManualScreen.this, "Please add Ingredients !!!", Toast.LENGTH_LONG).show();
                 }else {
                     processSubmitRecipeToServer();
                 }
@@ -156,6 +155,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
 
     private void init(){
+
+        imgRecipe = (ImageView)findViewById(R.id.imgRecipe);
         etNoofServings = (EditText)findViewById(R.id.etNoofServings);
         etIngDetails = (EditText)findViewById(R.id.etIngDetails);
         forSpinner = (Spinner) findViewById(R.id.forSpinner);
@@ -165,9 +166,77 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
         btnAddIng = (Button) findViewById(R.id.btnAddIng);
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeManualScreen.this, "user_pref", 0);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRegionalManualScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
+        Objpos = getIntent().getIntExtra("pos", 0);
+        Objpos -=1; // for setting up with 0
+        ComplexPreferences complexPreferences1 = ComplexPreferences.getComplexPreferences(AddRegionalManualScreen.this, "user_pref", 0);
+        regionalObj = complexPreferences1.getObject("regional-recipe", regionalmainModel.class);
+
+        fillupRecipeDetails();
+    }
+
+
+    private void fillupRecipeDetails(){
+
+        Glide.with(AddRegionalManualScreen.this).load(API.BASE_URL_IMAGE_FETCH + regionalObj.data.get(Objpos).Recipe.photo_url)
+                .into(imgRecipe);
+
+        etRecpieName.setText(regionalObj.data.get(Objpos).Recipe.name);
+        etNoofServings.setText(regionalObj.data.get(Objpos).Recipe.no_of_servings);
+        etIngDetails.setText(Html.fromHtml(regionalObj.data.get(Objpos).Recipe.method).toString());
+
+        for(int i=0;i<regionalObj.data.get(Objpos).RecipeIngredient.size();i++){
+            processAddIngFromRegional(regionalObj.data.get(Objpos).RecipeIngredient.get(i).ingredient_id,regionalObj.data.get(Objpos).RecipeIngredient.get(i).unit,regionalObj.data.get(Objpos).RecipeIngredient.get(i).quantity);
+        }
+
+
+    }
+
+    private void processAddIngFromRegional(String ingName,String unit,String qty){
+        View view = getLayoutInflater().inflate(R.layout.item_recipe_manual_screen, linearTableAdded, false);
+
+        spOne = (Spinner) view.findViewById(R.id.spOne);
+        spTwo = (Spinner) view.findViewById(R.id.spTwo);
+
+        AutoCompleteTextView etIngredient = (AutoCompleteTextView) view.findViewById(R.id.etIngredient);
+
+        ArrayList<String> firstColumn = new ArrayList<String>();
+        ArrayList<String> secondColumn = new ArrayList<String>();
+
+       /* firstColumn.add("Quantity");
+        firstColumn.add("1/4");
+        firstColumn.add("1/2");
+        for (int i = 1; i <= 10; i++)
+            firstColumn.add("" + i);*/
+
+        /*secondColumn.add("Unit");
+        secondColumn.add("ML");
+        secondColumn.add("GM");
+        secondColumn.add("Pinch");
+        secondColumn.add("Handful");
+        secondColumn.add("Cup");
+        secondColumn.add("Teaspoon");
+        secondColumn.add("Tablespoon");*/
+
+        firstColumn.add(qty);
+        secondColumn.add(unit);
+
+        CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(AddRegionalManualScreen.this, firstColumn);
+        spOne.setAdapter(spinnerAdapterFirst);
+        spOne.setSelection(posi);
+
+        CustomSpinnerAdapter spinnerAdapterSecond = new CustomSpinnerAdapter(AddRegionalManualScreen.this, secondColumn);
+        spTwo.setAdapter(spinnerAdapterSecond);
+        spTwo.setSelection(posj);
+
+        etIngredient.setText(ingName);
+        etIngredient.setFocusable(false);
+        etIngredient.setOnTouchListener(myAutoEditTextListener);
+
+
+        linearTableAdded.addView(view);
     }
 
     private void processSubmitRecipeToServer(){
@@ -179,8 +248,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
-           userJSONObject.put("method", etIngDetails.getText().toString().trim());
-           userJSONObject.put("ingredients_details", "");
+           userJSONObject.put("method", "");
+           userJSONObject.put("ingredients_details", etIngDetails.getText().toString().trim());
            userJSONObject.put("sanjeev_kapoor_receipe", "No");
            userJSONObject.put("regional_food_receipe", "No");
            userJSONObject.put("age_group", "6-8 months");
@@ -221,13 +290,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
            userJSONObject.put("recipe_ingredient", array);
 
             JSONPost json = new JSONPost();
-           json.POST(AddRecipeManualScreen.this, API.ADD_RECIPE, userJSONObject.toString(),"Saving Recipe...");
+           json.POST(AddRegionalManualScreen.this, API.ADD_RECIPE, userJSONObject.toString(),"Saving Recipe...");
            json.setPostResponseListener(new POSTResponseListener() {
                @Override
                public String onPost(String msg) {
 
                    Log.e("add recipe", "onPost response: " + msg);
-                    Toast.makeText(AddRecipeManualScreen.this,"Recipe added Succesfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRegionalManualScreen.this,"Recipe added Succesfully",Toast.LENGTH_SHORT).show();
                     finish();
 
                    return null;
@@ -277,11 +346,11 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         secondColumn.add("Teaspoon");
         secondColumn.add("Tablespoon");
 
-        CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(AddRecipeManualScreen.this, firstColumn);
+        CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(AddRegionalManualScreen.this, firstColumn);
         spOne.setAdapter(spinnerAdapterFirst);
         spOne.setSelection(posi);
 
-        CustomSpinnerAdapter spinnerAdapterSecond = new CustomSpinnerAdapter(AddRecipeManualScreen.this, secondColumn);
+        CustomSpinnerAdapter spinnerAdapterSecond = new CustomSpinnerAdapter(AddRegionalManualScreen.this, secondColumn);
         spTwo.setAdapter(spinnerAdapterSecond);
         spTwo.setSelection(posj);
 
@@ -327,9 +396,10 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     };
 
 
+
     private void processfetchBabyDetails() {
 
-        progressDialog = new ProgressDialog(AddRecipeManualScreen.this);
+        progressDialog = new ProgressDialog(AddRegionalManualScreen.this);
         progressDialog.setMessage("Loading Details...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -358,14 +428,14 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(AddRecipeManualScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRegionalManualScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
 
     }
     private void fetchGlossaryList() {
-        progressDialog = new ProgressDialog(AddRecipeManualScreen.this);
+        progressDialog = new ProgressDialog(AddRegionalManualScreen.this);
         progressDialog.setMessage("Loading ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -392,12 +462,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
                 addBabyAdapter();
 
+
             }
 
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(AddRecipeManualScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRegionalManualScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
@@ -419,16 +490,10 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         }
 
 
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(AddRecipeManualScreen.this, spinnerList);
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(AddRegionalManualScreen.this, spinnerList);
 
         forSpinner.setAdapter(customSpinnerAdapter);
 
-
-
-    /*    Set<String> keys = mapp.keySet();
-        List<String> siteIdList = new ArrayList<>(keys);
-
-*/
         IngredientNames = new ArrayList<String>();
 
         for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
@@ -471,7 +536,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         secondColumn.add("Teaspoon");
         secondColumn.add("Tablespoon");
 
-        CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(AddRecipeManualScreen.this, firstColumn);
+        CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(AddRegionalManualScreen.this, firstColumn);
         spOne.setAdapter(spinnerAdapterFirst);
 
 
@@ -500,7 +565,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         });
 
 
-        CustomSpinnerAdapter spinnerAdapterSecond = new CustomSpinnerAdapter(AddRecipeManualScreen.this, secondColumn);
+        CustomSpinnerAdapter spinnerAdapterSecond = new CustomSpinnerAdapter(AddRegionalManualScreen.this, secondColumn);
         spTwo.setAdapter(spinnerAdapterSecond);
 
         linearTable.addView(view);
@@ -533,7 +598,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView txt = new TextView(AddRecipeManualScreen.this);
+            TextView txt = new TextView(AddRegionalManualScreen.this);
             txt.setPadding(12, 12, 12, 12);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
@@ -544,7 +609,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         public View getView(int i, View view, ViewGroup viewgroup) {
 
-            TextView txt = new TextView(AddRecipeManualScreen.this);
+            TextView txt = new TextView(AddRegionalManualScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(12, 12, 12, 12);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
@@ -588,7 +653,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
 
-        ListPopupWindow popupWindow = new ListPopupWindow(AddRecipeManualScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(AddRegionalManualScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
@@ -598,7 +663,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(AddRecipeManualScreen.this, arrayList, drawableImage, true));
+        popupWindow.setAdapter(new SettingsAdapter(AddRegionalManualScreen.this, arrayList, drawableImage, true));
         popupWindow.show();
     }
 
@@ -607,7 +672,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(AddRecipeManualScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(AddRegionalManualScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());
         popupWindow.setAnchorView(menuItemView);
@@ -619,7 +684,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(AddRecipeManualScreen.this, arrayList, drawableImage, false));
+        popupWindow.setAdapter(new MoreAdapter(AddRegionalManualScreen.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 
@@ -628,9 +693,9 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     private void logoutFromApp() {
 
         Log.e("click", "logout");
-        PrefUtils.clearCurrentUser(AddRecipeManualScreen.this);
+        PrefUtils.clearCurrentUser(AddRegionalManualScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i = new Intent(AddRecipeManualScreen.this, StartScreen.class);
+        Intent i = new Intent(AddRegionalManualScreen.this, StartScreen.class);
         startActivity(i);
         finish();
     }
@@ -693,11 +758,11 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(AddRecipeManualScreen.this, DisclaimerScreen.class);
+                            Intent i = new Intent(AddRegionalManualScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(AddRecipeManualScreen.this, AboutusScreen.class);
+                            Intent i2 = new Intent(AddRegionalManualScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -777,11 +842,11 @@ public class AddRecipeManualScreen extends ActionBarActivity {
                     switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(AddRecipeManualScreen.this, GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(AddRegionalManualScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(AddRecipeManualScreen.this, GlossaryScreen.class);
+                            Intent i = new Intent(AddRegionalManualScreen.this, GlossaryScreen.class);
                             startActivity(i);
                             break;
                     }

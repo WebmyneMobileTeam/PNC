@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -289,6 +290,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
                         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
+                        fromDatePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
                         fromDatePickerDialog.show();
                     }
                 });
