@@ -18,15 +18,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.CustomViewPager;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CirclePageIndicator;
 import com.example.android.parvarish_nutricalculator.ui.widgets.PageIndicator;
 
 
 public class WalkThorugh extends FragmentActivity {
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private  TabsPagerAdapter mAdapter;
     protected PageIndicator mIndicator;
     public ImageView image1;
@@ -55,8 +57,10 @@ public class WalkThorugh extends FragmentActivity {
         image1 = (ImageView) findViewById(R.id.image1);
         image2 = (ImageView) findViewById(R.id.image2);
         imageCancel = (ImageView)findViewById(R.id.image_cancel);
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        mIndicator = (CirclePageIndicator)findViewById(R.id.guideIndicator);
+        viewPager = (CustomViewPager) findViewById(R.id.pager);
+
+
+       mIndicator = (CirclePageIndicator)findViewById(R.id.guideIndicator);
 
         imageCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,18 +89,20 @@ public class WalkThorugh extends FragmentActivity {
         mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
         viewPager.setAdapter(mAdapter);
-
         mIndicator.setViewPager(viewPager);
-      //  CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
 
-       // mIndicator = indicator;
 
-       // indicator.setViewPager(viewPager);
+        viewPager.setOnSwipeOutListener(new CustomViewPager.OnSwipeOutListener() {
 
-      //  indicator.setFillColor(Color.parseColor("#FF0000"));
 
-      //  indicator.setStrokeColor(Color.parseColor("#FF0000"));
-
+            @Override
+            public void onSwipeOutAtEnd() {
+                Intent intent = new Intent(WalkThorugh.this, HomeScreen.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
     }

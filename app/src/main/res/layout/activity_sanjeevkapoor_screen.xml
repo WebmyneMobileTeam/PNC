@@ -41,12 +41,13 @@
         </LinearLayout>
 
 <LinearLayout
-            android:padding="16dp"
+            android:padding="8dp"
             android:background="#fff"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <GridView
+            android:layout_gravity="center"
             android:gravity="center"
             android:dividerHeight="0dp"
             android:divider="@null"
@@ -61,7 +62,7 @@
 
 </LinearLayout>
 
-q</LinearLayout>
+</LinearLayout>
 
 
 

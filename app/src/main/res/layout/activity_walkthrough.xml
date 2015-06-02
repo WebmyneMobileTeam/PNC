@@ -4,13 +4,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
-<android.support.v4.view.ViewPager
+<com.example.android.parvarish_nutricalculator.helpers.CustomViewPager
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-</android.support.v4.view.ViewPager>
+</com.example.android.parvarish_nutricalculator.helpers.CustomViewPager>
 
     <ImageView
         android:id="@+id/image_cancel"
@@ -39,7 +39,7 @@
         android:layout_gravity="right|center_vertical"
         />
 
-    <com.example.android.parvarish_nutricalculator.ui.widgets.CirclePageIndicator
+   <com.example.android.parvarish_nutricalculator.ui.widgets.CirclePageIndicator
         android:id="@+id/guideIndicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -18,18 +18,18 @@
     android:layout_margin="4dp"
 
     android:src="@mipmap/ic_launcher"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_width="@dimen/nutrition_image"
+    android:layout_height="@dimen/nutrition_image" />
 
 </LinearLayout>
     <TextView
+        android:singleLine="true"
         android:textColor="#494949"
         android:textSize="@dimen/normal_text"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:id="@+id/txtTitle"
         android:gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 </LinearLayout>

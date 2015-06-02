@@ -9,47 +9,51 @@
 
     <include layout="@layout/app_bar"></include>
 
+    <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/linearTopGuidelines"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:background="@drawable/leftred_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="NUTRITIONAL GUIDELINES"
+            android:textColor="#000000"
+            android:textSize="@dimen/big_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:background="@drawable/rightred_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
         <ScrollView
-            android:layout_below="@+id/toolbar"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_below="@+id/linearTopGuidelines"
             android:layout_above="@+id/btnSaveImageNutritionGuidelines"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-
-                style="@style/both_match_parent"
+                android:layout_gravity="center"
                 android:gravity="center"
+                style="@style/both_match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/linearTopGuidelines"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@drawable/leftred_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:gravity="center"
-                        android:text="NUTRITIONAL GUIDELINES"
-                        android:textColor="#000000"
-                        android:textSize="@dimen/big_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:background="@drawable/rightred_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
 
 
 

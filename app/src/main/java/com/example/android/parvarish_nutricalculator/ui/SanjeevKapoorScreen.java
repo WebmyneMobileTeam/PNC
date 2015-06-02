@@ -23,9 +23,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
@@ -36,7 +38,7 @@ import java.util.Arrays;
 
 public class SanjeevKapoorScreen extends ActionBarActivity {
 
-    private ArrayList<String> recipeNames;
+    private ArrayList<String> recipeNames,recipeImages;
     sanjeevmainModel sajneevObj;
     private TextView txtTitle;
     private GridView sanjeevList;
@@ -80,15 +82,17 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
 
     void setGridView(){
         recipeNames = new ArrayList<String>();
+        recipeImages = new ArrayList<String>();
         ageGroup = getIntent().getStringExtra("Title");
 
         for(int i=0;i<sajneevObj.data.size();i++){
             if(sajneevObj.data.get(i).Recipe.age_group.equalsIgnoreCase(ageGroup)){
                 recipeNames.add(sajneevObj.data.get(i).Recipe.name);
+                recipeImages.add(sajneevObj.data.get(i).Recipe.photo_url);
             }
         }
 
-        CustomImageAdapter adp = new CustomImageAdapter(SanjeevKapoorScreen.this,recipeNames);
+        CustomImageAdapter adp = new CustomImageAdapter(SanjeevKapoorScreen.this,recipeNames,recipeImages);
         sanjeevList.setAdapter(adp);
 
 
@@ -127,11 +131,14 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
 
     class CustomImageAdapter extends BaseAdapter{
         ArrayList<String> valueNames;
+        ArrayList<String> valueImg;
+
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomImageAdapter(Context ctx,ArrayList<String> names){
+        public CustomImageAdapter(Context ctx,ArrayList<String> names,ArrayList<String> img){
             this.ctx = ctx;
             this.valueNames = names;
+            this.valueImg = img;
         }
 
         @Override
@@ -161,7 +168,11 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
 
 
             txtTitle.setText(valueNames.get(position));
-            imageView.setImageResource(R.mipmap.ic_launcher);
+
+
+            Glide.with(SanjeevKapoorScreen.this).load(API.BASE_URL_IMAGE_FETCH + valueImg.get(position))
+                    .into(imageView);
+
 
             return view;
 
