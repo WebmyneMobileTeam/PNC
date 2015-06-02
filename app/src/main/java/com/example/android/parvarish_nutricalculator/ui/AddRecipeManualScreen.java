@@ -785,6 +785,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
                             startActivity(i);
                             break;
                     }
+
                 }
             });
 
