@@ -58,15 +58,33 @@
                 android:hint="Enter email address"
                 style="@style/edittext_login" />
 
+        <ListView
+            android:dividerHeight="0dp"
+            android:divider="@null"
+            android:layout_marginTop="5dp"
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
 
 
 </LinearLayout>
     <LinearLayout
         android:gravity="center"
         android:layout_gravity="center"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Button
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/btnShareLink"
+            android:text="SHARE LINK"
+            style="@style/btn_addBaby" />
+
         <Button
             android:gravity="center"
             android:layout_gravity="center"

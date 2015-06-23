@@ -47,6 +47,7 @@ import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
+import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
@@ -57,6 +58,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class MyRecipeListScreen extends ActionBarActivity {
+
+
+
+
     private ProgressDialog progressDialog;
     private Spinner forSpinner;
     ArrayList<String> spinnerList=new ArrayList<>();
@@ -84,6 +89,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
         init();
+
 
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeListScreen.this, "user_pref", 0);
