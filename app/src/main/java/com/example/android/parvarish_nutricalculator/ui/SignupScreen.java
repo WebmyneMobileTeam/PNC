@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 
 import me.drakeet.library.UIButton;
 import pt.joaocruz04.lib.SOAPManager;
+
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -90,15 +91,15 @@ public class SignupScreen extends ActionBarActivity {
     }
 
     private void setupUI() {
-        btnSignUp= (UIButton)findViewById(R.id.btnSignUp);
-         btnSignUpWithFacebook = (UIButton)findViewById(R.id.btnSignUpFacebook);
-         txtStaticFacebookText = (TextView)findViewById(R.id.staticText);
-         edUserName = (EditText)findViewById(R.id.edSignUpUserName);
-         edPassword = (EditText)findViewById(R.id.edSignUpPassword);
-         edEmail = (EditText)findViewById(R.id.edSignUpEmail);
-         edMobile = (EditText)findViewById(R.id.edSignUpMobile);
-         edCity = (EditText)findViewById(R.id.edSignUpCity);
-         btnSignUp = (UIButton)findViewById(R.id.btnSignUp);
+        btnSignUp = (UIButton) findViewById(R.id.btnSignUp);
+        btnSignUpWithFacebook = (UIButton) findViewById(R.id.btnSignUpFacebook);
+        txtStaticFacebookText = (TextView) findViewById(R.id.staticText);
+        edUserName = (EditText) findViewById(R.id.edSignUpUserName);
+        edPassword = (EditText) findViewById(R.id.edSignUpPassword);
+        edEmail = (EditText) findViewById(R.id.edSignUpEmail);
+        edMobile = (EditText) findViewById(R.id.edSignUpMobile);
+        edCity = (EditText) findViewById(R.id.edSignUpCity);
+        btnSignUp = (UIButton) findViewById(R.id.btnSignUp);
 
         btnSignUpWithFacebook.setTypeface(PrefUtils.getTypeFace(SignupScreen.this));
         txtStaticFacebookText.setTypeface(PrefUtils.getTypeFace(SignupScreen.this));
@@ -145,18 +146,19 @@ public class SignupScreen extends ActionBarActivity {
 //        }
 
 
-        if(isEmptyField(edUserName)){
-            Toast.makeText(SignupScreen.this,"Please Enter Username",Toast.LENGTH_SHORT).show();
-        } else if(isEmptyField(edPassword)){
-            Toast.makeText(SignupScreen.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
-        } else if(isEmptyField(edEmail)){
-            Toast.makeText(SignupScreen.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
-        } else if(!isEmailMatch(edEmail)){
-            Toast.makeText(SignupScreen.this,"Please Enter Valid Email",Toast.LENGTH_SHORT).show();
-        }  else {
+        if (isEmptyField(edUserName)) {
+            Toast.makeText(SignupScreen.this, "Please Enter Username", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edPassword)) {
+            Toast.makeText(SignupScreen.this, "Please Enter Password", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edEmail)) {
+            Toast.makeText(SignupScreen.this, "Please Enter Email", Toast.LENGTH_SHORT).show();
+        } else if (!isEmailMatch(edEmail)) {
+            Toast.makeText(SignupScreen.this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
+        } else {
             registrationProcess();
         }
     }
+
     public boolean isEmptyField(EditText param1) {
 
         boolean isEmpty = false;
@@ -181,71 +183,70 @@ public class SignupScreen extends ActionBarActivity {
     }
 
 
-
     private void registrationProcess() {
 
-        final ProgressDialog progressDialog=new ProgressDialog(SignupScreen.this);
+        final ProgressDialog progressDialog = new ProgressDialog(SignupScreen.this);
         progressDialog.setMessage("Loading");
         progressDialog.show();
-            List<NameValuePair> pairs = new ArrayList<>();
-            pairs.add(new BasicNameValuePair("email",edEmail.getText().toString().trim()));
-            pairs.add(new BasicNameValuePair("name",edUserName.getText().toString().trim()+""));
-            pairs.add(new BasicNameValuePair("dob","2015-07-09"));
-            pairs.add(new BasicNameValuePair("password",edPassword.getText().toString().trim()));
-            pairs.add(new BasicNameValuePair("city",edCity.getText().toString().trim()));
-            pairs.add(new BasicNameValuePair("mobile",edMobile.getText().toString().toString()));
-            pairs.add(new BasicNameValuePair("gender","Male"));
-            pairs.add(new BasicNameValuePair("profile_pic",""));
-            pairs.add(new BasicNameValuePair("fb_id",""));
-            pairs.add(new BasicNameValuePair("fb_email",""));
+        List<NameValuePair> pairs = new ArrayList<>();
+        pairs.add(new BasicNameValuePair("email", edEmail.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("name", edUserName.getText().toString().trim() + ""));
+        pairs.add(new BasicNameValuePair("dob", "2015-07-09"));
+        pairs.add(new BasicNameValuePair("password", edPassword.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("city", edCity.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("mobile", edMobile.getText().toString().toString()));
+        pairs.add(new BasicNameValuePair("gender", "Male"));
+        pairs.add(new BasicNameValuePair("profile_pic", ""));
+        pairs.add(new BasicNameValuePair("fb_id", ""));
+        pairs.add(new BasicNameValuePair("fb_email", ""));
 
-            new GetPostClass(API.REGISTRATION,pairs, EnumType.POST) {
-                @Override
-                public void response(String response) {
+        new GetPostClass(API.REGISTRATION, pairs, EnumType.POST) {
+            @Override
+            public void response(String response) {
 //                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+                progressDialog.dismiss();
 
-                    try {
+                try {
 
-                        JSONObject jsonObject = new JSONObject(response.toString().trim());
-                        userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
+                    JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
 
-                        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SignupScreen.this, "user_pref", 0);
-                        complexPreferences.putObject("current-user", userUserModel);
-                        complexPreferences.commit();
-                    }catch (Exception e){
-                        Log.e("exc","in json parsing");
-                    }
-
-
-
-                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putBoolean("isUserLogin", true);
-                    editor.commit();
-
-                    SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
-                    boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
-
-                    if(isFristTime){
-                        Intent intent = new Intent(SignupScreen.this, WalkThorugh.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    }else {
-                        Intent intent = new Intent(SignupScreen.this, HomeScreen.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
-                    }
-
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SignupScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", userUserModel);
+                    complexPreferences.commit();
+                } catch (Exception e) {
+                    Log.e("exc", "in json parsing");
                 }
-                @Override
-                public void error(String error) {
-                    Toast.makeText(SignupScreen.this,error,Toast.LENGTH_SHORT).show();
-                    progressDialog.dismiss();
+
+
+                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isUserLogin", true);
+                editor.commit();
+
+                SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
+                boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
+
+                if (isFristTime) {
+                    Intent intent = new Intent(SignupScreen.this, WalkThorugh.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(SignupScreen.this, HomeScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
-            }.call();
+
+            }
+
+            @Override
+            public void error(String error) {
+                Toast.makeText(SignupScreen.this, error, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }.call();
 
     }
 
@@ -263,7 +264,7 @@ public class SignupScreen extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -279,28 +280,28 @@ public class SignupScreen extends ActionBarActivity {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
 
-        String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+        String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
 
         ListPopupWindow popupWindow = new ListPopupWindow(SignupScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(SignupScreen.this,arrayList,drawableImage,true));
+        popupWindow.setAdapter(new SettingsAdapter(SignupScreen.this, arrayList, drawableImage, true));
         popupWindow.show();
     }
 
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
-        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+        String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
         ListPopupWindow popupWindow = new ListPopupWindow(SignupScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());
@@ -308,12 +309,12 @@ public class SignupScreen extends ActionBarActivity {
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int)(height/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
+        popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(SignupScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(SignupScreen.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 
@@ -324,19 +325,20 @@ public class SignupScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(SignupScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(SignupScreen.this,StartScreen.class);
+        Intent i = new Intent(SignupScreen.this, StartScreen.class);
         startActivity(i);
         finish();
     }
 
-    public  class SettingsAdapter extends ArrayAdapter<String> {
+    public class SettingsAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
         Context ctx;
-        private  class ViewHolder {
+
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -346,7 +348,7 @@ public class SignupScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -358,20 +360,20 @@ public class SignupScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
                 }
@@ -386,11 +388,11 @@ public class SignupScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(SignupScreen.this,DisclaimerScreen.class);
+                            Intent i = new Intent(SignupScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(SignupScreen.this,AboutusScreen.class);
+                            Intent i2 = new Intent(SignupScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -406,7 +408,7 @@ public class SignupScreen extends ActionBarActivity {
         }
     }
 
-    public  class MoreAdapter extends ArrayAdapter<String> {
+    public class MoreAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
@@ -414,7 +416,7 @@ public class SignupScreen extends ActionBarActivity {
         private boolean isSettings;
         Context ctx;
 
-        private  class ViewHolder {
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -424,7 +426,7 @@ public class SignupScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -436,21 +438,21 @@ public class SignupScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
 
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
 
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
@@ -467,14 +469,14 @@ public class SignupScreen extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    switch (position){
+                    switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(SignupScreen.this,GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(SignupScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(SignupScreen.this,GlossaryScreen.class);
+                            Intent i = new Intent(SignupScreen.this, GlossaryScreen.class);
                             startActivity(i);
                             break;
                     }
@@ -484,8 +486,6 @@ public class SignupScreen extends ActionBarActivity {
             return convertView;
         }
     }
-
-
 
 
 }

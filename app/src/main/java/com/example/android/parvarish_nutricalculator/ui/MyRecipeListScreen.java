@@ -215,7 +215,6 @@ public class MyRecipeListScreen extends ActionBarActivity {
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
-
                     adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
                     myRecipeList.setAdapter(adp);
 

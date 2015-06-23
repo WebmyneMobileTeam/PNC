@@ -518,6 +518,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
                             Intent i = new Intent(AddRecipeWebScreen.this,GlossaryScreen.class);
                             startActivity(i);
                             break;
+
                     }
                 }
             });

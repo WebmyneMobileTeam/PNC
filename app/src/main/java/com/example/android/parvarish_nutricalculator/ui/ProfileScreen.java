@@ -190,9 +190,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
         addBabyLinearMain = (LinearLayout)findViewById(R.id.addBabyLinearMain);
 
-
-
-
     }
 
 
@@ -481,8 +478,6 @@ private void processfetchProfileDetails(){
 
 
     }
-
-
 
     private void fillDetails(){
         edSignUpCity.setText(userProfile.data.city);
