@@ -69,7 +69,6 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
     public Dialog d;
     public Button yes,btnShareLink;
     ListView listView;
-    EditText edEmail;
     private String UserId;
 
     ArrayAdapter<String> adapter;
@@ -89,7 +88,6 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
         setContentView(R.layout.add_friend_item);
 
         listView = (ListView)findViewById(R.id.listView);
-        edEmail =  (EditText)findViewById(R.id.edEmail);
         yes = (Button) findViewById(R.id.btnSendReq);
 
         btnShareLink = (Button) findViewById(R.id.btnShareLink);

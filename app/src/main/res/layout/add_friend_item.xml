@@ -51,13 +51,6 @@
         android:layout_height="3dp"/>
 
 
-
-            <EditText
-                android:layout_marginTop="15dp"
-                android:id="@+id/edEmail"
-                android:hint="Enter email address"
-                style="@style/edittext_login" />
-
         <ListView
             android:dividerHeight="0dp"
             android:divider="@null"
