@@ -20,8 +20,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 
@@ -29,16 +33,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
-
+    sanjeevmainModel sajneevObj;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
-    private TextView txtServing,txtAgeGroup,txtTitle;
-
+    private TextView txtServing,txtAgeGroup,txtTitle,txtMethod;
+    ImageView photoImg;
+    int listPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_sanjeev_recipie);
+
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,6 +54,14 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+
+
+        Log.e("Pos ",""+listPos);
+        listPos = getIntent().getIntExtra("pos",0);
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SanjeevKumarEditRecipeScreen.this, "user_pref", 0);
+        sajneevObj = complexPreferences.getObject("sanjeev-recipe", sanjeevmainModel.class);
+
 
         init();
 
@@ -59,13 +73,19 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     }
 
     void init(){
+        txtMethod = (TextView)findViewById(R.id.txtMethod);
         txtServing = (TextView)findViewById(R.id.txtServing);
         txtAgeGroup = (TextView)findViewById(R.id.txtAgeGroup);
         txtTitle = (TextView)findViewById(R.id.txtTitle);
+        photoImg = (ImageView)findViewById(R.id.photoImg);
 
-        txtTitle.setText(getIntent().getStringExtra("Title"));
-        txtServing.setText("Servings : " + getIntent().getStringExtra("serving"));
-        txtAgeGroup.setText("Age of Baby : " + getIntent().getStringExtra("agegroup"));
+        txtTitle.setText(sajneevObj.data.get(listPos).Recipe.name);
+        txtServing.setText("Servings : " + sajneevObj.data.get(listPos).Recipe.no_of_servings);
+        txtAgeGroup.setText("Age of Baby : " + sajneevObj.data.get(listPos).Recipe.age_group);
+
+        Glide.with(SanjeevKumarEditRecipeScreen.this).load(API.BASE_URL_IMAGE_FETCH +sajneevObj.data.get(listPos).Recipe.photo_url)
+                .into(photoImg);
+
     }
 
     private void addTableView() {

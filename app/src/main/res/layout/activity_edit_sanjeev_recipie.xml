@@ -21,9 +21,11 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:scaleType="fitXY"
+                android:id="@+id/photoImg"
                 android:background="@color/color_button_darkred"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="150dp" />
 
             <TextView
                 android:text="OATS AND VEGETABLE SOUP"
@@ -89,6 +91,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/txtMethod"
                 android:text="Method"
                 android:padding="16dp"
                 android:gravity="left"

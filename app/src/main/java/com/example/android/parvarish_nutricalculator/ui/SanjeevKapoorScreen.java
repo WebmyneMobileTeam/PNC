@@ -101,22 +101,16 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                ArrayList<String> tempName = new ArrayList<String>();
-                ArrayList<String> tempServing = new ArrayList<String>();
-                ArrayList<String> tempAgeGroup = new ArrayList<String>();
-
+                int listPOS=0;
                 for(int i=0;i<sajneevObj.data.size();i++){
                     if(sajneevObj.data.get(i).Recipe.age_group.equalsIgnoreCase(ageGroup)){
-                        tempName.add(sajneevObj.data.get(i).Recipe.name);
-                        tempServing.add(sajneevObj.data.get(i).Recipe.no_of_servings);
-                        tempAgeGroup.add(sajneevObj.data.get(i).Recipe.age_group);
+                        Log.e("#### inside if ",""+i);
+                        listPOS = i;
                     }
                 }
 
                 Intent i= new Intent(SanjeevKapoorScreen.this,SanjeevKumarEditRecipeScreen.class);
-                i.putExtra("Title",tempName.get(position));
-                i.putExtra("serving",tempServing.get(position));
-                i.putExtra("agegroup",tempAgeGroup.get(position));
+                i.putExtra("pos",listPOS);
                 startActivity(i);
             }
         });
