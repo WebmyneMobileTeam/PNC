@@ -323,6 +323,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
+
             view = layoutInflator.inflate(R.layout.myrecipe_feed_item_view, parent, false);
 
             ImageView imgDelete = (ImageView)view.findViewById(R.id.imgDelete);

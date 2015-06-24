@@ -12,14 +12,18 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.Patterns;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -67,10 +71,8 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
     ListView listView;
     EditText edEmail;
     private String UserId;
-    ArrayList<String> FINAL_EMAIL=new ArrayList<String>();
 
-    List<Model> list = new ArrayList<Model>();
-
+    ArrayAdapter<String> adapter;
     public CustomDialogBoxAddFreind(Activity context,String uid ) {
         super(context);
         this.act = context;
@@ -95,21 +97,19 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
         yes.setOnClickListener(this);
 
 
-        ArrayList<String> EmailAcc = proessFetchEmailContacts();
+        final ArrayList<String> EmailAcc = proessFetchEmailContacts();
 
-        CustomAdapter adp = new CustomAdapter(act,getModel(EmailAcc));
-        listView.setAdapter(adp);
+         adapter = new ArrayAdapter<String>(act,android.R.layout.simple_list_item_multiple_choice,EmailAcc);
+
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+
+
 
     }
 
 
-    private List<Model> getModel(ArrayList<String> EmailAcc) {
-
-        for(int i=0;i<EmailAcc.size();i++)
-            list.add(new Model(EmailAcc.get(i)));
-
-        return list;
-    }
 
     public ArrayList<String> proessFetchEmailContacts(){
         ArrayList<String> names = new ArrayList<String>();
@@ -145,18 +145,30 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
 
             case R.id.btnSendReq:
 
-                for(int i=0;i<FINAL_EMAIL.size();i++)
-                  Log.e("#### Name-",FINAL_EMAIL.get(i));
+                SparseBooleanArray checked = listView.getCheckedItemPositions();
 
+                ArrayList<String> FINAL_EMAIL = new ArrayList<String>();
+                for (int i = 0; i < checked.size(); i++) {
+                    // Item position in adapter
+                    int position = checked.keyAt(i);
+                    // Add sport if it is checked i.e.) == TRUE!
+                    if (checked.valueAt(i))
+                        FINAL_EMAIL.add(adapter.getItem(position));
+                }
 
+                Log.e("@@@@ List size -",""+FINAL_EMAIL.size());
+                for(int i=0;i<FINAL_EMAIL.size();i++) {
+                    Log.e("#### Name-", FINAL_EMAIL.get(i));
 
-                 /*   if(isEmptyField(edEmail)){
-                        showToast("Please Enter email address !!!");
-                    }else if(!isEmailMatch(edEmail)){
-                        showToast("Please Enter valid Email");
+                }
+
+                    if( FINAL_EMAIL.size()==0){
+                        showToast("Please Select at least one email address !!!");
                     }else {
-                        processFreindInvite();
-                    }*/
+                        processFreindInvite(FINAL_EMAIL);
+                    }
+
+
                 break;
 
             case R.id.btnShareLink:
@@ -176,88 +188,7 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
 
     }
 
-    class CustomAdapter extends BaseAdapter {
-        LayoutInflater layoutInflator;
-        private Context ctx;
 
-        private final List<Model> list;
-        public CustomAdapter(Context ctx,List<Model> obj){
-            this.ctx = ctx;
-            this.list = obj;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        public class Myholder{
-            TextView txtEmail;
-            CheckBox chkBox;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-
-            Myholder holder;
-
-            if(convertView == null) {
-                holder = new Myholder();
-
-                layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = layoutInflator.inflate(R.layout.freinds_email_list_item, parent, false);
-
-                holder.txtEmail = (TextView) convertView.findViewById(R.id.email);
-                holder.chkBox = (CheckBox) convertView.findViewById(R.id.chkBox);
-
-
-                holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        int getPosition = (Integer) buttonView.getTag();  // Here we get the position that we have set for the checkbox using setTag.
-                        list.get(getPosition).setSelected(buttonView.isChecked()); // Set the value of checkbox to maintain its state.
-
-
-
-                    }
-                });
-
-                convertView.setTag(holder);
-
-                convertView.setTag(R.id.email, holder.txtEmail);
-                convertView.setTag(R.id.chkBox, holder.chkBox);
-
-            }else {
-                holder = (Myholder)convertView.getTag();
-            }
-
-            holder.chkBox.setTag(position); // This line is important.
-
-            holder.txtEmail.setText(list.get(position).getName());
-            holder.chkBox.setChecked(list.get(position).isSelected());
-            if(list.get(position).isSelected()){
-                FINAL_EMAIL.add(list.get(position).getName());
-            }
-
-            return convertView;
-        }
-
-
-
-    }
 
 
 
@@ -272,7 +203,7 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
         Toast.makeText(act, msg, Toast.LENGTH_SHORT).show();
     }
 
-    void processFreindInvite(){
+    void processFreindInvite(final ArrayList<String> EMAIL_ADDRESS){
         try{
 
             JSONObject userJSONObject = new JSONObject();
@@ -281,10 +212,13 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
             userJSONObject.put("type", "Test");
 
             JSONArray array = new JSONArray();
-            array.put(edEmail.getText().toString().trim());
+
+            for(int i=0;i<EMAIL_ADDRESS.size();i++)
+            array.put(EMAIL_ADDRESS.get(i));
+
             userJSONObject.put("friend_email",array);
 
-            Log.e("req",userJSONObject.toString());
+            Log.e("@@@# freind req",userJSONObject.toString());
             JSONPost json = new JSONPost();
             json.POST(act, API.FRIENDS_INVITE, userJSONObject.toString(),"Sending Request...");
             json.setPostResponseListener(new POSTResponseListener() {
