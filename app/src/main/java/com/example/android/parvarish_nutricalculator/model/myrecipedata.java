@@ -12,6 +12,9 @@ public class myrecipedata {
     @SerializedName("Babies")
     public ArrayList<babyData> Babies;
 
+    @SerializedName("RecipeIngredientList")
+    public ArrayList<recipeSubIngredient> RecipeIngredientList;
+
     @SerializedName("id")
     public String id;
 

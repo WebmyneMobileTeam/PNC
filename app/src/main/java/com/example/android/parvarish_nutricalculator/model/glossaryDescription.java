@@ -11,4 +11,11 @@ public class glossaryDescription {
     @SerializedName("data")
     public ArrayList<glossaryData> data;
 
+    public ArrayList<glossaryIngredient> returnAllIngredients(){
+        ArrayList<glossaryIngredient> arrayList = new ArrayList<>();
+        for(glossaryData ingredient : data){
+            arrayList.addAll(ingredient.Ingredient);
+        }
+        return arrayList;
+    }
 }

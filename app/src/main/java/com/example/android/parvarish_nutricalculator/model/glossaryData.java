@@ -1,6 +1,7 @@
 package com.example.android.parvarish_nutricalculator.model;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,5 +14,10 @@ public class glossaryData {
 
     @SerializedName("Ingredient")
     public ArrayList<glossaryIngredient> Ingredient;
+
+
+
+
+
 
 }

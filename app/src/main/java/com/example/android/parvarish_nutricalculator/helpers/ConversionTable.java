@@ -3,8 +3,8 @@ package com.example.android.parvarish_nutricalculator.helpers;
 /**
  * Created by Android on 29-05-2015.
  */
-public class CalculateNutrition {
-    public CalculateNutrition(){
+public class ConversionTable {
+    public ConversionTable(){
     }
 
     public static double CalculateEnergy(String qty,String unit,double energy){

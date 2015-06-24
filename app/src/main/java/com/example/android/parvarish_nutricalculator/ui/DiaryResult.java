@@ -11,36 +11,28 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.API;
-import com.example.android.parvarish_nutricalculator.helpers.CalculateNutrition;
+import com.example.android.parvarish_nutricalculator.helpers.ConversionTable;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
+import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculation;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.diaryModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
-import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
-import com.example.android.parvarish_nutricalculator.model.recipeData;
 import com.example.android.parvarish_nutricalculator.model.recipeModel;
-import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBox;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
@@ -95,11 +87,14 @@ public class DiaryResult extends ActionBarActivity {
 
         for(int i=0;i<dm.diarysubModel.size();i++){
             View view = getLayoutInflater().inflate(R.layout.diaryresultitem, linearRecipeNames, false);
-
             TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
             txtrecipeName.setText(dm.diarysubModel.get(i).recipeMainData.name);
-
             linearRecipeNames.addView(view, i);
+
+
+            for(int j=0;j<dm.diarysubModel.get(i).recipeMainData.RecipeIngredientList.size();j++){
+                Log.e("#### ING ID ",""+dm.diarysubModel.get(i).recipeMainData.RecipeIngredientList.get(j).RecipeIngredient.ingredient_id);
+            }
         }
 
     }
@@ -174,7 +169,7 @@ public class DiaryResult extends ActionBarActivity {
 
     void CalcualateNutritionResult(){
 
-        CalculateNutrition cn = new CalculateNutrition();
+        ConversionTable cn = new ConversionTable();
 
         for(int i=0;i<dm.diarysubModel.size();i++){
            // cn.CalculateEnergy(myrecipe.data.get(i).RecipeIngredient.get(0).quantity,myrecipe.data.get(i).RecipeIngredient.get(0).unit);
@@ -214,14 +209,16 @@ public class DiaryResult extends ActionBarActivity {
     }
 
     private void fetchIngredientsdetails(){
+
         progressDialog = new ProgressDialog(DiaryResult.this);
         progressDialog.setMessage("Loading Details...");
         progressDialog.setCancelable(false);
         progressDialog.show();
+
         new GetPostClass(API.GLOSSARY_INGREDIENTS, EnumType.GET) {
             @Override
             public void response(String response) {
-                Log.e("ingridents response", response);
+               // Log.e("ingridents response", response);
                 progressDialog.dismiss();
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
@@ -231,6 +228,13 @@ public class DiaryResult extends ActionBarActivity {
                 }catch(Exception e){
                     Log.e("exc",e.toString());
                 }
+
+                //..... Call values for calculations
+
+                NutritionCalculation executer = new NutritionCalculation(DiaryResult.this,dm.diarysubModel.get(2).recipeMainData,ingdredient);
+                executer.calculate();
+
+
 
             }
 
@@ -242,6 +246,13 @@ public class DiaryResult extends ActionBarActivity {
         }.call();
     }
 
+
+    private void fetchRecipeDetails(String recipeID){
+
+
+
+
+    }
 
 
 

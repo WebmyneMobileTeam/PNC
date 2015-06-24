@@ -18,7 +18,6 @@ public class recipeIngredient {
     @SerializedName("unit")
     public String unit;
 
-
     @SerializedName("receipe_id")
     public String receipe_id;
 
