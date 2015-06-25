@@ -30,6 +30,7 @@ import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculation;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
+import com.example.android.parvarish_nutricalculator.model.POJOTableRow;
 import com.example.android.parvarish_nutricalculator.model.diaryModel;
 import com.example.android.parvarish_nutricalculator.model.diarySubModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
@@ -103,7 +104,7 @@ public class DiaryResult extends ActionBarActivity {
 
     }
 
-    private void addTableView(float energy, float protien, float fat, float calcium, float iron) {
+    private void addTableView(float energy, float protien, float fat, float calcium, float iron,float ICMR_RATIO_ENERGY,float ICMR_RATIO_PROTEIN,float ICMR_RATIO_CALCIUM,float ICMR_RATIO_FAT,float ICMR_RATIO_IRON) {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -121,58 +122,79 @@ public class DiaryResult extends ActionBarActivity {
 
         tableView.setWeights(weights);
 
-        //TODO
-        // Right now we are taking statically ICMR value for postion 0
-
-
-
         linearTableDetails.addView(tableView, params);
 
-        ArrayList<String> values = new ArrayList<>();
-        values.add("Nutrients");
-        values.add("Recipe Values");
-        values.add("ICMR Recommandation");
-        values.add("% ICMR Recommandation met");
+        ArrayList<POJOTableRow> values = new ArrayList<>();
+        values.add(new POJOTableRow("Nutrients",Color.BLACK));
+        values.add(new POJOTableRow("Recipe Values",Color.BLACK));
+        values.add(new POJOTableRow("ICMR Recommandation", Color.BLACK));
+        values.add(new POJOTableRow("% ICMR Recommandation met", Color.BLACK));
 
-        tableView.addRow(values, "#000000");
+        tableView.addRow(values);
         tableView.addDivider();
 
-        ArrayList<String> values2 = new ArrayList<>();
-        values2.add("Energy (kcal)");
-        values2.add(String.format("%.2f",energy));
+        ArrayList<POJOTableRow> values2 = new ArrayList<>();
+        values2.add(new POJOTableRow("Energy (kcal)",Color.WHITE));
+        values2.add(new POJOTableRow(String.format("%.2f",energy),Color.WHITE));
+        values2.add(new POJOTableRow(icmrOBJ.data.get(0).IcmrRecommended.energy.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.energy,Color.WHITE));
 
-        values2.add((icmrOBJ.data.get(0).IcmrRecommended.energy.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.energy));
-        values2.add("97%");
 
-        ArrayList<String> values3 = new ArrayList<>();
-        values3.add("Protein (gm)");
-        values3.add(String.format("%.2f",protien));
-        values3.add((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein));
-        values3.add("97%");
+        // Checking the ICMR RAtio For ENERGY
+        if(ICMR_RATIO_ENERGY >=85 && ICMR_RATIO_ENERGY<=105)
+        values2.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_ENERGY)+"%",Color.WHITE));
+        else values2.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_ENERGY)+"%",Color.RED));
+        //END
 
-        ArrayList<String> values4 = new ArrayList<>();
-        values4.add("Fat (gm)");
-        values4.add(String.format("%.2f",fat));
-        values4.add((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat));
-        values4.add("97%");
+        ArrayList<POJOTableRow> values3 = new ArrayList<>();
+        values3.add(new POJOTableRow("Protein (gm)",Color.WHITE));
+        values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
+        values3.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein),Color.WHITE));
 
-        ArrayList<String> values5 = new ArrayList<>();
-        values5.add("Calcium (mg)");
-        values5.add(String.format("%.2f",calcium));
-        values5.add((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium));
-        values5.add("97%");
+        // Checking the ICMR RAtio For PROTEIN
+        if(ICMR_RATIO_PROTEIN >=85 && ICMR_RATIO_PROTEIN<=105)
+            values3.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_PROTEIN)+"%",Color.WHITE));
+        else values3.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_PROTEIN)+"%",Color.RED));
+        //END
 
-        ArrayList<String> values6 = new ArrayList<>();
-        values6.add("Iron (mg)");
-        values6.add(String.format("%.2f",iron));
-        values6.add((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.iron));
-        values6.add("97%");
+        ArrayList<POJOTableRow> values4 = new ArrayList<>();
+        values4.add(new POJOTableRow("Fat (gm)",Color.WHITE));
+        values4.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
 
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values3, "#ffffff");
-        tableView.addRow(values4, "#ffffff");
-        tableView.addRow(values5, "#ffffff");
-        tableView.addRow(values6, "#ffffff");
+        // Checking the ICMR RAtio For FAT
+        if(ICMR_RATIO_FAT >=85 && ICMR_RATIO_FAT<=105)
+            values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.WHITE));
+        else values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.RED));
+        //END
+
+        ArrayList<POJOTableRow> values5 = new ArrayList<>();
+        values5.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
+        values5.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
+
+        // Checking the ICMR RAtio For CALCIUM
+        if(ICMR_RATIO_CALCIUM >=85 && ICMR_RATIO_CALCIUM<=105)
+            values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.WHITE));
+        else values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.RED));
+        // END
+
+        ArrayList<POJOTableRow> values6 = new ArrayList<>();
+        values6.add(new POJOTableRow("Iron (mg)",Color.WHITE));
+        values6.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
+
+        // Checking the ICMR RAtio For IRON
+        if(ICMR_RATIO_IRON >=85 && ICMR_RATIO_IRON<=105)
+            values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.WHITE));
+        else values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.RED));
+        // END
+
+        tableView.addRow(values2);
+        tableView.addRow(values3);
+        tableView.addRow(values4);
+        tableView.addRow(values5);
+        tableView.addRow(values6);
+
 
 
     }
@@ -180,7 +202,6 @@ public class DiaryResult extends ActionBarActivity {
     void CalcualateNutritionResult(){
 
         ConversionTable cn = new ConversionTable();
-
         for(int i=0;i<dm.diarysubModel.size();i++){
            // cn.CalculateEnergy(myrecipe.data.get(i).RecipeIngredient.get(0).quantity,myrecipe.data.get(i).RecipeIngredient.get(0).unit);
         }
@@ -295,7 +316,26 @@ public class DiaryResult extends ActionBarActivity {
                         Log.e("Result calcium ",""+calcium);
                         Log.e("Result iron ",""+iron);
 
-                        addTableView(energy,protien,fat,calcium,iron);
+                        float finalTOTAL_ENERGY = energy;
+                        float finalTOTAL_CALCIUM = calcium;
+                        float finalTOTAL_PROTEIN = protien;
+                        float finalTOTAL_IRON = iron;
+                        float finalTOTAL_FAT = fat;
+
+
+                        float icmrEnrgy = Float.parseFloat((icmrOBJ.data.get(0).IcmrRecommended.energy.equalsIgnoreCase("")?"100":icmrOBJ.data.get(0).IcmrRecommended.energy));
+                        float icmrProtein =  Float.parseFloat((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"100":icmrOBJ.data.get(0).IcmrRecommended.protein));
+                        float icmrCalcium =   Float.parseFloat((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"100":icmrOBJ.data.get(0).IcmrRecommended.calcium));
+                        float icmrFat =   Float.parseFloat((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"100":icmrOBJ.data.get(0).IcmrRecommended.fat));
+                        float icmrIron =  Float.parseFloat((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("")?"100":icmrOBJ.data.get(0).IcmrRecommended.iron));
+
+                        float ICMR_RATIO_ENERGY = (finalTOTAL_ENERGY / icmrEnrgy) * 100;
+                        float ICMR_RATIO_PROTEIN = (finalTOTAL_PROTEIN / icmrProtein) * 100;
+                        float ICMR_RATIO_CALCIUM = (finalTOTAL_CALCIUM / icmrCalcium) * 100;
+                        float ICMR_RATIO_FAT = (finalTOTAL_FAT / icmrFat) * 100;
+                        float ICMR_RATIO_IRON = (finalTOTAL_IRON / icmrIron) * 100;
+
+                        addTableView(energy,protien,fat,calcium,iron,ICMR_RATIO_ENERGY,ICMR_RATIO_PROTEIN,ICMR_RATIO_CALCIUM,ICMR_RATIO_FAT,ICMR_RATIO_IRON);
                     }
                 });
 

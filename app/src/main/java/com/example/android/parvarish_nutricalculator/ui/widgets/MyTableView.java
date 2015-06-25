@@ -10,6 +10,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.helpers.AdvancedSpannableString;
+import com.example.android.parvarish_nutricalculator.model.POJOTableRow;
 
 import java.util.ArrayList;
 
@@ -31,7 +33,7 @@ public class MyTableView extends TableLayout {
         this.weights = weights;
     }
 
-    public void addRow(ArrayList<String> values, String textColor) {
+    public void addRow(ArrayList<POJOTableRow> values) {
 
         TableRow row = new TableRow(ctx);
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
@@ -44,8 +46,8 @@ public class MyTableView extends TableLayout {
             txt.setLayoutParams(tvPar);
             txt.setPadding(8, 8, 8, 8);
             txt.setMaxLines(2);
-            txt.setTextColor(Color.parseColor(textColor));
-            txt.setText(values.get(i));
+            txt.setTextColor(values.get(i).color);
+            txt.setText(values.get(i).value);
             txt.setGravity(Gravity.LEFT);
            // txt.setSingleLine(true);
             txt.setTextSize(ctx.getResources().getDimension(R.dimen.small_text2));

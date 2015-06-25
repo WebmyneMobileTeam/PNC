@@ -59,7 +59,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
 
 
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
-        addTableView();
+       // addTableView();
 
 
     }
@@ -82,7 +82,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
 
     }
 
-    private void addTableView() {
+  /*  private void addTableView() {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -119,7 +119,7 @@ public class ViewFriendsRecipe extends ActionBarActivity {
         tableView.addRow(values2, "#ffffff");
         tableView.addRow(values2, "#ffffff");
 
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

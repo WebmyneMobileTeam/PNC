@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
 import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
+import com.example.android.parvarish_nutricalculator.model.icmrMainModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.recipeData;
 import com.example.android.parvarish_nutricalculator.model.recipeIngredient;
@@ -40,14 +41,20 @@ public class NutritionCalculation {
     private ArrayList<Float> inner_calciums;
     private ArrayList<Float> inner_irons;
 
+    float ICMR_RATIO_ENERGY = 0f;
+    float ICMR_RATIO_PROTEIN = 0f;
+    float ICMR_RATIO_CALCIUM = 0f;
+    float ICMR_RATIO_FAT = 0f;
+    float ICMR_RATIO_IRON = 0f;
 
     private ProgressDialog pd;
     private OnCalculationResult onCalculationResult;
 
-    public NutritionCalculation(Context _context, ArrayList<myrecipedata> recipe, glossaryDescription ingredients_values) {
+    public NutritionCalculation(Context _context, ArrayList<myrecipedata> recipe, glossaryDescription ingredients_values ) {
         this._context = _context;
         this.recipes = recipe;
         this.ingredients_values = ingredients_values;
+
     }
 
     public void startCalculation(){
@@ -77,6 +84,8 @@ public class NutritionCalculation {
 
 
 
+
+
                 return null;
             }
 
@@ -84,6 +93,9 @@ public class NutritionCalculation {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 pd.dismiss();
+
+
+
                 onCalculationResult.onResult(returnOverAllEnergy(), returnOverAllProtien(), returnOverAllFat(), returnOverAllCalcium(), returnOverAllIron());
 
                // onCalculationResult.onResult(returnOverAllInnerEnergy(),returnOverAllInnerProtien(),returnOverAllInnerFat(),returnOverAllInnerCalcium(),returnOverAllInnerIron());
@@ -171,12 +183,12 @@ public class NutritionCalculation {
 
             }
 
+
             energies.add(returnOverAllInnerEnergy());
             calciums.add(returnOverAllInnerCalcium());
-            proteins.add(returnOverAllInnerProtien());
+            proteins.add( returnOverAllInnerProtien());
             irons.add(returnOverAllInnerIron());
             fats.add(returnOverAllInnerFat());
-
 
         } catch (Exception e) {
             e.printStackTrace();
