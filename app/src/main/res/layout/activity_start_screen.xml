@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:layout_above="@+id/bottomstartlinear"
-        android:layout_below="@+id/appbar"
+
         style="@style/both_match_parent">
 
         <ImageView

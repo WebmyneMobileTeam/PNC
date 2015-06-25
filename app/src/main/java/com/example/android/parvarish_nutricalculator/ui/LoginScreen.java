@@ -19,6 +19,7 @@ import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.helpers.User;
 import com.example.android.parvarish_nutricalculator.model.userModel;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,7 +45,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     private Button btnForgotPassword;
     private Button btnLogin;
     private UIButton btnFacebookLogin;
-    private ProgressDialog progressDialog;
+    private HUD progressDialog;
 
 //    private ProgressDialog progressDialog;
     User user;
@@ -55,7 +56,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-
 
         if(PrefUtils.getCurrentUser(LoginScreen.this) != null){
             Intent homeIntent = new Intent(LoginScreen.this, HomeScreen.class);
@@ -238,10 +238,11 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
             pairs.add(new BasicNameValuePair("fb_id",""));
             pairs.add(new BasicNameValuePair("password", edPassword.getText().toString()));
 
-            progressDialog =new ProgressDialog(LoginScreen.this);
-            progressDialog.setMessage("Loading...");
+
+            progressDialog =new HUD(LoginScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
             progressDialog.show();
-            new GetPostClass(API.LOGIN,pairs,EnumType.POST) {
+
+           new GetPostClass(API.LOGIN,pairs,EnumType.POST) {
                 @Override
                 public void response(String response) {
                     progressDialog.dismiss();

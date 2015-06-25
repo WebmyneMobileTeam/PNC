@@ -40,8 +40,6 @@ public class WalkThorugh extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walkthrough);
 
-
-
         //setting the device not to open walk thorugh
         SharedPreferences preferences = getSharedPreferences("firstTime", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -49,20 +47,13 @@ public class WalkThorugh extends FragmentActivity {
         editor.commit();
         //end coding walk thorugh
 
-
-
-
-
-
         image1 = (ImageView) findViewById(R.id.image1);
         image2 = (ImageView) findViewById(R.id.image2);
         imageCancel = (ImageView)findViewById(R.id.image_cancel);
         viewPager = (CustomViewPager) findViewById(R.id.pager);
 
-
        mIndicator = (CirclePageIndicator)findViewById(R.id.guideIndicator);
-
-        imageCancel.setOnClickListener(new View.OnClickListener() {
+       imageCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WalkThorugh.this, HomeScreen.class);

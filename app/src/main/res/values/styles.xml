@@ -4,7 +4,7 @@
     <style name="AppTheme" parent="AppTheme.Base">
 
     </style>
-
+    <style name="Widget.GifMoviewView" parent="@android:style/Widget"></style>
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/primaryColor</item>

@@ -57,8 +57,6 @@ public class DiaryResult extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_result);
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
@@ -69,7 +67,6 @@ public class DiaryResult extends ActionBarActivity {
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryResult.this, "user_pref", 0);
         dm = complexPreferences.getObject("current-diary", diaryModel.class);
-
 
         init();
         addRecipeNames();
