@@ -27,5 +27,8 @@ public class recipeIngredient {
     @SerializedName("modified")
     public String modified;
 
+    @SerializedName("name")
+    public String name;
+
 
 }

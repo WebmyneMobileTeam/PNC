@@ -179,9 +179,10 @@ public class MyRecipeListScreen extends ActionBarActivity {
                     @Override
                     public void bottomButton() {
                         customDialog.dismiss();
-                       /* Intent i = new Intent(MyRecipeListScreen.this, AddRecipeManualScreen.class);
+                        Intent i = new Intent(MyRecipeListScreen.this, MyRecipeEditScreen.class);
+                        i.putExtra("listPos",position);
                         startActivity(i);
-*/
+
                     }
                 });
 

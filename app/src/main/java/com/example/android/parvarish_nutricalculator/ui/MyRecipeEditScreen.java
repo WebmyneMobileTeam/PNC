@@ -43,6 +43,7 @@ import com.example.android.parvarish_nutricalculator.helpers.POSTResponseListene
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.regionalmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
@@ -57,6 +58,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyRecipeEditScreen extends ActionBarActivity {
+    myrecipeModel myrecipe;
     private ProgressDialog progressDialog,progressDialog2;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner forSpinner;
@@ -75,7 +77,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
     HashMap<String,String> ingHashMap;
     ArrayList<String> IngredientNames;
     int Objpos;
-    regionalmainModel regionalObj;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,10 +169,10 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeEditScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
-        Objpos = getIntent().getIntExtra("pos", 0);
-        Objpos -=1; // for setting up with 0
-        ComplexPreferences complexPreferences1 = ComplexPreferences.getComplexPreferences(MyRecipeEditScreen.this, "user_pref", 0);
-        regionalObj = complexPreferences1.getObject("regional-recipe", regionalmainModel.class);
+        Objpos = getIntent().getIntExtra("listPos", 0);
+
+        ComplexPreferences complexPreferences2 = ComplexPreferences.getComplexPreferences(MyRecipeEditScreen.this, "user_pref", 0);
+        myrecipe = complexPreferences2.getObject("current-myrecipe", myrecipeModel.class);
 
         fillupRecipeDetails();
     }
@@ -179,15 +180,15 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
     private void fillupRecipeDetails(){
 
-        Glide.with(MyRecipeEditScreen.this).load(API.BASE_URL_IMAGE_FETCH + regionalObj.data.get(Objpos).Recipe.photo_url)
+        Glide.with(MyRecipeEditScreen.this).load(API.BASE_URL_IMAGE_FETCH + myrecipe.data.Recipe.get(Objpos).photo_url)
                 .into(imgRecipe);
 
-        etRecpieName.setText(regionalObj.data.get(Objpos).Recipe.name);
-        etNoofServings.setText(regionalObj.data.get(Objpos).Recipe.no_of_servings);
-        etIngDetails.setText(Html.fromHtml(regionalObj.data.get(Objpos).Recipe.method).toString());
+        etRecpieName.setText(myrecipe.data.Recipe.get(Objpos).name);
+        etNoofServings.setText(myrecipe.data.Recipe.get(Objpos).no_of_servings);
+        etIngDetails.setText(Html.fromHtml(myrecipe.data.Recipe.get(Objpos).method).toString());
 
-        for(int i=0;i<regionalObj.data.get(Objpos).RecipeIngredient.size();i++){
-            processAddIngFromRegional(regionalObj.data.get(Objpos).RecipeIngredient.get(i).ingredient_id,regionalObj.data.get(Objpos).RecipeIngredient.get(i).unit,regionalObj.data.get(Objpos).RecipeIngredient.get(i).quantity);
+        for(int i=0;i<myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.size();i++){
+            processAddIngFromRegional(myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.name,myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.unit,myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.quantity);
         }
 
 
