@@ -66,4 +66,6 @@ public class API {
     public static String SANJEEV_KAPOOR_RECIPE = BASE_URL+"recipes/sanjeev";
 
     public static String REGIONAL_RECIPE = BASE_URL+"recipes/regional";
+
+    public static String FETCH_IMCR = BASE_URL+"icmr_recommendeds/listing";
 }

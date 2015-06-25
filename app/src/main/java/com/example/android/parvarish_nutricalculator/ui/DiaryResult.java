@@ -31,7 +31,10 @@ import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculation;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.diaryModel;
+import com.example.android.parvarish_nutricalculator.model.diarySubModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.icmrMainModel;
+import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.recipeModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
@@ -47,6 +50,7 @@ public class DiaryResult extends ActionBarActivity {
     private Toolbar toolbar;
     recipeModel myrecipe;
     glossaryDescription ingdredient;
+    icmrMainModel icmrOBJ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +103,7 @@ public class DiaryResult extends ActionBarActivity {
 
     }
 
-    private void addTableView() {
+    private void addTableView(float energy, float protien, float fat, float calcium, float iron) {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -117,6 +121,11 @@ public class DiaryResult extends ActionBarActivity {
 
         tableView.setWeights(weights);
 
+        //TODO
+        // Right now we are taking statically ICMR value for postion 0
+
+
+
         linearTableDetails.addView(tableView, params);
 
         ArrayList<String> values = new ArrayList<>();
@@ -130,32 +139,33 @@ public class DiaryResult extends ActionBarActivity {
 
         ArrayList<String> values2 = new ArrayList<>();
         values2.add("Energy (kcal)");
-        values2.add("174");
-        values2.add("672(Approx)");
+        values2.add(String.format("%.2f",energy));
+
+        values2.add((icmrOBJ.data.get(0).IcmrRecommended.energy.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.energy));
         values2.add("97%");
 
         ArrayList<String> values3 = new ArrayList<>();
         values3.add("Protein (gm)");
-        values3.add("14.9");
-        values3.add("14.9 (Approx)");
+        values3.add(String.format("%.2f",protien));
+        values3.add((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein));
         values3.add("97%");
 
         ArrayList<String> values4 = new ArrayList<>();
         values4.add("Fat (gm)");
-        values4.add("174");
-        values4.add("9.8");
+        values4.add(String.format("%.2f",fat));
+        values4.add((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat));
         values4.add("97%");
 
         ArrayList<String> values5 = new ArrayList<>();
         values5.add("Calcium (mg)");
-        values5.add("174");
-        values5.add("500");
+        values5.add(String.format("%.2f",calcium));
+        values5.add((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium));
         values5.add("97%");
 
         ArrayList<String> values6 = new ArrayList<>();
         values6.add("Iron (mg)");
-        values6.add("174");
-        values6.add("5");
+        values6.add(String.format("%.2f",iron));
+        values6.add((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.iron));
         values6.add("97%");
 
         tableView.addRow(values2, "#ffffff");
@@ -223,16 +233,14 @@ public class DiaryResult extends ActionBarActivity {
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
                     ingdredient = new GsonBuilder().create().fromJson(response, glossaryDescription.class);
-                    addTableView();
+
 
                 }catch(Exception e){
                     Log.e("exc",e.toString());
                 }
 
-                //..... Call values for calculations
+                fetchICMRdetails();
 
-                NutritionCalculation executer = new NutritionCalculation(DiaryResult.this,dm.diarysubModel.get(2).recipeMainData,ingdredient);
-                executer.calculate();
 
 
 
@@ -247,13 +255,62 @@ public class DiaryResult extends ActionBarActivity {
     }
 
 
-    private void fetchRecipeDetails(String recipeID){
+    private void fetchICMRdetails(){
+
+        progressDialog = new ProgressDialog(DiaryResult.this);
+        progressDialog.setMessage("Loading Details...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        new GetPostClass(API.FETCH_IMCR, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                 Log.e("icmr response", response);
+                progressDialog.dismiss();
+                try {
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
+                    icmrOBJ = new GsonBuilder().create().fromJson(response, icmrMainModel.class);
+
+
+                }catch(Exception e){
+                    Log.e("exc",e.toString());
+                }
+
+                //..... Call values for calculations
+                ArrayList<myrecipedata> arr = new ArrayList<myrecipedata>();
+
+                for(diarySubModel diaryM : dm.diarysubModel ){
+                    arr.add(diaryM.recipeMainData);
+                }
+
+
+                NutritionCalculation executer = new NutritionCalculation(DiaryResult.this,arr,ingdredient);
+                executer.startCalculation();
+                executer.setOnCalculationResult(new NutritionCalculation.OnCalculationResult() {
+                    @Override
+                    public void onResult(float energy, float protien, float fat, float calcium, float iron) {
+                        Log.e("Result Energy ",""+energy);
+                        Log.e("Result protien ",""+protien);
+                        Log.e("Result fat ",""+fat);
+                        Log.e("Result calcium ",""+calcium);
+                        Log.e("Result iron ",""+iron);
+
+                        addTableView(energy,protien,fat,calcium,iron);
+                    }
+                });
 
 
 
 
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(DiaryResult.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
     }
-
 
 
     @Override
