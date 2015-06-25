@@ -30,14 +30,14 @@ import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculation;
+import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculationSingleMyRecipe;
 import com.example.android.parvarish_nutricalculator.helpers.NutritionCalculationSingleRecipe;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.POJOTableRow;
-import com.example.android.parvarish_nutricalculator.model.diarySubModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
 import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
 import com.example.android.parvarish_nutricalculator.model.icmrMainModel;
-import com.example.android.parvarish_nutricalculator.model.myrecipedata;
+import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.sanjeevmainModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
@@ -46,10 +46,10 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
+public class MyRecipeViewScreen extends ActionBarActivity {
+    myrecipeModel myrecipe;
     glossaryDescription ingdredient;
     icmrMainModel icmrOBJ;
-    sanjeevmainModel sajneevObj;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
     private TextView txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
@@ -71,12 +71,11 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
-
+        listPos = getIntent().getIntExtra("listPos", 0);
         Log.e("Pos ",""+listPos);
-        listPos = getIntent().getIntExtra("pos", 0);
 
-        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SanjeevKumarEditRecipeScreen.this, "user_pref", 0);
-        sajneevObj = complexPreferences.getObject("sanjeev-recipe", sanjeevmainModel.class);
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeViewScreen.this, "user_pref", 0);
+        myrecipe = complexPreferences.getObject("current-myrecipe", myrecipeModel.class);
 
 
         init();
@@ -92,7 +91,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
     private void fetchIngredientsdetails(){
 
-        progressDialog = new ProgressDialog(SanjeevKumarEditRecipeScreen.this);
+        progressDialog = new ProgressDialog(MyRecipeViewScreen.this);
         progressDialog.setMessage("Loading Details...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -109,9 +108,9 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
                     String ing="";
 
                     ArrayList<glossaryIngredient> arr = ingdredient.returnAllIngredients();
-                    for(int i = 0; i < sajneevObj.data.size(); i++) {
+                    for(int i = 0; i < myrecipe.data.Recipe.get(listPos).RecipeIngredientList.size(); i++) {
                         for (int j = 0; j < arr.size(); j++) {
-                            if (sajneevObj.data.get(i).Recipe.id.equalsIgnoreCase(arr.get(j).id)) {
+                            if (myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.id.equalsIgnoreCase(arr.get(j).id)) {
                                 ing +=arr.get(i).name+"\n";
                             }
                         }
@@ -131,7 +130,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(SanjeevKumarEditRecipeScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyRecipeViewScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
     }
@@ -139,7 +138,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
     private void fetchICMRdetails(){
 
-        progressDialog = new ProgressDialog(SanjeevKumarEditRecipeScreen.this);
+        progressDialog = new ProgressDialog(MyRecipeViewScreen.this);
         progressDialog.setMessage("Loading Details...");
         progressDialog.setCancelable(false);
         progressDialog.show();
@@ -160,10 +159,10 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
 
 
-                NutritionCalculationSingleRecipe executer = new NutritionCalculationSingleRecipe(SanjeevKumarEditRecipeScreen.this,sajneevObj.data.get(listPos).RecipeIngredient,ingdredient);
+                NutritionCalculationSingleMyRecipe executer = new NutritionCalculationSingleMyRecipe(MyRecipeViewScreen.this,myrecipe.data.Recipe.get(listPos).RecipeIngredientList,ingdredient);
                 executer.startCalculation();
 
-                executer.setOnCalculationResult(new NutritionCalculationSingleRecipe.OnCalculationResult() {
+                executer.setOnCalculationResult(new NutritionCalculationSingleMyRecipe.OnCalculationResult() {
                     @Override
                     public void onResult(float energy, float protien, float fat, float calcium, float iron) {
                         Log.e("Result Energy ",""+energy);
@@ -185,7 +184,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
             @Override
             public void error(String error) {
                 progressDialog.dismiss();
-                Toast.makeText(SanjeevKumarEditRecipeScreen.this, error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyRecipeViewScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
     }
@@ -202,15 +201,15 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         txtTitle = (TextView)findViewById(R.id.txtTitle);
         photoImg = (ImageView)findViewById(R.id.photoImg);
 
-        txtTitle.setText(sajneevObj.data.get(listPos).Recipe.name);
-        txtServing.setText("Servings : " + sajneevObj.data.get(listPos).Recipe.no_of_servings);
-        txtAgeGroup.setText("Age of Baby : " + sajneevObj.data.get(listPos).Recipe.age_group);
+        txtTitle.setText(myrecipe.data.Recipe.get(listPos).name);
+        txtServing.setText("Servings : " + myrecipe.data.Recipe.get(listPos).no_of_servings);
+        txtAgeGroup.setText("Age of Baby : " + myrecipe.data.Recipe.get(listPos).age_group);
 
-        Glide.with(SanjeevKumarEditRecipeScreen.this).load(API.BASE_URL_IMAGE_FETCH +sajneevObj.data.get(listPos).Recipe.photo_url)
+        Glide.with(MyRecipeViewScreen.this).load(API.BASE_URL_IMAGE_FETCH +myrecipe.data.Recipe.get(listPos).photo_url)
                 .into(photoImg);
 
 
-        txtMeth.setText(Html.fromHtml(sajneevObj.data.get(listPos).Recipe.method));
+        txtMeth.setText(Html.fromHtml(myrecipe.data.Recipe.get(listPos).method));
 
     }
 
@@ -218,7 +217,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        MyTableView tableView = new MyTableView(SanjeevKumarEditRecipeScreen.this);
+        MyTableView tableView = new MyTableView(MyRecipeViewScreen.this);
         tableView.setPadding(8,8,8,8);
 
         // setting weights recommanded
@@ -311,7 +310,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
 
-        ListPopupWindow popupWindow = new ListPopupWindow(SanjeevKumarEditRecipeScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(MyRecipeViewScreen.this);
         popupWindow.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
@@ -321,7 +320,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         popupWindow.setWidth((int)(width/1.5));
         popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(SanjeevKumarEditRecipeScreen.this,arrayList,drawableImage,true));
+        popupWindow.setAdapter(new SettingsAdapter(MyRecipeViewScreen.this,arrayList,drawableImage,true));
         popupWindow.show();
     }
 
@@ -330,7 +329,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
         int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(SanjeevKumarEditRecipeScreen.this);
+        ListPopupWindow popupWindow = new ListPopupWindow(MyRecipeViewScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());
         popupWindow.setAnchorView(menuItemView);
@@ -342,7 +341,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         popupWindow.setWidth((int)(width/1.5));
         popupWindow.setHeight((int)(height/1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(SanjeevKumarEditRecipeScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(MyRecipeViewScreen.this,arrayList,drawableImage,false));
         popupWindow.show();
 
 
@@ -351,9 +350,9 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     private void logoutFromApp() {
 
         Log.e("click", "logout");
-        PrefUtils.clearCurrentUser(SanjeevKumarEditRecipeScreen.this);
+        PrefUtils.clearCurrentUser(MyRecipeViewScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(SanjeevKumarEditRecipeScreen.this,StartScreen.class);
+        Intent i= new Intent(MyRecipeViewScreen.this,StartScreen.class);
         startActivity(i);
         finish();
     }
@@ -415,11 +414,11 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(SanjeevKumarEditRecipeScreen.this,DisclaimerScreen.class);
+                            Intent i = new Intent(MyRecipeViewScreen.this,DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(SanjeevKumarEditRecipeScreen.this,AboutusScreen.class);
+                            Intent i2 = new Intent(MyRecipeViewScreen.this,AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
@@ -499,11 +498,11 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
                     switch (position){
 
                         case 5:
-                            Intent iGuide = new Intent(SanjeevKumarEditRecipeScreen.this,GuideLinesMainScreen.class);
+                            Intent iGuide = new Intent(MyRecipeViewScreen.this,GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(SanjeevKumarEditRecipeScreen.this,GlossaryScreen.class);
+                            Intent i = new Intent(MyRecipeViewScreen.this,GlossaryScreen.class);
                             startActivity(i);
                             break;
                     }

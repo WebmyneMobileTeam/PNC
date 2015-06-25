@@ -46,6 +46,7 @@ import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.userModel;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.login.LoginManager;
 import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.gson.GsonBuilder;
@@ -62,7 +63,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
 
 
-    private ProgressDialog progressDialog;
+    private HUD progressDialog;
     private Spinner forSpinner;
     ArrayList<String> spinnerList=new ArrayList<>();
     private ListView myRecipeList;
@@ -162,7 +163,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
         myRecipeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 final CustomDialog customDialog = new CustomDialog(MyRecipeListScreen.this, "View Recipe", "Edit Recipe", android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
@@ -170,8 +171,9 @@ public class MyRecipeListScreen extends ActionBarActivity {
                     @Override
                     public void topButton() {
                         customDialog.dismiss();
-                       /* Intent i = new Intent(MyRecipeListScreen.this, AddRecipeWebScreen.class);
-                        startActivity(i);*/
+                        Intent i = new Intent(MyRecipeListScreen.this, MyRecipeViewScreen.class);
+                        i.putExtra("listPos",position);
+                        startActivity(i);
                     }
 
                     @Override
@@ -203,9 +205,9 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
     private void fetchMyRecpie(){
 
-        progressDialog =new ProgressDialog(MyRecipeListScreen.this);
-        progressDialog.setMessage("Loading ...");
+        progressDialog =new HUD(MyRecipeListScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
+
         new GetPostClass(API.MY_RECIPE+currentUser.data.id, EnumType.GET) {
             @Override
             public void response(String response) {
@@ -215,6 +217,11 @@ public class MyRecipeListScreen extends ActionBarActivity {
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     myrecipe = new GsonBuilder().create().fromJson(response, myrecipeModel.class);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeListScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("current-myrecipe", myrecipe);
+                    complexPreferences.commit();
+
                     adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
                     myRecipeList.setAdapter(adp);
 
@@ -429,8 +436,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
     void processDeleteRecipe(final String id){
 
-        progressDialog =new ProgressDialog(MyRecipeListScreen.this);
-        progressDialog.setMessage("Deleting recipe ...");
+        progressDialog =new HUD(MyRecipeListScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
 
         new GetPostClass(API.DELETE_RECIPE+id, EnumType.GET) {

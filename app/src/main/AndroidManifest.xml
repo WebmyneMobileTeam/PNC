@@ -45,6 +45,16 @@
             android:name=".ui.LoginScreen"
             android:label="@string/title_activity_login_screen" >
         </activity>
+
+        <activity
+            android:name=".ui.MyRecipeViewScreen"
+            android:label="@string/title_activity_login_screen" >
+        </activity>
+        <activity
+            android:name=".ui.MyRecipeEditScreen"
+            android:label="@string/title_activity_login_screen" >
+        </activity>
+
         <activity
             android:name=".ui.SanjeevKumarEditRecipeScreen"
             android:label="@string/title_activity_login_screen" >

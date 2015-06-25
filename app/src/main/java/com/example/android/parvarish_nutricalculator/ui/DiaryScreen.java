@@ -47,6 +47,7 @@ import com.example.android.parvarish_nutricalculator.model.diarySubModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBox;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
@@ -56,7 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DiaryScreen extends ActionBarActivity {
-    private ProgressDialog progressDialog,progressDialog2;
+    private HUD progressDialog,progressDialog2;
     userModel currentUser;
     babyModel cuurentBaby;
     ArrayList<String> spinnerList = new ArrayList<>();
@@ -90,8 +91,16 @@ public class DiaryScreen extends ActionBarActivity {
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(DiaryScreen.this, DiaryResult.class);
-                startActivity(i);
+
+                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
+                diaryModel dmobj = complexPreferences.getObject("current-diary", diaryModel.class);
+
+                if(dmobj == null ||dmobj.diarysubModel.size()==0){
+                 Toast.makeText(DiaryScreen.this,"Please add recipe in diary !!!",Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent i = new Intent(DiaryScreen.this, DiaryResult.class);
+                    startActivity(i);
+                }
             }
         });
 
@@ -303,8 +312,7 @@ public class DiaryScreen extends ActionBarActivity {
 
 
     private void processFetchBabydetails(){
-        progressDialog = new ProgressDialog(DiaryScreen.this);
-        progressDialog.setMessage("Loading Details...");
+        progressDialog =new HUD(DiaryScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.setCancelable(false);
         progressDialog.show();
         //API.GET_BABY_DETAILS+currentUser.data.id
@@ -356,8 +364,7 @@ public class DiaryScreen extends ActionBarActivity {
     }
 
     private void fetchMyRecipe(){
-        progressDialog2 = new ProgressDialog(DiaryScreen.this);
-        progressDialog2.setMessage("Loading Details...");
+        progressDialog2 =new HUD(DiaryScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.setCancelable(false);
         progressDialog2.show();
         new GetPostClass(API.MY_RECIPE+currentUser.data.id, EnumType.GET) {

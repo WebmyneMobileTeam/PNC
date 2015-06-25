@@ -42,6 +42,7 @@ import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxAddFreind;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxEditBaby;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
@@ -51,7 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class FriendsScreen extends ActionBarActivity {
-    private ProgressDialog progressDialog;
+    private HUD progressDialog;
     private ListView friendList;
     private Toolbar toolbar;
     userModel currentUser;
@@ -183,8 +184,7 @@ public class FriendsScreen extends ActionBarActivity {
 
     void processRejectRequest(final String id){
 
-        progressDialog =new ProgressDialog(FriendsScreen.this);
-        progressDialog.setMessage("Updating request ...");
+        progressDialog =new HUD(FriendsScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE+id+"&status=Rejected", EnumType.GET) {
             @Override
@@ -211,8 +211,7 @@ public class FriendsScreen extends ActionBarActivity {
     }
 
     private void fetchFreindsScreen(){
-        progressDialog =new ProgressDialog(FriendsScreen.this);
-        progressDialog.setMessage("Loading ...");
+        progressDialog  =new HUD(FriendsScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         new GetPostClass(API.FRIENDS_LISTING+currentUser.data.id, EnumType.GET) {
             @Override

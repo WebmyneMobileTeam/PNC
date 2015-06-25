@@ -37,6 +37,7 @@ import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
 import com.example.android.parvarish_nutricalculator.model.icmrMainModel;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.recipeModel;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DiaryResult extends ActionBarActivity {
-    ProgressDialog progressDialog,progressDialog2;
+    HUD progressDialog,progressDialog2;
     diaryModel dm;
     private LinearLayout linearTableDetails,linearRecipeNames;
     private Toolbar toolbar;
@@ -194,50 +195,11 @@ public class DiaryResult extends ActionBarActivity {
 
     }
 
-    void CalcualateNutritionResult(){
 
-        ConversionTable cn = new ConversionTable();
-        for(int i=0;i<dm.diarysubModel.size();i++){
-           // cn.CalculateEnergy(myrecipe.data.get(i).RecipeIngredient.get(0).quantity,myrecipe.data.get(i).RecipeIngredient.get(0).unit);
-        }
-        String energy="";String protein="";String fat="";String calcium="";String iron="";
-
-
-      /*  for(int i=0;i<dm.diarysubModel.size();i++){
-            for(int j=0;j<dm.diarysubModel.get(i).recipeMainData.)
-        }
-*/
-
-
-      /*  for(int a=0;a<ingdredient.data.size();a++){
-            for(int b=0;b<ingdredient.data.get(a).Ingredient.size();b++){
-                for(int i=0;i<myrecipe.data.size();i++){
-                    for(int j=0;j<myrecipe.data.get(i).RecipeIngredient.size();j++) {
-                        if (myrecipe.data.get(i).RecipeIngredient.get(j).ingredient_id.equalsIgnoreCase(ingdredient.data.get(a).Ingredient.get(b).id)) {
-                            energy = ingdredient.data.get(a).Ingredient.get(b).energy;
-                            protein = ingdredient.data.get(a).Ingredient.get(b).protein;
-                            fat = ingdredient.data.get(a).Ingredient.get(b).fat;
-                            calcium = ingdredient.data.get(a).Ingredient.get(b).calcium;
-                            iron = ingdredient.data.get(a).Ingredient.get(b).iron;
-                        }
-                    }
-
-                }
-            }
-        }*/
-
-        Log.e("energy - ",energy);
-        Log.e("protein - ",protein);
-        Log.e("fat - ",fat);
-        Log.e("calcium - ",calcium);
-        Log.e("iorn - ",iron);
-
-    }
 
     private void fetchIngredientsdetails(){
 
-        progressDialog = new ProgressDialog(DiaryResult.this);
-        progressDialog.setMessage("Loading Details...");
+        progressDialog =new HUD(DiaryResult.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.setCancelable(false);
         progressDialog.show();
 
@@ -273,8 +235,7 @@ public class DiaryResult extends ActionBarActivity {
 
     private void fetchICMRdetails(){
 
-        progressDialog = new ProgressDialog(DiaryResult.this);
-        progressDialog.setMessage("Loading Details...");
+        progressDialog  =new HUD(DiaryResult.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.setCancelable(false);
         progressDialog.show();
 

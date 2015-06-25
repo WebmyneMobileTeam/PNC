@@ -47,6 +47,7 @@ import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxEditBaby;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxGlossary;
+import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
@@ -75,7 +76,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     private Button btnSave,btnChangePassword;
     private EditText edSignUpCity,edSignUpMobile,edSignUpEmail,edSignUpPassword,edSignUpUserName;
     private ImageView imgProfile;
-    private ProgressDialog progressDialog,progressDialog2;
+    private HUD progressDialog,progressDialog2;
     private ListView profileList;
     private Toolbar toolbar;
     userModel currentUser;
@@ -195,8 +196,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     private void processfetchBabyDetails(){
 
-        progressDialog =new ProgressDialog(ProfileScreen.this);
-        progressDialog.setMessage("Loading Profile...");
+        progressDialog  =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         //API.GET_BABY_DETAILS+currentUser.data.id
         new GetPostClass(API.GET_BABY_DETAILS+currentUser.data.id,EnumType.GET) {
@@ -359,8 +359,7 @@ private View.OnClickListener myBabyClick = new View.OnClickListener() {
 
 private void processShowDeleteBabyDialog(String bid){
 
-        progressDialog =new ProgressDialog(ProfileScreen.this);
-        progressDialog.setMessage("Deleteing Baby details...");
+        progressDialog =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         //API.GET_BABY_DETAILS+currentUser.data.id
         new GetPostClass(API.DELETE_BABY+bid,EnumType.GET) {
@@ -401,17 +400,16 @@ private void processAddbaby(String edBabyName,String edBabyDOB){
 private void processAdd(String edBabyName,String edBabyDOB){
         List<NameValuePair> pairs = new ArrayList<>();
 
-         Log.e("dob",edBabyDOB);
+         Log.e("dob", edBabyDOB);
 
         pairs.add(new BasicNameValuePair("user_id", currentUser.data.id));
         pairs.add(new BasicNameValuePair("baby_name",edBabyName));
         pairs.add(new BasicNameValuePair("baby_dob",edBabyDOB));
-        pairs.add(new BasicNameValuePair("photo_url",""));
+        pairs.add(new BasicNameValuePair("photo_url", ""));
 
          Log.e("rewuest",""+ pairs.toString());
 
-        progressDialog2 =new ProgressDialog(ProfileScreen.this);
-        progressDialog2.setMessage("Adding Baby Details...");
+        progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.show();
         new GetPostClass(API.ADD_BABY,pairs,EnumType.POST) {
             @Override
@@ -438,8 +436,7 @@ private void processAdd(String edBabyName,String edBabyDOB){
 private void processfetchProfileDetails(){
 
 
-        progressDialog =new ProgressDialog(ProfileScreen.this);
-        progressDialog.setMessage("Loading Profile...");
+        progressDialog =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
 
          new GetPostClass(API.GET_PROFILE+currentUser.data.id,EnumType.GET) {
@@ -559,8 +556,7 @@ private void processfetchProfileDetails(){
         pairs.add(new BasicNameValuePair("fb_email",currentUser.data.fb_email));
 
 
-        progressDialog2 =new ProgressDialog(ProfileScreen.this);
-        progressDialog2.setMessage("Updating Profile...");
+        progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.show();
         new GetPostClass(API.UPDATE_PROFILE,pairs,EnumType.POST) {
             @Override
