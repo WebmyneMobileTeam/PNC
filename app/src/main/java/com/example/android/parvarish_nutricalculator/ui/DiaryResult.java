@@ -119,9 +119,7 @@ public class DiaryResult extends ActionBarActivity {
         weights.add(0.5f);
         weights.add(1f);
         weights.add(0.5f);
-
         tableView.setWeights(weights);
-
         linearTableDetails.addView(tableView, params);
 
         ArrayList<POJOTableRow> values = new ArrayList<>();
