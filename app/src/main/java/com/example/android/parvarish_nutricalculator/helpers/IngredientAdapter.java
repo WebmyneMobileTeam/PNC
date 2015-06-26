@@ -1,5 +1,6 @@
 package com.example.android.parvarish_nutricalculator.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
+import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxGlossary;
 import com.tonicartos.superslim.GridSLM;
 import com.tonicartos.superslim.LinearSLM;
 
@@ -35,9 +37,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
 
     private boolean mMarginsFixed;
      ArrayList<glossaryIngredient> countryNames;
-    private final Context mContext;
+    private final Activity mContext;
 
-    public IngredientAdapter(Context context, int headerMode, ArrayList<glossaryIngredient> names) {
+    public IngredientAdapter(Activity context, int headerMode, ArrayList<glossaryIngredient> names) {
         mContext = context;
 
         countryNames = names;
@@ -86,7 +88,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
 
                     for(int i=0;i<countryNames.size();i++){
                         if(countryNames.get(i).name.equalsIgnoreCase(tv.getText().toString().trim())){
-                            Toast.makeText(mContext,"This is Clicked"+countryNames.get(i).name+"\n"+countryNames.get(i).details,Toast.LENGTH_LONG).show();
+                            CustomDialogBoxGlossary box = new CustomDialogBoxGlossary(mContext,countryNames.get(i).name,countryNames.get(i).details,countryNames.get(i).nutients_benefits);
+                            box.show();
+                            //Toast.makeText(mContext,"This is Clicked"+countryNames.get(i).name+"\n"+countryNames.get(i).details,Toast.LENGTH_LONG).show();
                             break;
                         }
                     }
