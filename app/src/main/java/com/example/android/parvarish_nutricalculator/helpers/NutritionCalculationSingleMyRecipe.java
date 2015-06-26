@@ -46,11 +46,13 @@ public class NutritionCalculationSingleMyRecipe {
 
     private ProgressDialog pd;
     private OnCalculationResult onCalculationResult;
+    private int NO_OF_SERVINGS=1;
 
-    public NutritionCalculationSingleMyRecipe(Context _context, ArrayList<recipeSubIngredient> recipeing, glossaryDescription ingredients_values) {
+    public NutritionCalculationSingleMyRecipe(Context _context, ArrayList<recipeSubIngredient> recipeing, glossaryDescription ingredients_values,String servings) {
         this._context = _context;
         this.recipesIng = recipeing;
         this.ingredients_values = ingredients_values;
+        this.NO_OF_SERVINGS = Integer.valueOf(servings);
 
     }
 
@@ -84,7 +86,7 @@ public class NutritionCalculationSingleMyRecipe {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 pd.dismiss();
-                onCalculationResult.onResult(returnOverAllEnergy(), returnOverAllProtien(), returnOverAllFat(), returnOverAllCalcium(), returnOverAllIron());
+                onCalculationResult.onResult(returnOverAllEnergy()/NO_OF_SERVINGS, returnOverAllProtien()/NO_OF_SERVINGS, returnOverAllFat()/NO_OF_SERVINGS, returnOverAllCalcium()/NO_OF_SERVINGS, returnOverAllIron()/NO_OF_SERVINGS);
             }
         }.execute();
 
@@ -114,10 +116,17 @@ public class NutritionCalculationSingleMyRecipe {
                     Log.e("Value Of 1 Unit ", "" + convertedUnit);
                 } else {
 
-                    JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
-                    JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
-                    JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.RecipeIngredient.unit.toLowerCase(), "ml"));
-                    convertedUnit = Float.parseFloat(particularObject.getString("1"));
+                    try {
+                        JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
+                        JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
+                        JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.RecipeIngredient.unit.toLowerCase(), "ml"));
+                        convertedUnit = Float.parseFloat(particularObject.getString("1"));
+                    }catch (Exception e){
+                        convertedUnit = 1;
+                        Log.e("Exce values not found",e.toString());
+
+                    }
+
                     Log.e("Value Of 1 Unit ", "" + convertedUnit);
                 }
                 Log.e("ML of single Ingredient", (convertedUnit * quantity) + " ML");

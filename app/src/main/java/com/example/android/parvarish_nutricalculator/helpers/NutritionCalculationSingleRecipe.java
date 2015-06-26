@@ -115,11 +115,16 @@ public class NutritionCalculationSingleRecipe {
                     Log.e("Value Of 1 Unit ", "" + convertedUnit);
                 } else {
 
-                    JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
-                    JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
-                    JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.unit.toLowerCase(), "ml"));
-                    convertedUnit = Float.parseFloat(particularObject.getString("1"));
-                    Log.e("Value Of 1 Unit ", "" + convertedUnit);
+                    try {
+                        JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
+                        JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
+                        JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.unit.toLowerCase(), "ml"));
+                        convertedUnit = Float.parseFloat(particularObject.getString("1"));
+                        Log.e("Value Of 1 Unit ", "" + convertedUnit);
+                    }catch(Exception e){
+                        convertedUnit = 1;
+                        Log.e("Exce values not found",e.toString());
+                    }
                 }
                 Log.e("ML of single Ingredient", (convertedUnit * quantity) + " ML");
 
