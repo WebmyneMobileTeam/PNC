@@ -102,6 +102,15 @@
             android:layout_height="wrap_content" />
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/linearTableAdded"
+
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
 
          <LinearLayout
         android:orientation="vertical"
@@ -122,15 +131,6 @@
             android:text="Add Meals"
             style="@style/btn_addBaby" />
 
-        <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:id="@+id/linearTableAdded"
-
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        />
 
 
 

@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.AGE_GROUP;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
@@ -51,6 +52,9 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -182,10 +186,21 @@ public class AddRecipeManualScreen extends ActionBarActivity {
            userJSONObject.put("ingredients_details", "");
            userJSONObject.put("sanjeev_kapoor_receipe", "No");
            userJSONObject.put("regional_food_receipe", "No");
-           userJSONObject.put("age_group", "6-8 months");
+
+           //Setting the age group
+           AGE_GROUP obj = new AGE_GROUP(cuurentBaby.data.get(babyspinnerPos - 1).Baby.baby_dob);
+           String age_group = obj.getAgeGroup();
+
+           userJSONObject.put("age_group", age_group);
+
            userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
            userJSONObject.put("photo_url", "");
-           userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos-1).Baby.id);
+           userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos - 1).Baby.id);
+
+
+
+
+
 
            JSONArray array = new JSONArray();
            for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
@@ -263,8 +278,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/4");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");
@@ -298,26 +318,16 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-
-            AutoCompleteTextView edIng;
-            for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
-
-                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
-                final int pos = i;
-                edIng = (AutoCompleteTextView) mainLiner.getChildAt(1);
-
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (edIng.getRight() - edIng.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                        // Toast.makeText(AddRecipeManualScreen.this,"clicked "+i,Toast.LENGTH_SHORT).show();
-                        linearTableAdded.removeViewAt(i);
-
-                    }
+            AutoCompleteTextView txt = (AutoCompleteTextView)v;
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == 0) {
+                if (event.getRawX() >= (txt.getRight() - txt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    LinearLayout parent = (LinearLayout)txt.getParent();
+                    //  Toast.makeText(DiaryScreen.this,"clicked "+,Toast.LENGTH_SHORT).show();
+                    linearTableAdded.removeViewAt(linearTableAdded.indexOfChild(parent));
+                    linearTableAdded.invalidate();
                 }
+
             }
 
 
@@ -457,8 +467,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/4");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");

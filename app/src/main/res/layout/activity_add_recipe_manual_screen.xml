@@ -162,12 +162,21 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:id="@+id/linearTableAdded"
+
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:id="@+id/linearTable"
 
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                >
-            </LinearLayout>
+              />
 
             <Button
                 android:gravity="center"
@@ -178,16 +187,6 @@
                 android:text="Add Ingredient"
                 style="@style/btn_addBaby" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:id="@+id/linearTableAdded"
-
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                >
-            </LinearLayout>
 
 
             <EditText

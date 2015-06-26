@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.custom.CustomDialog;
+import com.example.android.parvarish_nutricalculator.helpers.AGE_GROUP;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
@@ -339,13 +340,14 @@ public class MyRecipeListScreen extends ActionBarActivity {
             TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
 
             txtrecipeName.setText(ValuesSearch.get(position).name);
-            txtBabyage.setText(ValuesSearch.get(position).age_group);
+
+            txtBabyage.setText("Baby Age: "+ValuesSearch.get(position).age_group);
 
 
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        showDeleteAlert("Are you sure want to delete this request ?",ValuesSearch.get(position).id);
+                    showDeleteAlert("Are you sure want to delete this request ?", ValuesSearch.get(position).id);
                 }
             });
 

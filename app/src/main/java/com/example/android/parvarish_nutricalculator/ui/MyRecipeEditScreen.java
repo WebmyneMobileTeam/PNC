@@ -333,8 +333,13 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/2");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");

@@ -333,8 +333,13 @@ public class AddRegionalManualScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/4");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");
@@ -367,28 +372,18 @@ public class AddRegionalManualScreen extends ActionBarActivity {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-
-
-            AutoCompleteTextView edIng;
-            for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
-
-                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
-                final int pos = i;
-                edIng = (AutoCompleteTextView) mainLiner.getChildAt(1);
-
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (event.getRawX() >= (edIng.getRight() - edIng.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-
-                        // Toast.makeText(AddRecipeManualScreen.this,"clicked "+i,Toast.LENGTH_SHORT).show();
-                        linearTableAdded.removeViewAt(i);
-
-                    }
+            AutoCompleteTextView txt = (AutoCompleteTextView)v;
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == 0) {
+                if (event.getRawX() >= (txt.getRight() - txt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    LinearLayout parent = (LinearLayout)txt.getParent();
+                    //  Toast.makeText(DiaryScreen.this,"clicked "+,Toast.LENGTH_SHORT).show();
+                    linearTableAdded.removeViewAt(linearTableAdded.indexOfChild(parent));
+                    linearTableAdded.invalidate();
                 }
+
             }
+
 
 
             return false;
@@ -523,8 +518,13 @@ public class AddRegionalManualScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/4");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");
