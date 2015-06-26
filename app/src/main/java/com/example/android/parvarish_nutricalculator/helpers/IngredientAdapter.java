@@ -6,9 +6,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
 import com.tonicartos.superslim.GridSLM;
 import com.tonicartos.superslim.LinearSLM;
 
@@ -18,6 +21,7 @@ import java.util.ArrayList;
  *
  */
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder> {
+
 
     private static final int VIEW_TYPE_HEADER = 0x01;
 
@@ -30,13 +34,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
     private int mHeaderDisplay;
 
     private boolean mMarginsFixed;
-
+     ArrayList<glossaryIngredient> countryNames;
     private final Context mContext;
 
-    public IngredientAdapter(Context context, int headerMode, String[] names) {
+    public IngredientAdapter(Context context, int headerMode, ArrayList<glossaryIngredient> names) {
         mContext = context;
 
-        final String[] countryNames = names;
+        countryNames = names;
         mHeaderDisplay = headerMode;
 
         mItems = new ArrayList<>();
@@ -46,8 +50,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
         int sectionManager = -1;
         int headerCount = 0;
         int sectionFirstPosition = 0;
-        for (int i = 0; i < countryNames.length; i++) {
-            String header = countryNames[i].substring(0, 1);
+        for (int i = 0; i < countryNames.size(); i++) {
+            String header = countryNames.get(i).name.substring(0, 1);
             if (!TextUtils.equals(lastHeader, header)) {
                 // Insert new header view and update section data.
                 sectionManager = (sectionManager + 1) % 2;
@@ -56,8 +60,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
                 headerCount += 1;
                 mItems.add(new LineItem(header, true, sectionManager, sectionFirstPosition));
             }
-            mItems.add(new LineItem(countryNames[i], false, sectionManager, sectionFirstPosition));
-
+            mItems.add(new LineItem(countryNames.get(i).name, false, sectionManager, sectionFirstPosition));
         }
     }
 
@@ -65,7 +68,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
     @Override
     public IngredientViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final View view;
-
         if (viewType == VIEW_TYPE_HEADER) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.header_item, parent, false);
@@ -74,28 +76,30 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
                     .inflate(R.layout.text_line_item, parent, false);
 
 
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    LinearLayout ll = (LinearLayout)v;
+                    TextView tv = (TextView)ll.findViewById(R.id.text);
+
+                    for(int i=0;i<countryNames.size();i++){
+                        if(countryNames.get(i).name.equalsIgnoreCase(tv.getText().toString().trim())){
+                            Toast.makeText(mContext,"This is Clicked"+countryNames.get(i).name+"\n"+countryNames.get(i).details,Toast.LENGTH_LONG).show();
+                            break;
+                        }
+                    }
+
+
+                }
+            });
+
+
 
         }
 
-       /* view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = parent.indexOfChild(view);
 
-                if(pos==0){
-                    pos+=1;
-                    Toast.makeText(mContext,"This is Cliocked" +mItems.get(pos).text,Toast.LENGTH_LONG).show();
-                }else{
-                    pos-=1;
-                    if(mItems.get(pos).isHeader){
-                        pos+=2;
-                        Toast.makeText(mContext,"This is Cliocked" +mItems.get(pos).text,Toast.LENGTH_LONG).show();
-                    }
-                    //Toast.makeText(mContext,"This is Cliocked" +mItems.get(pos).text,Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });*/
         return new IngredientViewHolder(view);
     }
 

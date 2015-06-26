@@ -150,7 +150,6 @@ public class GlossaryScreenTemp extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int item) {
                 btnCategory.setText(catg[item]);
 
-
                 GlossaryScreenTempFragment.mAdapter.notifyDataSetChanged();
         //        glossaryList.invalidateViews();
                // mad.notifyDataSetInvalidated();*/

@@ -175,8 +175,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
        try {
 
            int babyspinnerPos = forSpinner.getSelectedItemPosition();
-
-
+           
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
            userJSONObject.put("method", etIngDetails.getText().toString().trim());

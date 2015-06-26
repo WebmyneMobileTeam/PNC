@@ -52,6 +52,7 @@ import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +70,9 @@ public class DiaryScreen extends ActionBarActivity {
     LinearLayout linearTable, linearTableAdded;
     CharSequence[] myRecipes;
     myrecipeModel myrecipe;
+    int lastTouchedPos = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,8 +166,6 @@ public class DiaryScreen extends ActionBarActivity {
     }
 
 
-
-
     void processAddTopTable(){
         View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTable, false);
         TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
@@ -194,8 +196,6 @@ public class DiaryScreen extends ActionBarActivity {
 
         int counter = linearTableAdded.getChildCount();
         counter+=1;
-
-
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
         spServings.setAdapter(customSpinnerAdapter);
@@ -287,21 +287,16 @@ public class DiaryScreen extends ActionBarActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
         //    Toast.makeText(DiaryScreen.this,"clicked ",Toast.LENGTH_SHORT).show();
-
-            TextView edIng;
-            for (int i = 0; i < linearTableAdded.getChildCount(); i++) {
-                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(i);
-                final int pos = i;
-                edIng = (TextView)mainLiner.getChildAt(1);
-
-                final int DRAWABLE_RIGHT = 2;
-
-                if (event.getAction() == 0) {
-                    if (event.getRawX() >= (edIng.getRight() - edIng.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                          linearTableAdded.removeViewAt(i);
-                    }
-
+            TextView txt = (TextView)v;
+            final int DRAWABLE_RIGHT = 2;
+            if (event.getAction() == 0) {
+                if (event.getRawX() >= (txt.getRight() - txt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    LinearLayout parent = (LinearLayout)txt.getParent();
+                    //  Toast.makeText(DiaryScreen.this,"clicked "+,Toast.LENGTH_SHORT).show();
+                    linearTableAdded.removeViewAt(linearTableAdded.indexOfChild(parent));
+                    linearTableAdded.invalidate();
                 }
+
             }
 
             saveDiaryData();

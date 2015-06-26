@@ -23,6 +23,7 @@ import com.example.android.parvarish_nutricalculator.helpers.IngredientAdapter;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
 import com.google.gson.GsonBuilder;
 import com.tonicartos.superslim.LayoutManager;
 
@@ -41,6 +42,8 @@ public class GlossaryScreenTempFragment extends Fragment {
     String[] ingName2;
     String[] ingNameSearch;
     EditText edSearch;
+
+    ArrayList<glossaryIngredient> ingArray;
 
     private static final String KEY_HEADER_POSITIONING = "key_header_mode";
 
@@ -121,12 +124,17 @@ public class GlossaryScreenTempFragment extends Fragment {
 
 
     private  void processSearchData(String searchString){
-         boolean isSearchItemFind = false;
+
+
+        ingArray = new ArrayList<glossaryIngredient>();
+
+        boolean isSearchItemFind = false;
         String categoryTxt = btnCategory.getText().toString().toLowerCase();
         for (int i = 0; i < gd.data.size(); i++) {
             if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {
 
                 ingNameSearch = new String[1];
+                ingArray = gd.data.get(i).Ingredient;
                 int k=0;
                 for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
 
@@ -142,7 +150,7 @@ public class GlossaryScreenTempFragment extends Fragment {
         }
 
         if(isSearchItemFind) {
-            mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay, ingNameSearch);
+            mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay, ingArray);
             mAdapter.setMarginsFixed(mAreMarginsFixed);
             mAdapter.setHeaderDisplay(mHeaderDisplay);
             mViews.setAdapter(mAdapter);
@@ -184,6 +192,8 @@ public class GlossaryScreenTempFragment extends Fragment {
                 for (int i = 0; i < gd.data.size(); i++) {
                     if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {
 
+                        ingArray = gd.data.get(i).Ingredient;
+
                         ingName2 = new String[gd.data.get(i).Ingredient.size()];
                         for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
 
@@ -194,10 +204,7 @@ public class GlossaryScreenTempFragment extends Fragment {
                     }
                 }
 
-
-
-                mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay,ingName2);
-
+                mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay,ingArray);
                 mAdapter.setMarginsFixed(mAreMarginsFixed);
                 mAdapter.setHeaderDisplay(mHeaderDisplay);
                 mViews.setAdapter(mAdapter);
@@ -236,7 +243,7 @@ public class GlossaryScreenTempFragment extends Fragment {
         String categoryTxt = btnCategory.getText().toString().toLowerCase();
         for (int i = 0; i < gd.data.size(); i++) {
             if (categoryTxt.equalsIgnoreCase(gd.data.get(i).IngredientCategory.name)) {
-
+                ingArray = gd.data.get(i).Ingredient;
                 ingName2 = new String[gd.data.get(i).Ingredient.size()];
                 for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
 
@@ -247,7 +254,7 @@ public class GlossaryScreenTempFragment extends Fragment {
         }
 
 
-        mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay,ingName2);
+        mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay,ingArray);
         mAdapter.setMarginsFixed(mAreMarginsFixed);
         mAdapter.setHeaderDisplay(mHeaderDisplay);
         mViews.setAdapter(mAdapter);

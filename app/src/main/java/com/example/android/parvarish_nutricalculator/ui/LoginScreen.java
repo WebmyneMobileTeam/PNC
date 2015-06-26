@@ -192,7 +192,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                                 startActivity(intent);
                                 finish();
                             }
-//                                callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
+        //    callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
                         }
                     });
 
@@ -222,10 +222,8 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         switch (v.getId()){
 
             case R.id.btnLogin:
-
                 loginProcess();
                 break;
-
         }
     }
 
@@ -289,7 +287,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                         startActivity(intent);
                         finish();
                     }
-
 
                 }
                 @Override
