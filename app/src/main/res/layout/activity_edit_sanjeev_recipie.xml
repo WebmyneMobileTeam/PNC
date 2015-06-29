@@ -136,9 +136,10 @@
             android:singleLine="true"
             android:textStyle="normal"
             android:gravity="center"
+            android:id="@+id/txtEdit"
             android:layout_gravity="center"
             android:textSize="@dimen/normal_text"
-            android:text="SAVE REPORT TO PHONE"
+            android:text="EDIT RECIPE"
             android:textColor="#ffffff"
             android:background="@color/color_button_darkred" />
 

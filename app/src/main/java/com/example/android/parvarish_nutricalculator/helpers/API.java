@@ -55,6 +55,8 @@ public class API {
 
     public static String ADD_RECIPE = BASE_URL+"recipes/addRecipe";
 
+    public static String EDIT_RECIPE = BASE_URL+"recipes/editRecipe";
+
     public static String GLOSSARY_INGREDIENTS = BASE_URL+"ingredient_categories/listing";
 
     public static String MY_RECIPE = BASE_URL+"users/userfeeds/?user_id=";

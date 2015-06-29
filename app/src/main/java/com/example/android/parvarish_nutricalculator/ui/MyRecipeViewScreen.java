@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -205,9 +206,15 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         txtServing.setText("Servings : " + myrecipe.data.Recipe.get(listPos).no_of_servings);
         txtAgeGroup.setText("Age of Baby : " + myrecipe.data.Recipe.get(listPos).age_group);
 
-        Glide.with(MyRecipeViewScreen.this).load(API.BASE_URL_IMAGE_FETCH +myrecipe.data.Recipe.get(listPos).photo_url)
-                .into(photoImg);
 
+        Bitmap recipeimg = PrefUtils.returnBitmapImage(myrecipe.data.Recipe.get(listPos).photo_url);
+
+        Log.e("### base 64", myrecipe.data.Recipe.get(listPos).photo_url);
+        photoImg.setImageBitmap(recipeimg);
+
+       /* Glide.with(MyRecipeViewScreen.this).load(recipeimg)
+                .into(photoImg);
+*/
 
         txtMeth.setText(Html.fromHtml(myrecipe.data.Recipe.get(listPos).method));
 

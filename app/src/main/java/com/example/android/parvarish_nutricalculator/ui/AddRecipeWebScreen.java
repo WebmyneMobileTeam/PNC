@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -47,7 +48,7 @@ import java.util.Arrays;
 
 public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClickListener {
     private ProgressDialog progressDialog,progressDialog2;
-
+    private EditText edURL;
     private Spinner SpRegionalRecipie;
     private Button btnImport;
     private Toolbar toolbar;
@@ -77,7 +78,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
 
         callWebServices();
 
-
+        edURL = (EditText)findViewById(R.id.edURL);
         img1 = (ImageView) findViewById(R.id.img1);
         img2 = (ImageView) findViewById(R.id.img2);
         img3 = (ImageView) findViewById(R.id.img3);
@@ -88,6 +89,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         img3.setOnClickListener(this);
         img4.setOnClickListener(this);
         btnImport = (Button) findViewById(R.id.btnImport);
+
         btnImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +100,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
                     startActivity(i);
                 }else{
                     Intent i = new Intent(AddRecipeWebScreen.this, ImportRecipeFromWebScreen.class);
+                    i.putExtra("url",edURL.getText().toString().trim());
                     startActivity(i);
                 }
 

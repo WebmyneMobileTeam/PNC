@@ -64,6 +64,10 @@ public class ComplexPreferences {
         editor.clear();
     }
 
+	public void removeObject(String objName) {
+		editor.remove(objName);
+	}
+
 	public <T> T getObject(String key, Class<T> a) {
 	
 		String gson = preferences.getString(key, null);

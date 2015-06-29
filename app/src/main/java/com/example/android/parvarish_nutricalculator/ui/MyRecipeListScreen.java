@@ -90,6 +90,16 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
         init();
 
 
@@ -189,11 +199,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
             }
         });
-
     }
-
-
-
 
     private void init(){
         btnAddRecipe = (Button)findViewById(R.id.btnAddRecipe);

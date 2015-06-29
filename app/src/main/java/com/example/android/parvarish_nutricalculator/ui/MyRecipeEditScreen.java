@@ -1,12 +1,16 @@
 package com.example.android.parvarish_nutricalculator.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +39,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.android.parvarish_nutricalculator.R;
 import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
+import com.example.android.parvarish_nutricalculator.helpers.AGE_GROUP;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
@@ -43,6 +48,7 @@ import com.example.android.parvarish_nutricalculator.helpers.POSTResponseListene
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
 import com.example.android.parvarish_nutricalculator.model.myrecipeModel;
 import com.example.android.parvarish_nutricalculator.model.regionalmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
@@ -58,8 +64,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyRecipeEditScreen extends ActionBarActivity {
+    Bitmap thumbnail;
+    private static final int CAMERA_REQUEST = 500;
+    private static final int GALLERY_REQUEST = 300;
+    private boolean isPictureTaken = false;
+    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
     myrecipeModel myrecipe;
-    private ProgressDialog progressDialog,progressDialog2;
+    private ProgressDialog progressDialog, progressDialog2;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner forSpinner;
     private Spinner spOne, spTwo;
@@ -73,10 +84,11 @@ public class MyRecipeEditScreen extends ActionBarActivity {
     int posi = 0, posj = 0;
     String nameIng;
     Button btnSubmit;
-    EditText etRecpieName,etIngDetails,etNoofServings;
-    HashMap<String,String> ingHashMap;
+    EditText etRecpieName, etIngDetails, etNoofServings;
+    ArrayList<glossaryIngredient> ingHashMap;
     ArrayList<String> IngredientNames;
     int Objpos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +106,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         processfetchBabyDetails();
 
 
-
         btnAddIng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,8 +115,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
                 Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
                 Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
-
-
 
 
                 AutoCompleteTextView etIngr = (AutoCompleteTextView) mainLiner.getChildAt(1);
@@ -139,29 +148,55 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
                 if (etRecpieName.toString().trim().length() == 0) {
                     Toast.makeText(MyRecipeEditScreen.this, "Please enter Recipe name !!!", Toast.LENGTH_LONG).show();
-                }else if(forSpinner.getSelectedItemPosition()==0){
-                   Toast.makeText(MyRecipeEditScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
-               }else if(etNoofServings.toString().trim().length() == 0){
+                } else if (forSpinner.getSelectedItemPosition() == 0) {
+                    Toast.makeText(MyRecipeEditScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
+                } else if (etNoofServings.toString().trim().length() == 0) {
                     Toast.makeText(MyRecipeEditScreen.this, "Please enter No. of servings !!!", Toast.LENGTH_LONG).show();
-                }else if(totalIng == 0){
+                } else if (totalIng == 0) {
                     Toast.makeText(MyRecipeEditScreen.this, "Please add Ingredients !!!", Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     processSubmitRecipeToServer();
                 }
+            }
+        });
+
+
+
+        imgRecipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyRecipeEditScreen.this);
+                builder.setTitle("Upload Picture");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (items[item].equals("Take Photo")) {
+                            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(takePicture, CAMERA_REQUEST);
+                            Log.e("Camera ", "exit");
+
+                        } else if (items[item].equals("Choose from Gallery")) {
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, GALLERY_REQUEST);
+                        }
+                    }
+                });
+                builder.show();
             }
         });
 
     }
 
 
-    private void init(){
+    private void init() {
 
-        imgRecipe = (ImageView)findViewById(R.id.imgRecipe);
-        etNoofServings = (EditText)findViewById(R.id.etNoofServings);
-        etIngDetails = (EditText)findViewById(R.id.etIngDetails);
+        imgRecipe = (ImageView) findViewById(R.id.imgRecipe);
+        etNoofServings = (EditText) findViewById(R.id.etNoofServings);
+        etIngDetails = (EditText) findViewById(R.id.etIngDetails);
         forSpinner = (Spinner) findViewById(R.id.forSpinner);
-        etRecpieName = (EditText)findViewById(R.id.etRecpieName);
-        btnSubmit = (Button)findViewById(R.id.btnSubmit);
+        etRecpieName = (EditText) findViewById(R.id.etRecpieName);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
         linearTable = (LinearLayout) findViewById(R.id.linearTable);
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
         btnAddIng = (Button) findViewById(R.id.btnAddIng);
@@ -174,11 +209,10 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         ComplexPreferences complexPreferences2 = ComplexPreferences.getComplexPreferences(MyRecipeEditScreen.this, "user_pref", 0);
         myrecipe = complexPreferences2.getObject("current-myrecipe", myrecipeModel.class);
 
-        fillupRecipeDetails();
     }
 
 
-    private void fillupRecipeDetails(){
+    private void fillupRecipeDetails() {
 
         Glide.with(MyRecipeEditScreen.this).load(API.BASE_URL_IMAGE_FETCH + myrecipe.data.Recipe.get(Objpos).photo_url)
                 .into(imgRecipe);
@@ -187,14 +221,19 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         etNoofServings.setText(myrecipe.data.Recipe.get(Objpos).no_of_servings);
         etIngDetails.setText(Html.fromHtml(myrecipe.data.Recipe.get(Objpos).method).toString());
 
-        for(int i=0;i<myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.size();i++){
-            processAddIngFromRegional(myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.name,myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.unit,myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.quantity);
+        for (int i = 0; i < myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.size(); i++) {
+            for(int j=0;j<ingHashMap.size();j++){
+                if(ingHashMap.get(j).id.equalsIgnoreCase(myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.ingredient_id)){
+                    processAddIngFromRegional(ingHashMap.get(j).name, myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.unit, myrecipe.data.Recipe.get(Objpos).RecipeIngredientList.get(i).RecipeIngredient.quantity);
+                }
+            }
+
         }
 
 
     }
 
-    private void processAddIngFromRegional(String ingName,String unit,String qty){
+    private void processAddIngFromRegional(String ingName, String unit, String qty) {
         View view = getLayoutInflater().inflate(R.layout.item_recipe_manual_screen, linearTableAdded, false);
 
         spOne = (Spinner) view.findViewById(R.id.spOne);
@@ -204,21 +243,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
         ArrayList<String> firstColumn = new ArrayList<String>();
         ArrayList<String> secondColumn = new ArrayList<String>();
-
-       /* firstColumn.add("Quantity");
-        firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
-            firstColumn.add("" + i);*/
-
-        /*secondColumn.add("Unit");
-        secondColumn.add("ML");
-        secondColumn.add("GM");
-        secondColumn.add("Pinch");
-        secondColumn.add("Handful");
-        secondColumn.add("Cup");
-        secondColumn.add("Teaspoon");
-        secondColumn.add("Tablespoon");*/
 
         firstColumn.add(qty);
         secondColumn.add(unit);
@@ -239,84 +263,113 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         linearTableAdded.addView(view);
     }
 
-    private void processSubmitRecipeToServer(){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                isPictureTaken = true;
+                thumbnail = (Bitmap) data.getExtras().get("data");
+                imgRecipe.setImageBitmap(thumbnail);
+
+            }
+        }
+    }
+
+
+    private void processSubmitRecipeToServer() {
         JSONObject userJSONObject = new JSONObject();
-       try {
+        try {
 
-           int babyspinnerPos = forSpinner.getSelectedItemPosition();
+            int babyspinnerPos = forSpinner.getSelectedItemPosition();
 
+            userJSONObject.put("id", myrecipe.data.Recipe.get(Objpos).id);
+            userJSONObject.put("name", etRecpieName.getText().toString().trim());
+            userJSONObject.put("user_id", currentUser.data.id);
+            userJSONObject.put("method", etIngDetails.getText().toString().trim());
+            userJSONObject.put("ingredients_details", "");
+            userJSONObject.put("sanjeev_kapoor_receipe", "No");
+            userJSONObject.put("regional_food_receipe", "No");
 
-           userJSONObject.put("name", etRecpieName.getText().toString().trim());
-           userJSONObject.put("user_id", currentUser.data.id);
-           userJSONObject.put("method", "");
-           userJSONObject.put("ingredients_details", etIngDetails.getText().toString().trim());
-           userJSONObject.put("sanjeev_kapoor_receipe", "No");
-           userJSONObject.put("regional_food_receipe", "No");
-           userJSONObject.put("age_group", "6-8 months");
-           userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
-           userJSONObject.put("photo_url", "");
-           userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos-1).Baby.id);
+            //Setting the age group
+            AGE_GROUP obj = new AGE_GROUP(cuurentBaby.data.get(babyspinnerPos - 1).Baby.baby_dob);
+            String age_group = obj.getAgeGroup();
 
-           JSONArray array = new JSONArray();
-           for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
-               LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(k);
-               LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
-               AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
+            userJSONObject.put("age_group", age_group);
+
+            userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
 
 
-               Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
-               Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
+            if(isPictureTaken) {
+                String base64Image = PrefUtils.returnBas64Image(thumbnail);
+                userJSONObject.put("photo_url", base64Image);
+            }else{
+                userJSONObject.put("photo_url","");
+            }
 
-               Log.e("spinner1 Value", tempspOne.getSelectedItem().toString());
-               Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
-               Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
+            userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos - 1).Baby.id);
+
+            JSONArray array = new JSONArray();
+
+
+            for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
+                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(k);
+                LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
+                AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
+
+
+                Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
+                Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
+
+                Log.e("spinner1 Value", tempspOne.getSelectedItem().toString());
+                Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
+                Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
 
                 JSONObject ingreditent = new JSONObject();
-                       for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
-                           String value = entry.getValue();
-                           if (value.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
-                               String key = entry.getKey();
-                                  ingreditent.put("ingredient_id", key);
-                           }
 
-                       }
-               ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
-               ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
+                for (int i = 0; i < ingHashMap.size(); i++) {
+                    if (ingHashMap.get(i).name.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
+                        ingreditent.put("ingredient_id", ingHashMap.get(i).id);
+                    }
+                }
+                ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
+                ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
 
-               array.put(ingreditent);
-               // end of main for loop
-           }
+                array.put(ingreditent);
+                // end of main for loop
+            }
 
-           userJSONObject.put("recipe_ingredient", array);
+            userJSONObject.put("recipe_ingredient", array);
 
             JSONPost json = new JSONPost();
-           json.POST(MyRecipeEditScreen.this, API.ADD_RECIPE, userJSONObject.toString(),"Saving Recipe...");
-           json.setPostResponseListener(new POSTResponseListener() {
-               @Override
-               public String onPost(String msg) {
+            json.POST(MyRecipeEditScreen.this, API.EDIT_RECIPE, userJSONObject.toString(), "Saving Recipe...");
+            json.setPostResponseListener(new POSTResponseListener() {
+                @Override
+                public String onPost(String msg) {
 
-                   Log.e("add recipe", "onPost response: " + msg);
-                    Toast.makeText(MyRecipeEditScreen.this,"Recipe added Succesfully",Toast.LENGTH_SHORT).show();
+                    Log.e("add recipe", "onPost response: " + msg);
+                    Toast.makeText(MyRecipeEditScreen.this, "Recipe added Succesfully", Toast.LENGTH_SHORT).show();
                     finish();
 
-                   return null;
-               }
+                    return null;
+                }
 
-               @Override
-               public void onPreExecute() {
+                @Override
+                public void onPreExecute() {
 
-               }
+                }
 
-               @Override
-               public void onBackground() {
+                @Override
+                public void onBackground() {
 
-               }
-           });
+                }
+            });
 
 
-       }catch (Exception e){
-           Log.e("Exception",e.toString());
-       }
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
     }
 
     private void processAddIng() {
@@ -333,7 +386,7 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("2/2");
+        firstColumn.add("2/4");
         firstColumn.add("3/4");
         firstColumn.add("1");
         firstColumn.add("5/4");
@@ -401,7 +454,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
     };
 
 
-
     private void processfetchBabyDetails() {
 
         progressDialog = new ProgressDialog(MyRecipeEditScreen.this);
@@ -439,6 +491,7 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
 
     }
+
     private void fetchGlossaryList() {
         progressDialog = new ProgressDialog(MyRecipeEditScreen.this);
         progressDialog.setMessage("Loading ...");
@@ -453,18 +506,8 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
                 glossaryDescription gd = new GsonBuilder().create().fromJson(response, glossaryDescription.class);
 
-                ingHashMap = new HashMap<String,String>();
-                //IngredientNames = new ArrayList<String>();
-                for (int i = 0; i < gd.data.size(); i++) {
-
-                    for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
-
-                        ingHashMap.put(gd.data.get(i).Ingredient.get(j).id, gd.data.get(i).Ingredient.get(j).name);
-                        //IngredientNames.add(gd.data.get(i).Ingredient.get(j).name);
-
-                    }
-                }
-
+                ingHashMap = gd.returnAllIngredients();
+                fillupRecipeDetails();
                 addBabyAdapter();
 
 
@@ -501,10 +544,8 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
         IngredientNames = new ArrayList<String>();
 
-        for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            IngredientNames.add(value);
+        for (int i=0;i<ingHashMap.size();i++) {
+            IngredientNames.add(ingHashMap.get(i).name);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -518,9 +559,9 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         etIngname = (AutoCompleteTextView) view.findViewById(R.id.etIngredient);
 
 
-       // AutoCompleteAdapter autocomlpeteadapter = new AutoCompleteAdapter(AddRecipeManualScreen.this,android.R.layout.simple_dropdown_item_1line, IngredientNames);
+        // AutoCompleteAdapter autocomlpeteadapter = new AutoCompleteAdapter(AddRecipeManualScreen.this,android.R.layout.simple_dropdown_item_1line, IngredientNames);
         etIngname.setAdapter(adapter);
-       // etIngredient.setThreshold(1);
+        // etIngredient.setThreshold(1);
 
 
         ArrayList<String> firstColumn = new ArrayList<String>();
@@ -528,8 +569,13 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
         firstColumn.add("Quantity");
         firstColumn.add("1/4");
-        firstColumn.add("1/2");
-        for (int i = 1; i <= 10; i++)
+        firstColumn.add("2/4");
+        firstColumn.add("3/4");
+        firstColumn.add("1");
+        firstColumn.add("5/4");
+        firstColumn.add("6/4");
+        firstColumn.add("7/4");
+        for (int i = 2; i <= 10; i++)
             firstColumn.add("" + i);
 
         secondColumn.add("Unit");
@@ -576,7 +622,6 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         linearTable.addView(view);
 
     }
-
 
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {

@@ -84,13 +84,14 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     String currentDate;
     babyModel cuurentBaby;
-    Bitmap thumbnail;
+    Bitmap thumbnail,babyThumbnail;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     LinearLayout addBabyLinearMain;
     View babyView;
     int  pos=0;
-
+    boolean isMainProfileImage = false;
+    boolean isBabyProfileImage = false;
     String currBabyId,currBabyName,currBabyDOB,currUserID;
 
     @Override
@@ -125,11 +126,13 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
                         if (items[item].equals("Take Photo")) {
+                            isMainProfileImage = true;
                             Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(takePicture, CAMERA_REQUEST);
                             Log.e("Camera ", "exit");
 
                         } else if (items[item].equals("Choose from Gallery")) {
+                            isMainProfileImage = true;
                             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                             startActivityForResult(pickPhoto , GALLERY_REQUEST);
@@ -140,23 +143,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
             }
         });
 
-       /* profileList = (ListView)findViewById(R.id.profileList);
 
-        // Setting on Touch Listener for handling the touch inside ScrollView
-        profileList.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Disallow the touch request for parent scroll on touch of child view
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
-        View headerView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_header_item, null, false);
-        View footerView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.profile_list_footer_item, null, false);
-        profileList.addHeaderView(headerView);
-        profileList.addFooterView(footerView);
-        CustomAdapter adp = new CustomAdapter(ProfileScreen.this);
-        profileList.setAdapter(adp);*/
     }
 
 
@@ -167,8 +154,18 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                thumbnail = (Bitmap) data.getExtras().get("data");
-                imgProfile.setImageBitmap(thumbnail);
+                if(isMainProfileImage) {
+                    isMainProfileImage = true;
+                    thumbnail = (Bitmap) data.getExtras().get("data");
+                    imgProfile.setImageBitmap(thumbnail);
+                }else {
+                           isBabyProfileImage = true;
+                           final View v = addBabyLinearMain.getChildAt(cuurentBaby.data.size());
+                           ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
+                           babyThumbnail = (Bitmap) data.getExtras().get("data");
+                           imgBabyProfile.setImageBitmap(babyThumbnail);
+
+                }
 
             }
         }
@@ -267,6 +264,8 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
             ImageView imgBabyProfile =  (ImageView)v.findViewById(R.id.imgBabyProfile);
 
 
+
+
             // this IF for adding new baby
             if(i == babySize){
 
@@ -293,6 +292,34 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                 });
 
 
+
+
+                imgBabyProfile.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileScreen.this);
+                        builder.setTitle("Upload Picture");
+                        builder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (items[item].equals("Take Photo")) {
+                                    isBabyProfileImage = true;
+                                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(takePicture, CAMERA_REQUEST);
+                                    Log.e("Camera ", "exit");
+
+                                } else if (items[item].equals("Choose from Gallery")) {
+                                    isBabyProfileImage = true;
+                                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(pickPhoto, GALLERY_REQUEST);
+                                }
+                            }
+                        });
+                        builder.show();
+                    }
+                });
+
                 btnAddBaby.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -302,9 +329,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                 });
 
             }else{
-
-
-
 
                 edBabyName.setText(cuurentBaby.data.get(i).Baby.baby_name);
                 edBabyDOB.setText(cuurentBaby.data.get(i).Baby.baby_dob);
@@ -405,9 +429,17 @@ private void processAdd(String edBabyName,String edBabyDOB){
         pairs.add(new BasicNameValuePair("user_id", currentUser.data.id));
         pairs.add(new BasicNameValuePair("baby_name",edBabyName));
         pairs.add(new BasicNameValuePair("baby_dob",edBabyDOB));
-        pairs.add(new BasicNameValuePair("photo_url", ""));
 
-         Log.e("rewuest",""+ pairs.toString());
+
+    if(isBabyProfileImage) {
+        String base64Image = PrefUtils.returnBas64Image(babyThumbnail);
+        pairs.add(new BasicNameValuePair("photo_url", base64Image));
+    }else{
+        pairs.add(new BasicNameValuePair("photo_url", ""));
+    }
+
+
+         Log.e("request",""+ pairs.toString());
 
         progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.show();
@@ -416,7 +448,7 @@ private void processAdd(String edBabyName,String edBabyDOB){
             public void response(String response) {
                 progressDialog2.dismiss();
 
-                Log.e("login response", response);
+                Log.e("baby response", response);
 
                 Toast.makeText(ProfileScreen.this,"Baby details added Sucessfully",Toast.LENGTH_SHORT).show();
 
@@ -453,6 +485,8 @@ private void processfetchProfileDetails(){
                         Log.e("sucness",userProfile.data.city);
                         Log.e("sucness",userProfile.data.email);
                         Log.e("sucness",userProfile.data.mobile);
+
+
                         fillDetails();
 
                         processfetchBabyDetails();
@@ -489,7 +523,7 @@ private void processfetchProfileDetails(){
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             imgProfile.setImageBitmap(decodedByte);
         }catch(Exception e){
-            Log.e("exc",e.toString());
+            Log.e("#### exc",e.toString());
         }
     }
 
@@ -531,12 +565,13 @@ private void processfetchProfileDetails(){
 
 
         //complete code to save image on server
-      /*  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+       ByteArrayOutputStream baos = new ByteArrayOutputStream();
         thumbnail.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         String  encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
-*/
+        Log.e("### BASE64 STRING ",encodedImage);
+
         List<NameValuePair> pairs = new ArrayList<>();
 
         pairs.add(new BasicNameValuePair("user_id",currentUser.data.id));
@@ -548,12 +583,21 @@ private void processfetchProfileDetails(){
         pairs.add(new BasicNameValuePair("city", edSignUpCity.getText().toString().trim()));
 
 
-        pairs.add(new BasicNameValuePair("mobile",edSignUpMobile.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("mobile", edSignUpMobile.getText().toString().trim()));
         pairs.add(new BasicNameValuePair("gender",currentUser.data.gender));
-        pairs.add(new BasicNameValuePair("profile_pic", currentUser.data.profile_pic));
 
-        pairs.add(new BasicNameValuePair("fb_id",currentUser.data.fb_id));
-        pairs.add(new BasicNameValuePair("fb_email",currentUser.data.fb_email));
+        if(isMainProfileImage) {
+            String base64Image = PrefUtils.returnBas64Image(thumbnail);
+            pairs.add(new BasicNameValuePair("profile_pic", encodedImage));
+        }else{
+            pairs.add(new BasicNameValuePair("profile_pic", currentUser.data.profile_pic));
+        }
+
+
+
+
+        pairs.add(new BasicNameValuePair("fb_id", currentUser.data.fb_id));
+        pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
 
 
         progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
@@ -736,10 +780,10 @@ private void processfetchProfileDetails(){
         int width = getResources().getDisplayMetrics().widthPixels;
         int height =  getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int)(height/1.5));
+        popupWindow.setWidth((int) (width / 1.5));
+        popupWindow.setHeight((int) (height / 1.5));
         popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(ProfileScreen.this,arrayList,drawableImage,false));
+        popupWindow.setAdapter(new MoreAdapter(ProfileScreen.this, arrayList, drawableImage, false));
         popupWindow.show();
 
 

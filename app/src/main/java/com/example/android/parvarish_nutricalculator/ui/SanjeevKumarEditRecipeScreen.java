@@ -52,7 +52,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     sanjeevmainModel sajneevObj;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
-    private TextView txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
+    private TextView txtEdit,txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
     ImageView photoImg;
     int listPos;
     ProgressDialog progressDialog;
@@ -85,6 +85,17 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
 
         fetchIngredientsdetails();
+
+
+
+        txtEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SanjeevKumarEditRecipeScreen.this,SanjeevkapoorMainEditScreen.class);
+                i.putExtra("pos",listPos);
+                startActivity(i);
+            }
+        });
 
     }
 
@@ -195,7 +206,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
         txtMeth  = (TextView)findViewById(R.id.txtMeth);
         txtING  = (TextView)findViewById(R.id.txtING);
-
+        txtEdit = (TextView)findViewById(R.id.txtEdit);
         txtMethod = (TextView)findViewById(R.id.txtMethod);
         txtServing = (TextView)findViewById(R.id.txtServing);
         txtAgeGroup  = (TextView)findViewById(R.id.txtAgeGroup);

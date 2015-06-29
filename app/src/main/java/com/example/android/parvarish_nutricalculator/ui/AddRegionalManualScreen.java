@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -44,6 +45,7 @@ import com.example.android.parvarish_nutricalculator.helpers.POSTResponseListene
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.babyModel;
 import com.example.android.parvarish_nutricalculator.model.glossaryDescription;
+import com.example.android.parvarish_nutricalculator.model.glossaryIngredient;
 import com.example.android.parvarish_nutricalculator.model.regionalmainModel;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
@@ -58,6 +60,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddRegionalManualScreen extends ActionBarActivity {
+    private static final int CAMERA_REQUEST = 500;
+    private static final int GALLERY_REQUEST = 300;
+    private boolean isPictureTaken = false;
+    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
+    Bitmap thumbnail;
     private ProgressDialog progressDialog,progressDialog2;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner forSpinner;
@@ -73,7 +80,7 @@ public class AddRegionalManualScreen extends ActionBarActivity {
     String nameIng;
     Button btnSubmit;
     EditText etRecpieName,etIngDetails,etNoofServings;
-    HashMap<String,String> ingHashMap;
+    ArrayList<glossaryIngredient> ingHashMap;
     ArrayList<String> IngredientNames;
     int Objpos;
     regionalmainModel regionalObj;
@@ -174,7 +181,7 @@ public class AddRegionalManualScreen extends ActionBarActivity {
         ComplexPreferences complexPreferences1 = ComplexPreferences.getComplexPreferences(AddRegionalManualScreen.this, "user_pref", 0);
         regionalObj = complexPreferences1.getObject("regional-recipe", regionalmainModel.class);
 
-        fillupRecipeDetails();
+
     }
 
 
@@ -188,8 +195,16 @@ public class AddRegionalManualScreen extends ActionBarActivity {
         etIngDetails.setText(Html.fromHtml(regionalObj.data.get(Objpos).Recipe.method).toString());
 
         for(int i=0;i<regionalObj.data.get(Objpos).RecipeIngredient.size();i++){
-            processAddIngFromRegional(regionalObj.data.get(Objpos).RecipeIngredient.get(i).ingredient_id,regionalObj.data.get(Objpos).RecipeIngredient.get(i).unit,regionalObj.data.get(Objpos).RecipeIngredient.get(i).quantity);
+            for(int j=0;j<ingHashMap.size();j++){
+                if(ingHashMap.get(j).id.equalsIgnoreCase(regionalObj.data.get(Objpos).RecipeIngredient.get(i).ingredient_id)){
+                    processAddIngFromRegional(ingHashMap.get(j).name, regionalObj.data.get(Objpos).RecipeIngredient.get(i).unit, regionalObj.data.get(Objpos).RecipeIngredient.get(i).quantity);
+                }
+            }
+
+
+
         }
+
 
 
     }
@@ -271,15 +286,13 @@ public class AddRegionalManualScreen extends ActionBarActivity {
                Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
                Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
 
-                JSONObject ingreditent = new JSONObject();
-                       for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
-                           String value = entry.getValue();
-                           if (value.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
-                               String key = entry.getKey();
-                                  ingreditent.put("ingredient_id", key);
-                           }
+               JSONObject ingreditent = new JSONObject();
 
-                       }
+               for (int i = 0; i < ingHashMap.size(); i++) {
+                   if (ingHashMap.get(i).name.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
+                       ingreditent.put("ingredient_id", ingHashMap.get(i).id);
+                   }
+               }
                ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
                ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
 
@@ -443,18 +456,9 @@ public class AddRegionalManualScreen extends ActionBarActivity {
 
                 glossaryDescription gd = new GsonBuilder().create().fromJson(response, glossaryDescription.class);
 
-                ingHashMap = new HashMap<String,String>();
-                //IngredientNames = new ArrayList<String>();
-                for (int i = 0; i < gd.data.size(); i++) {
+                ingHashMap = gd.returnAllIngredients();
 
-                    for (int j = 0; j < gd.data.get(i).Ingredient.size(); j++) {
-
-                        ingHashMap.put(gd.data.get(i).Ingredient.get(j).id, gd.data.get(i).Ingredient.get(j).name);
-                        //IngredientNames.add(gd.data.get(i).Ingredient.get(j).name);
-
-                    }
-                }
-
+                fillupRecipeDetails();
                 addBabyAdapter();
 
 
@@ -491,10 +495,8 @@ public class AddRegionalManualScreen extends ActionBarActivity {
 
         IngredientNames = new ArrayList<String>();
 
-        for (Map.Entry<String, String> entry : ingHashMap.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            IngredientNames.add(value);
+        for (int i=0;i<ingHashMap.size();i++) {
+            IngredientNames.add(ingHashMap.get(i).name);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

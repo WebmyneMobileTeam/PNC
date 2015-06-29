@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -39,6 +40,11 @@ import java.util.Locale;
  */
 public class CustomDialogBoxEditBaby extends Dialog  implements
         View.OnClickListener{
+    Bitmap thumbnail;
+    private static final int CAMERA_REQUEST = 500;
+    private static final int GALLERY_REQUEST = 300;
+    private boolean isPictureTaken = false;
+    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
     private ProgressDialog progressDialog;
     public Activity act;
     public Dialog d;
@@ -61,6 +67,8 @@ public class CustomDialogBoxEditBaby extends Dialog  implements
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +76,7 @@ public class CustomDialogBoxEditBaby extends Dialog  implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.baby_item);
 
-        dateFormatter = new SimpleDateFormat("yyyy-dd-MM", Locale.US);
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
          edBabyName =  (EditText)findViewById(R.id.edBabyName);
          edBabyDOB =  (EditText)findViewById(R.id.edBabyDOB);

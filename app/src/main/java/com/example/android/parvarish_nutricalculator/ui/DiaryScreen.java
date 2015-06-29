@@ -71,7 +71,7 @@ public class DiaryScreen extends ActionBarActivity {
     CharSequence[] myRecipes;
     myrecipeModel myrecipe;
     int lastTouchedPos = 0;
-
+    ImageView imgDiaryReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +132,20 @@ public class DiaryScreen extends ActionBarActivity {
         });
 
 
+        //Deleting the library
+        imgDiaryReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
+                complexPreferences.removeObject("current-diary");
+                complexPreferences.commit();
+
+                PrefUtils.RefreshActivity(DiaryScreen.this);
+
+            }
+        });
+
+
 
 
     }
@@ -146,7 +160,7 @@ public class DiaryScreen extends ActionBarActivity {
         spinnerListServings.add("5");
 
 
-
+        imgDiaryReset = (ImageView)findViewById(R.id.imgDiaryReset);
         linearTable = (LinearLayout) findViewById(R.id.linearTable);
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
 
@@ -157,6 +171,10 @@ public class DiaryScreen extends ActionBarActivity {
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
+
+
+
+
 
     }
 
