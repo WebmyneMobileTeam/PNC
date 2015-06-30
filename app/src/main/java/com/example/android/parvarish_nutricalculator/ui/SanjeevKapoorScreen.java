@@ -101,13 +101,18 @@ public class SanjeevKapoorScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Log.e("#### AgeGroup",""+ageGroup);
+
                 int listPOS=0;
                 for(int i=0;i<sajneevObj.data.size();i++){
                     if(sajneevObj.data.get(i).Recipe.age_group.equalsIgnoreCase(ageGroup)){
-                        Log.e("#### inside if ",""+i);
+
+                        if(sajneevObj.data.get(i).Recipe.name.equalsIgnoreCase(recipeNames.get(position)))
                         listPOS = i;
                     }
                 }
+
+                Log.e("#### listPOS",""+listPOS);
 
                 Intent i= new Intent(SanjeevKapoorScreen.this,SanjeevKumarEditRecipeScreen.class);
                 i.putExtra("pos",listPOS);
