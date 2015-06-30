@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -189,7 +191,41 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                 }
 
             }
+        }else if(requestCode == GALLERY_REQUEST){
+
+
+
+            // Get the Image from data
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            // Get the cursor
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            // Move to first row
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String imgDecodableString = cursor.getString(columnIndex);
+            cursor.close();
+
+
+            if (resultCode == RESULT_OK) {
+                if(isMainProfileImage) {
+                    isMainProfileImage = true;
+                    thumbnail = (Bitmap) data.getExtras().get("data");
+                    imgProfile.setImageBitmap(thumbnail);
+                }else {
+                    isBabyProfileImage = true;
+                    final View v = addBabyLinearMain.getChildAt(cuurentBaby.data.size());
+                    ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
+                    babyThumbnail = (Bitmap) data.getExtras().get("data");
+                    imgBabyProfile.setImageBitmap(babyThumbnail);
+
+                }
+            }
         }
+
+
     }
 
     private void init(){
@@ -647,16 +683,6 @@ private void processfetchProfileDetails(){
 
 
 
-
-
-
-
-
-
-
-
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -919,7 +945,7 @@ private void processfetchProfileDetails(){
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
+        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes, R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
         ListPopupWindow popupWindow = new ListPopupWindow(ProfileScreen.this);
 
         popupWindow.setListSelector(new ColorDrawable());

@@ -165,7 +165,7 @@ public class WalkThorugh extends FragmentActivity {
 
                     // Top Rated fragment activity
 
-                    return SliderFragment.newInstance(R.drawable.slide8,"");
+                    return SliderFragment.newInstance(R.drawable.slide88,"");
 
             }
 

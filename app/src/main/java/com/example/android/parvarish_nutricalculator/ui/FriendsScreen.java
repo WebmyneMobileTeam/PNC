@@ -222,7 +222,7 @@ public class FriendsScreen extends ActionBarActivity {
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     friendobj = new GsonBuilder().create().fromJson(response, freindMainModel.class);
-                    adp = new CustomAdapter(FriendsScreen.this,friendobj.data);
+                    adp = new CustomAdapter(FriendsScreen.this,friendobj.data,currentUser.data.id);
                     friendList.setAdapter(adp);
 
 
@@ -260,13 +260,14 @@ public class FriendsScreen extends ActionBarActivity {
     class CustomAdapter extends BaseAdapter{
         LayoutInflater layoutInflator;
         private Context ctx;
-
+        String myUserID;
         List<freindsubModel> ValuesSearch;
         ArrayList<freindsubModel> arraylist;
 
 
-        public CustomAdapter(Context ctx,ArrayList<freindsubModel> obj){
+        public CustomAdapter(Context ctx,ArrayList<freindsubModel> obj,String cuurentUserID){
             this.ctx = ctx;
+            this.myUserID = cuurentUserID;
             this.ValuesSearch = obj;
             arraylist = new ArrayList<freindsubModel>();
             arraylist.addAll(ValuesSearch);
@@ -297,7 +298,18 @@ public class FriendsScreen extends ActionBarActivity {
             ImageView imgDel = (ImageView)view.findViewById(R.id.imgDel);
             ImageView imgProfile= (ImageView)view.findViewById(R.id.imgProfile);
 
-            txtName.setText(ValuesSearch.get(position).FriendUser.name);
+
+            // If im reciving any freind request than i will fetch details from USer object
+            if(ValuesSearch.get(position).Friend.friend_id.equalsIgnoreCase(myUserID)){
+                txtName.setText(ValuesSearch.get(position).User.name);
+            }
+              // Otherwise i will fetch details from FriendUser object
+            else{
+                txtName.setText(ValuesSearch.get(position).FriendUser.name);
+
+            }
+
+
 
 
             imgDel.setOnClickListener(new View.OnClickListener() {
