@@ -72,7 +72,10 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         edUserName.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
         btnForgotPassword.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
         btnLogin.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
+
+
         btnFacebookLogin.setTypeface(PrefUtils.getTypeFace(LoginScreen.this));
+
         //btnLogin.setOnClickListener(loginClick);
         btnLogin.setOnClickListener(this);
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
@@ -113,13 +116,10 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         callbackManager=CallbackManager.Factory.create();
         loginButton= (LoginButton)findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile", "email","user_friends");
+
         btnFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                progressDialog = new ProgressDialog(LoginScreen.this);
-//                progressDialog.setMessage("Loading...");
-//                progressDialog.show();
 
                 loginButton.performClick();
                 loginButton.setPressed(true);

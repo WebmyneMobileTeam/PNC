@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -44,16 +45,28 @@ import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.babyModel;
+import com.example.android.parvarish_nutricalculator.model.fbData;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxEditBaby;
 import com.example.android.parvarish_nutricalculator.ui.widgets.CustomDialogBoxGlossary;
 import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.gson.GsonBuilder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.kobjects.util.Util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,6 +80,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import me.drakeet.library.UIButton;
 
 
 public class ProfileScreen extends ActionBarActivity implements View.OnClickListener{
@@ -81,7 +95,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     private Toolbar toolbar;
     userModel currentUser;
     userModel userProfile;
-
+    UIButton btnLoginFacebook;
     String currentDate;
     babyModel cuurentBaby;
     Bitmap thumbnail,babyThumbnail;
@@ -93,7 +107,12 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     boolean isMainProfileImage = false;
     boolean isBabyProfileImage = false;
     String currBabyId,currBabyName,currBabyDOB,currUserID;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    //Facebook
+    private String arr_permissions[]={"public_profile","user_friends", "email"};
 
+    fbData fbModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,7 +154,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                             isMainProfileImage = true;
                             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(pickPhoto , GALLERY_REQUEST);
+                            startActivityForResult(pickPhoto, GALLERY_REQUEST);
                         }
                     }
                 });
@@ -150,6 +169,8 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
@@ -172,6 +193,9 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     }
 
     private void init(){
+
+       btnLoginFacebook = (UIButton)findViewById(R.id.btnLoginFacebook);
+
         imgProfile = (ImageView)findViewById(R.id.imgProfile);
 
         btnSave = (Button)findViewById(R.id.btnSave);
@@ -187,6 +211,33 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         edSignUpUserName = (EditText)findViewById(R.id.edSignUpUserName);
 
         addBabyLinearMain = (LinearLayout)findViewById(R.id.addBabyLinearMain);
+
+
+
+
+        callbackManager=CallbackManager.Factory.create();
+
+        loginButton= (LoginButton)findViewById(R.id.login_button);
+
+        loginButton.setReadPermissions(arr_permissions);
+
+
+
+        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loginButton.performClick();
+                loginButton.setPressed(true);
+                loginButton.invalidate();
+                loginButton.registerCallback(callbackManager, mCallBack);
+                loginButton.setPressed(false);
+                loginButton.invalidate();
+
+
+
+            }
+        });
 
     }
 
@@ -527,6 +578,85 @@ private void processfetchProfileDetails(){
         }
     }
 
+
+
+
+    private FacebookCallback<LoginResult> mCallBack = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+
+            // App code
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(
+                                JSONObject object,
+                                GraphResponse response) {
+
+                            Log.e("response FB object: ", object.toString() + "");
+
+                            try {
+
+                                fbModel = new fbData();
+
+                                fbModel.fb_id = object.getString("id").toString();
+                                fbModel.fb_email = object.getString("email").toString();
+
+                                Log.e("#### fb email ",object.getString("email").toString());
+                                fbModel.name = object.getString("name").toString();
+                                fbModel.gender = object.getString("gender").toString();
+
+
+                            }catch (Exception e){
+                              Log.e("#### EXC",e.toString());
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+                    });
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender, birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
+
+        }
+
+        @Override
+        public void onCancel() {
+
+//            progressDialog.dismiss();
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+
+//            progressDialog.dismiss();
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -564,13 +694,8 @@ private void processfetchProfileDetails(){
     private void processUpdateProfile(){
 
 
-        //complete code to save image on server
-       ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
-        byte[] b = baos.toByteArray();
-        String  encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
-        Log.e("### BASE64 STRING ",encodedImage);
+
 
         List<NameValuePair> pairs = new ArrayList<>();
 
@@ -587,6 +712,15 @@ private void processfetchProfileDetails(){
         pairs.add(new BasicNameValuePair("gender",currentUser.data.gender));
 
         if(isMainProfileImage) {
+
+            //complete code to save image on server
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+            byte[] b = baos.toByteArray();
+            String  encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+            Log.e("### BASE64 STRING ",encodedImage);
+
+
             String base64Image = PrefUtils.returnBas64Image(thumbnail);
             pairs.add(new BasicNameValuePair("profile_pic", encodedImage));
         }else{
@@ -595,9 +729,24 @@ private void processfetchProfileDetails(){
 
 
 
+        try {
+            // Setting the facebook parameters
+            if (fbModel.fb_id == null) {
+                pairs.add(new BasicNameValuePair("fb_id", currentUser.data.fb_id));
+                pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
 
-        pairs.add(new BasicNameValuePair("fb_id", currentUser.data.fb_id));
-        pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
+            } else {
+                pairs.add(new BasicNameValuePair("fb_id",fbModel.fb_id));
+                pairs.add(new BasicNameValuePair("fb_email", fbModel.fb_email));
+            }
+        }catch (Exception e){
+            Log.e("~~~~Exce in FB",e.toString());
+            // If the facebook parameters are null
+            pairs.add(new BasicNameValuePair("fb_id", currentUser.data.fb_id));
+            pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
+
+        }
+
 
 
         progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
