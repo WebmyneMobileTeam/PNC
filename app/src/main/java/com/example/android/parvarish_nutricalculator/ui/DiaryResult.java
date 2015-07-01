@@ -144,7 +144,7 @@ public class DiaryResult extends ActionBarActivity {
         //END
 
         ArrayList<POJOTableRow> values3 = new ArrayList<>();
-        values3.add(new POJOTableRow("Protein (gm)",Color.WHITE));
+        values3.add(new POJOTableRow("Protein (g)",Color.WHITE));
         values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
         values3.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein),Color.WHITE));
 
@@ -154,38 +154,42 @@ public class DiaryResult extends ActionBarActivity {
         else values3.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_PROTEIN)+"%",Color.RED));
         //END
 
+
+
         ArrayList<POJOTableRow> values4 = new ArrayList<>();
-        values4.add(new POJOTableRow("Fat (gm)",Color.WHITE));
-        values4.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
-        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
-
-        // Checking the ICMR RAtio For FAT
-        if(ICMR_RATIO_FAT >=85 && ICMR_RATIO_FAT<=105)
-            values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.WHITE));
-        else values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.RED));
-        //END
-
-        ArrayList<POJOTableRow> values5 = new ArrayList<>();
-        values5.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
-        values5.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
-        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
+        values4.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
+        values4.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
 
         // Checking the ICMR RAtio For CALCIUM
         if(ICMR_RATIO_CALCIUM >=85 && ICMR_RATIO_CALCIUM<=105)
-            values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.WHITE));
-        else values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.RED));
+            values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.WHITE));
+        else values4.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_CALCIUM)+"%",Color.RED));
         // END
 
-        ArrayList<POJOTableRow> values6 = new ArrayList<>();
-        values6.add(new POJOTableRow("Iron (mg)",Color.WHITE));
-        values6.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
-        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
+        ArrayList<POJOTableRow> values5 = new ArrayList<>();
+        values5.add(new POJOTableRow("Iron (mg)",Color.WHITE));
+        values5.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
 
         // Checking the ICMR RAtio For IRON
         if(ICMR_RATIO_IRON >=85 && ICMR_RATIO_IRON<=105)
-            values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.WHITE));
-        else values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.RED));
+            values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.WHITE));
+        else values5.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_IRON)+"%",Color.RED));
         // END
+
+
+
+        ArrayList<POJOTableRow> values6 = new ArrayList<>();
+        values6.add(new POJOTableRow("Zinc (mg)",Color.WHITE));
+        values6.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
+
+        // Checking the ICMR RAtio For FAT
+        if(ICMR_RATIO_FAT >=85 && ICMR_RATIO_FAT<=105)
+            values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.WHITE));
+        else values6.add(new POJOTableRow(String.format("%.2f",ICMR_RATIO_FAT)+"%",Color.RED));
+        //END
 
         tableView.addRow(values2);
         tableView.addRow(values3);

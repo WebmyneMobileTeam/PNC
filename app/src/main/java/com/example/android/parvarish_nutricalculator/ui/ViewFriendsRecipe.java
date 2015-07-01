@@ -308,29 +308,27 @@ public class ViewFriendsRecipe extends ActionBarActivity {
         values2.add(new POJOTableRow(String.format("%.2f",energy),Color.WHITE));
 
 
-
         ArrayList<POJOTableRow> values3 = new ArrayList<>();
-        values3.add(new POJOTableRow("Protein (gm)",Color.WHITE));
+        values3.add(new POJOTableRow("Protein (g)",Color.WHITE));
         values3.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein),Color.WHITE));
         values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values4 = new ArrayList<>();
-        values4.add(new POJOTableRow("Fat (gm)",Color.WHITE));
-        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.fat),Color.WHITE));
-        values4.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
+        values4.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium),Color.WHITE));
+        values4.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values5 = new ArrayList<>();
-        values5.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
-        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium),Color.WHITE));
-        values5.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
-
+        values5.add(new POJOTableRow("Iron (mg)",Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron),Color.WHITE));
+        values5.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
 
         ArrayList<POJOTableRow> values6 = new ArrayList<>();
-        values6.add(new POJOTableRow("Iron (mg)",Color.WHITE));
-        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron),Color.WHITE));
-        values6.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
+        values6.add(new POJOTableRow("Zinc (mg)",Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.fat),Color.WHITE));
+        values6.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
 
 
         tableView.addRow(values2);
@@ -370,45 +368,6 @@ public class ViewFriendsRecipe extends ActionBarActivity {
             }
         }.call();
     }
-
-  /*  private void addTableView() {
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        MyTableView tableView = new MyTableView(ViewFriendsRecipe.this);
-        tableView.setPadding(8,8,8,8);
-
-        // setting weights recommanded
-        ArrayList<Float> weights = new ArrayList<>();
-        weights.add(1f);
-        weights.add(1f);
-        weights.add(0.5f);
-        tableView.setWeights(weights);
-
-        linearTableDetails.addView(tableView, params);
-
-        ArrayList<String> values = new ArrayList<>();
-        values.add("Nutrients");
-        values.add("ICMR Recommandation");
-        values.add("Values");
-
-        tableView.addRow(values, "#000000");
-        tableView.addDivider();
-
-        ArrayList<String> values2 = new ArrayList<>();
-        values2.add("Energy");
-        values2.add("6.733(Approx)");
-        values2.add("174");
-
-
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-        tableView.addRow(values2, "#ffffff");
-
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

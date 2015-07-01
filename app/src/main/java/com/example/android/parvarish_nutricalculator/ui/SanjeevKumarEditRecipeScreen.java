@@ -260,27 +260,27 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
 
         ArrayList<POJOTableRow> values3 = new ArrayList<>();
-        values3.add(new POJOTableRow("Protein (gm)",Color.WHITE));
+        values3.add(new POJOTableRow("Protein (g)",Color.WHITE));
         values3.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein),Color.WHITE));
         values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values4 = new ArrayList<>();
-        values4.add(new POJOTableRow("Fat (gm)",Color.WHITE));
-        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
-        values4.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
+        values4.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
+        values4.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values5 = new ArrayList<>();
-        values5.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
-        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
-        values5.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
-
+        values5.add(new POJOTableRow("Iron (mg)",Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
+        values5.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
 
         ArrayList<POJOTableRow> values6 = new ArrayList<>();
-        values6.add(new POJOTableRow("Iron (mg)",Color.WHITE));
-        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
-        values6.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
+        values6.add(new POJOTableRow("Zinc (mg)",Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
+        values6.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
+
 
 
         tableView.addRow(values2);
