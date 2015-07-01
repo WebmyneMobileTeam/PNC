@@ -110,22 +110,24 @@ public class NutritionCalculationSingleRecipe {
                 float convertedUnit = 0f;
                 int quantity = Integer.parseInt(qty);
 
-                if (unit.equalsIgnoreCase("ml")) {
-                    convertedUnit = Float.parseFloat(ingredient.quantity);
-                    Log.e("Value Of 1 Unit ", "" + convertedUnit);
-                } else {
 
-                    try {
-                        JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
-                        JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
-                        JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.unit.toLowerCase(), "ml"));
-                        convertedUnit = Float.parseFloat(particularObject.getString("1"));
-                        Log.e("Value Of 1 Unit ", "" + convertedUnit);
-                    }catch(Exception e){
-                        convertedUnit = 1;
-                        Log.e("Exce values not found",e.toString());
-                    }
+
+
+                try {
+                    JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
+                    JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
+                    JSONObject particularObject = innerObj.getJSONObject(String.format("%s", ingredient.unit.toLowerCase()));
+                    convertedUnit = Float.parseFloat(particularObject.getString("1"));
+                }catch (Exception e){
+                    convertedUnit = 1;
+                    Log.e("$$ Exc value not found",e.toString());
+
                 }
+
+
+
+                Log.e("Value Of Quantity ", "" + quantity);
+                Log.e("Value Of 1 Unit ", "" + convertedUnit);
                 Log.e("ML of single Ingredient", (convertedUnit * quantity) + " ML");
 
                 for (glossaryIngredient ingredient2 : ingredients_values.returnAllIngredients()) {

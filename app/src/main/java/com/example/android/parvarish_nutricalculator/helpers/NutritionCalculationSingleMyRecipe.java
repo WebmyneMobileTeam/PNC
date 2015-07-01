@@ -109,26 +109,25 @@ public class NutritionCalculationSingleMyRecipe {
                 String qty = ingredient.RecipeIngredient.quantity;
                 String unit = ingredient.RecipeIngredient.unit;
                 float convertedUnit = 0f;
-                int quantity = Integer.parseInt(qty);
+                float quantity = Float.parseFloat(qty);
 
-                if (unit.equalsIgnoreCase("ml")) {
-                    convertedUnit = Float.parseFloat(ingredient.RecipeIngredient.quantity);
-                    Log.e("Value Of 1 Unit ", "" + convertedUnit);
-                } else {
+
 
                     try {
                         JSONObject cookingMeasures = new JSONObject(loadJSONFromAsset());
                         JSONObject innerObj = cookingMeasures.getJSONObject("cookingmeasure");
-                        JSONObject particularObject = innerObj.getJSONObject(String.format("%s-%s", ingredient.RecipeIngredient.unit.toLowerCase(), "ml"));
+                        JSONObject particularObject = innerObj.getJSONObject(String.format("%s", ingredient.RecipeIngredient.unit.toLowerCase()));
                         convertedUnit = Float.parseFloat(particularObject.getString("1"));
                     }catch (Exception e){
                         convertedUnit = 1;
-                        Log.e("Exce values not found",e.toString());
+                        Log.e("$$ Exc value not found",e.toString());
 
                     }
 
-                    Log.e("Value Of 1 Unit ", "" + convertedUnit);
-                }
+
+
+                Log.e("Value Of Quantity ", "" + quantity);
+                Log.e("Value Of 1 Unit ", "" + convertedUnit);
                 Log.e("ML of single Ingredient", (convertedUnit * quantity) + " ML");
 
                 for (glossaryIngredient ingredient2 : ingredients_values.returnAllIngredients()) {
@@ -296,7 +295,7 @@ public class NutritionCalculationSingleMyRecipe {
     private String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream is = _context.getAssets().open("CookingMeasure.json");
+            InputStream is = _context.getAssets().open("NewCookingMeasure.json");
 
             int size = is.available();
 
