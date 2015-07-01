@@ -307,7 +307,7 @@ public class NutritionCalculation {
     private String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream is = _context.getAssets().open("CookingMeasure.json");
+            InputStream is = _context.getAssets().open("NewCookingMeasure.json");
 
             int size = is.available();
 
