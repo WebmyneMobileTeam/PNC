@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <string-array name="Qunatity">
+        <item>Qunatity</item>
+        <item>0.25</item>
+        <item>0.50</item>
+        <item>0.75</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>1.50</item>
+        <item>1.75</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="Unit">
+        <item>Unit</item>
+        <item>Gm</item>
+        <item>Ml</item>
+        <item>Tablespoon</item>
+        <item>Teaspoon</item>
+        <item>Cup</item>
+        <item>Teacup</item>
+        <item>Glass</item>
+        <item>Oz</item>
+    </string-array>
+
+
     <string name="app_name">Nutri Calculator for Baby Food</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

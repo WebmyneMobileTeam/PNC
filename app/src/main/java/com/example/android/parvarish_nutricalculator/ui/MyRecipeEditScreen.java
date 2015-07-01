@@ -386,25 +386,10 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         ArrayList<String> firstColumn = new ArrayList<String>();
         ArrayList<String> secondColumn = new ArrayList<String>();
 
-        firstColumn.add("Quantity");
-        firstColumn.add("1/4");
-        firstColumn.add("2/4");
-        firstColumn.add("3/4");
-        firstColumn.add("1");
-        firstColumn.add("5/4");
-        firstColumn.add("6/4");
-        firstColumn.add("7/4");
-        for (int i = 2; i <= 10; i++)
-            firstColumn.add("" + i);
 
-        secondColumn.add("Unit");
-        secondColumn.add("ML");
-        secondColumn.add("GM");
-        secondColumn.add("Pinch");
-        secondColumn.add("Handful");
-        secondColumn.add("Cup");
-        secondColumn.add("Teaspoon");
-        secondColumn.add("Tablespoon");
+        firstColumn.addAll(Arrays.asList(getResources().getStringArray(R.array.Qunatity)));
+        secondColumn.addAll(Arrays.asList(getResources().getStringArray(R.array.Unit)));
+
 
         CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(MyRecipeEditScreen.this, firstColumn);
         spOne.setAdapter(spinnerAdapterFirst);
@@ -569,25 +554,10 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         ArrayList<String> firstColumn = new ArrayList<String>();
         ArrayList<String> secondColumn = new ArrayList<String>();
 
-        firstColumn.add("Quantity");
-        firstColumn.add("1/4");
-        firstColumn.add("2/4");
-        firstColumn.add("3/4");
-        firstColumn.add("1");
-        firstColumn.add("5/4");
-        firstColumn.add("6/4");
-        firstColumn.add("7/4");
-        for (int i = 2; i <= 10; i++)
-            firstColumn.add("" + i);
 
-        secondColumn.add("Unit");
-        secondColumn.add("ML");
-        secondColumn.add("GM");
-        secondColumn.add("Pinch");
-        secondColumn.add("Handful");
-        secondColumn.add("Cup");
-        secondColumn.add("Teaspoon");
-        secondColumn.add("Tablespoon");
+        firstColumn.addAll(Arrays.asList(getResources().getStringArray(R.array.Qunatity)));
+        secondColumn.addAll(Arrays.asList(getResources().getStringArray(R.array.Unit)));
+
 
         CustomSpinnerAdapter spinnerAdapterFirst = new CustomSpinnerAdapter(MyRecipeEditScreen.this, firstColumn);
         spOne.setAdapter(spinnerAdapterFirst);
