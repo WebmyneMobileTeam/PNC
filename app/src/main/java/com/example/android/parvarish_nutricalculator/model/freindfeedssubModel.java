@@ -12,6 +12,6 @@ public class freindfeedssubModel {
     public userData  User;
 
     @SerializedName("Recipe")
-    public ArrayList<recipeSubData> Recipe;
+    public ArrayList<myrecipedata> Recipe;
 
 }

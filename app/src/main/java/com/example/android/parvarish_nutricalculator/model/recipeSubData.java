@@ -1,10 +1,18 @@
 package com.example.android.parvarish_nutricalculator.model;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * Created by Android on 07-05-2015.
  */
 public class recipeSubData {
+
+    @SerializedName("Babies")
+    public ArrayList<babyData> Babies;
+
+    @SerializedName("RecipeIngredientList")
+    public ArrayList<recipeSubIngredient> RecipeIngredientList;
 
     @SerializedName("id")
     public String id;

@@ -36,6 +36,7 @@ import com.example.android.parvarish_nutricalculator.model.freindFeedsMainModel;
 import com.example.android.parvarish_nutricalculator.model.freindMainModel;
 import com.example.android.parvarish_nutricalculator.model.freindfeedssubModel;
 import com.example.android.parvarish_nutricalculator.model.freindsubModel;
+import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.model.recipeSubData;
 import com.example.android.parvarish_nutricalculator.model.userModel;
 import com.facebook.login.LoginManager;
@@ -72,8 +73,9 @@ public class FriendsFeedsScreen extends ActionBarActivity {
 
         init();
 
-        userID = getIntent().getStringExtra("userid");
 
+        userID = getIntent().getStringExtra("userid");
+        Log.e("###User Id",userID);
 
        // txtUserName.setText(currentUser.data.name);
 
@@ -139,14 +141,14 @@ public class FriendsFeedsScreen extends ActionBarActivity {
     }
 
     class CustomAdapter extends BaseAdapter{
-        List<recipeSubData> ValuesSearch;
-        ArrayList<recipeSubData> arraylist;
+        List<myrecipedata> ValuesSearch;
+        ArrayList<myrecipedata> arraylist;
         LayoutInflater layoutInflator;
         private Context ctx;
-        public CustomAdapter(Context ctx,ArrayList<recipeSubData> obj){
+        public CustomAdapter(Context ctx,ArrayList<myrecipedata> obj){
             this.ctx = ctx;
             this.ValuesSearch = obj;
-            arraylist = new ArrayList<recipeSubData>();
+            arraylist = new ArrayList<myrecipedata>();
             arraylist.addAll(ValuesSearch);
         }
 
@@ -189,7 +191,7 @@ public class FriendsFeedsScreen extends ActionBarActivity {
                 ValuesSearch.addAll(arraylist);
 
             } else {
-                for ( recipeSubData obj: arraylist) {
+                for ( myrecipedata obj: arraylist) {
                     if (charText.length() != 0 && obj.name.toLowerCase(Locale.getDefault()).contains(charText)) {
                         ValuesSearch.add(obj);
                     }
@@ -433,7 +435,32 @@ public class FriendsFeedsScreen extends ActionBarActivity {
                 public void onClick(View v) {
 
                     switch (position) {
+                        case 0:
+                            popupWindow2.dismiss();
+                            Intent pro1 = new Intent(FriendsFeedsScreen.this, HomeScreen.class);
+                            startActivity(pro1);
+                            break;
+                        case 1:
+                            popupWindow2.dismiss();
+                            Intent pro = new Intent(FriendsFeedsScreen.this, ProfileScreen.class);
+                            startActivity(pro);
+                            break;
+                        case 2:
+                            popupWindow2.dismiss();
+                            Intent myrecipe = new Intent(FriendsFeedsScreen.this, MyRecipeListScreen.class);
+                            startActivity(myrecipe);
+                            break;
+                        case 3:
+                            popupWindow2.dismiss();
+                            Intent diary = new Intent(FriendsFeedsScreen.this, DiaryScreen.class);
+                            startActivity(diary);
+                            break;
 
+                        case 4:
+                            popupWindow2.dismiss();
+                            Intent iGuide1 = new Intent(FriendsFeedsScreen.this, FriendsScreen.class);
+                            startActivity(iGuide1);
+                            break;
                         case 5:
                             popupWindow2.dismiss();
                             Intent iGuide = new Intent(FriendsFeedsScreen.this, GuideLinesMainScreen.class);

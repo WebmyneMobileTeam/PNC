@@ -70,4 +70,7 @@ public class API {
     public static String REGIONAL_RECIPE = BASE_URL+"recipes/regional";
 
     public static String FETCH_IMCR = BASE_URL+"icmr_recommendeds/listing";
+
+    public static String COPY_RECIPE = BASE_URL+"recipes/copyRecipe?recipe_id=";
+
 }

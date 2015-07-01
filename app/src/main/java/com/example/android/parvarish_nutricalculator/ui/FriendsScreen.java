@@ -26,6 +26,7 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,13 +90,19 @@ public class FriendsScreen extends ActionBarActivity {
         friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                RelativeLayout rl = (RelativeLayout)view;
+
+                final TextView txtID = (TextView)rl.findViewById(R.id.USERID);
+                Log.e("#### User id -",txtID.getText().toString());
+
                 final CustomDialog customDialog = new CustomDialog(FriendsScreen.this, "See Friend's Feed", "Unfriend", android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
                 customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                     @Override
                     public void topButton() {
                         Intent i = new Intent(FriendsScreen.this, FriendsFeedsScreen.class);
-                        i.putExtra("userid",friendobj.data.get(position).FriendUser.id);
+                        i.putExtra("userid", txtID.getText().toString());
                         startActivity(i);
                     }
 
@@ -265,7 +272,7 @@ public class FriendsScreen extends ActionBarActivity {
         String myUserID;
         List<freindsubModel> ValuesSearch;
         ArrayList<freindsubModel> arraylist;
-
+        String FreindUSERID;
 
         public CustomAdapter(Context ctx,ArrayList<freindsubModel> obj,String cuurentUserID){
             this.ctx = ctx;
@@ -273,6 +280,7 @@ public class FriendsScreen extends ActionBarActivity {
             this.ValuesSearch = obj;
             arraylist = new ArrayList<freindsubModel>();
             arraylist.addAll(ValuesSearch);
+            FreindUSERID ="0";
         }
 
         @Override
@@ -299,18 +307,23 @@ public class FriendsScreen extends ActionBarActivity {
             TextView txtName = (TextView)view.findViewById(R.id.txtName);
             ImageView imgDel = (ImageView)view.findViewById(R.id.imgDel);
             ImageView imgProfile= (ImageView)view.findViewById(R.id.imgProfile);
+            TextView USERID = (TextView)view.findViewById(R.id.USERID);
 
 
             // If im reciving any freind request than i will fetch details from USer object
             if(ValuesSearch.get(position).Friend.friend_id.equalsIgnoreCase(myUserID)){
                 txtName.setText(ValuesSearch.get(position).User.name);
+                FreindUSERID = ValuesSearch.get(position).User.id;
+
             }
               // Otherwise i will fetch details from FriendUser object
             else{
                 txtName.setText(ValuesSearch.get(position).FriendUser.name);
+                FreindUSERID = ValuesSearch.get(position).FriendUser.id;
 
             }
 
+            USERID.setText(FreindUSERID);
 
 
 
@@ -324,6 +337,11 @@ public class FriendsScreen extends ActionBarActivity {
 
             return view;
         }
+
+
+
+
+
 
         // Filter Class
         public void filter(String charText) {
@@ -578,7 +596,32 @@ public class FriendsScreen extends ActionBarActivity {
                 public void onClick(View v) {
 
                     switch (position) {
+                        case 0:
+                            popupWindow2.dismiss();
+                            Intent pro1 = new Intent(FriendsScreen.this, HomeScreen.class);
+                            startActivity(pro1);
+                            break;
+                        case 1:
+                            popupWindow2.dismiss();
+                            Intent pro = new Intent(FriendsScreen.this, ProfileScreen.class);
+                            startActivity(pro);
+                            break;
+                        case 2:
+                            popupWindow2.dismiss();
+                            Intent myrecipe = new Intent(FriendsScreen.this, MyRecipeListScreen.class);
+                            startActivity(myrecipe);
+                            break;
+                        case 3:
+                            popupWindow2.dismiss();
+                            Intent diary = new Intent(FriendsScreen.this, DiaryScreen.class);
+                            startActivity(diary);
+                            break;
 
+                        case 4:
+                            popupWindow2.dismiss();
+                            Intent iGuide1 = new Intent(FriendsScreen.this, FriendsScreen.class);
+                            startActivity(iGuide1);
+                            break;
                         case 5:
                             popupWindow2.dismiss();
                             Intent iGuide = new Intent(FriendsScreen.this, GuideLinesMainScreen.class);

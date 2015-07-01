@@ -157,6 +157,9 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             Log.e("response: ", response + "");
                             userModel userUserModel = new userModel();
                             try {
+
+                            //    registrationProcess(object.getString("id").toString(),object.getString("email").toString(), object.getString("name").toString());
+
                                 userUserModel.data.fb_id = object.getString("id").toString();
                                 userUserModel.data.email = object.getString("email").toString();
                                 userUserModel.data.name = object.getString("name").toString();
@@ -164,8 +167,12 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                                 PrefUtils.setCurrentUser(userUserModel,LoginScreen.this);
 
                             }catch (Exception e){
+                                Log.e("### EXC",e.toString());
                                 e.printStackTrace();
                             }
+
+
+
 
                             ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
                             complexPreferences.putObject("current-user", userUserModel);
@@ -215,6 +222,79 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 //            progressDialog.dismiss();
         }
     };
+
+
+    private void registrationProcess(String fbID,String email,String name) {
+
+        final ProgressDialog progressDialog = new ProgressDialog(LoginScreen.this);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+        List<NameValuePair> pairs = new ArrayList<>();
+        pairs.add(new BasicNameValuePair("email", email));
+        pairs.add(new BasicNameValuePair("name", name));
+        pairs.add(new BasicNameValuePair("dob", "2015-07-09"));
+        pairs.add(new BasicNameValuePair("password", "123"));
+        pairs.add(new BasicNameValuePair("city", ""));
+        pairs.add(new BasicNameValuePair("mobile", ""));
+        pairs.add(new BasicNameValuePair("gender", "Male"));
+        pairs.add(new BasicNameValuePair("profile_pic", ""));
+        pairs.add(new BasicNameValuePair("fb_id", fbID));
+        pairs.add(new BasicNameValuePair("fb_email", email));
+
+        new GetPostClass(API.REGISTRATION, pairs, EnumType.POST) {
+            @Override
+            public void response(String response) {
+//                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+
+                Log.e("##### RES--",response);
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
+
+                    ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
+                    complexPreferences.putObject("current-user", userUserModel);
+                    complexPreferences.commit();
+                } catch (Exception e) {
+                    Log.e("exc", "in json parsing");
+                }
+
+
+                SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isUserLogin", true);
+                editor.commit();
+
+                SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
+                boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
+
+                if (isFristTime) {
+                    Intent intent = new Intent(LoginScreen.this, WalkThorugh.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void error(String error) {
+                Toast.makeText(LoginScreen.this, error, Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        }.call();
+
+    }
+
+
+
 
     @Override
     public void onClick(View v) {

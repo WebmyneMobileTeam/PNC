@@ -412,6 +412,28 @@ public class HomeScreen extends ActionBarActivity {
 
                     switch (position) {
 
+                        case 1:
+                            popupWindow2.dismiss();
+                            Intent pro = new Intent(HomeScreen.this, ProfileScreen.class);
+                            startActivity(pro);
+                            break;
+                        case 2:
+                            popupWindow2.dismiss();
+                            Intent myrecipe = new Intent(HomeScreen.this, MyRecipeListScreen.class);
+                            startActivity(myrecipe);
+                            break;
+                        case 3:
+                            popupWindow2.dismiss();
+                            Intent diary = new Intent(HomeScreen.this, DiaryScreen.class);
+                            startActivity(diary);
+                            break;
+
+                        case 4:
+                            popupWindow2.dismiss();
+                            Intent iGuide1 = new Intent(HomeScreen.this, FriendsScreen.class);
+                            startActivity(iGuide1);
+                            break;
+
                         case 5:
                             popupWindow2.dismiss();
                             Intent iGuide = new Intent(HomeScreen.this, GuideLinesMainScreen.class);

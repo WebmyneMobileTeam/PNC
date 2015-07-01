@@ -327,7 +327,32 @@ public class DisclaimerScreen extends ActionBarActivity {
                 public void onClick(View v) {
 
                     switch (position) {
+                        case 0:
+                            popupWindow2.dismiss();
+                            Intent pro1 = new Intent(DisclaimerScreen.this, HomeScreen.class);
+                            startActivity(pro1);
+                            break;
+                        case 1:
+                            popupWindow2.dismiss();
+                            Intent pro = new Intent(DisclaimerScreen.this, ProfileScreen.class);
+                            startActivity(pro);
+                            break;
+                        case 2:
+                            popupWindow2.dismiss();
+                            Intent myrecipe = new Intent(DisclaimerScreen.this, MyRecipeListScreen.class);
+                            startActivity(myrecipe);
+                            break;
+                        case 3:
+                            popupWindow2.dismiss();
+                            Intent diary = new Intent(DisclaimerScreen.this, DiaryScreen.class);
+                            startActivity(diary);
+                            break;
 
+                        case 4:
+                            popupWindow2.dismiss();
+                            Intent iGuide1 = new Intent(DisclaimerScreen.this, FriendsScreen.class);
+                            startActivity(iGuide1);
+                            break;
                         case 5:
                             popupWindow2.dismiss();
                             Intent iGuide = new Intent(DisclaimerScreen.this, GuideLinesMainScreen.class);

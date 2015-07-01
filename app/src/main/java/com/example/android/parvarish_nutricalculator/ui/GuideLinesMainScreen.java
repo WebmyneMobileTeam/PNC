@@ -448,7 +448,32 @@ public class GuideLinesMainScreen extends ActionBarActivity implements View.OnCl
                 public void onClick(View v) {
 
                     switch (position) {
+                        case 0:
+                            popupWindow2.dismiss();
+                            Intent pro1 = new Intent(GuideLinesMainScreen.this, HomeScreen.class);
+                            startActivity(pro1);
+                            break;
+                        case 1:
+                            popupWindow2.dismiss();
+                            Intent pro = new Intent(GuideLinesMainScreen.this, ProfileScreen.class);
+                            startActivity(pro);
+                            break;
+                        case 2:
+                            popupWindow2.dismiss();
+                            Intent myrecipe = new Intent(GuideLinesMainScreen.this, MyRecipeListScreen.class);
+                            startActivity(myrecipe);
+                            break;
+                        case 3:
+                            popupWindow2.dismiss();
+                            Intent diary = new Intent(GuideLinesMainScreen.this, DiaryScreen.class);
+                            startActivity(diary);
+                            break;
 
+                        case 4:
+                            popupWindow2.dismiss();
+                            Intent iGuide1 = new Intent(GuideLinesMainScreen.this, FriendsScreen.class);
+                            startActivity(iGuide1);
+                            break;
                         case 5:
                             popupWindow2.dismiss();
                             Intent iGuide = new Intent(GuideLinesMainScreen.this, GuideLinesMainScreen.class);
