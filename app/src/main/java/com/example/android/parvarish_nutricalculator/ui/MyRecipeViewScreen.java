@@ -55,7 +55,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
     icmrMainModel icmrOBJ;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
-    private TextView txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
+    private TextView txtEdit,txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
     ImageView photoImg;
     int listPos;
     ProgressDialog progressDialog;
@@ -88,6 +88,16 @@ public class MyRecipeViewScreen extends ActionBarActivity {
 
         fetchIngredientsdetails();
 
+
+        txtEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MyRecipeViewScreen.this, MyRecipeEditScreen.class);
+                i.putExtra("listPos",listPos);
+                startActivity(i);
+            }
+        });
+
     }
 
 
@@ -112,14 +122,20 @@ public class MyRecipeViewScreen extends ActionBarActivity {
 
                     ArrayList<glossaryIngredient> arr = ingdredient.returnAllIngredients();
                     for(int i = 0; i < myrecipe.data.Recipe.get(listPos).RecipeIngredientList.size(); i++) {
+
                         for (int j = 0; j < arr.size(); j++) {
-                            if (myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.id.equalsIgnoreCase(arr.get(j).id)) {
-                                ing +=arr.get(i).name+"\n";
+                            if (arr.get(j).id.equalsIgnoreCase(myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.ingredient_id)) {
+                                ing +=myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.quantity+" "+arr.get(j).name+" "+myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.unit+"\n";
+
+                                Log.e("#### my recipe ing id", myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.ingredient_id);
+                                Log.e("#### org ing id", arr.get(j).id);
+                                Log.e("#### ing", arr.get(j).name);
                             }
                         }
                     }
 
-                     txtING.setText("\n"+Html.fromHtml(ing));
+
+                     txtING.setText(ing);
 
                 }catch(Exception e){
                     Log.e("exc",e.toString());
@@ -194,7 +210,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
 
 
     void init(){
-
+        txtEdit= (TextView)findViewById(R.id.txtEdit);
         txtMeth  = (TextView)findViewById(R.id.txtMeth);
         txtING  = (TextView)findViewById(R.id.txtING);
 

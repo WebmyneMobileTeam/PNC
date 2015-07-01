@@ -513,6 +513,8 @@ public class MyRecipeEditScreen extends ActionBarActivity {
 
 
         int babySize = cuurentBaby.data.size();
+
+
         if (babySize == 0) {
             spinnerList.add("No Baby added");
         } else {
@@ -525,9 +527,17 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         }
 
 
-        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(MyRecipeEditScreen.this, spinnerList);
 
+
+
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(MyRecipeEditScreen.this, spinnerList);
         forSpinner.setAdapter(customSpinnerAdapter);
+
+        for(int i=0;i<cuurentBaby.data.size();i++){
+            if(cuurentBaby.data.get(i).Baby.id.equalsIgnoreCase(myrecipe.data.Recipe.get(Objpos).baby_id)){
+                forSpinner.setSelection(i+1);
+            }
+        }
 
         IngredientNames = new ArrayList<String>();
 

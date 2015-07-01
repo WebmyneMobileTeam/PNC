@@ -265,8 +265,8 @@ public class SanjeevkapoorMainEditScreen extends ActionBarActivity {
 
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
-           userJSONObject.put("method", "");
-           userJSONObject.put("ingredients_details", etIngDetails.getText().toString().trim());
+           userJSONObject.put("method", etIngDetails.getText().toString().trim());
+           userJSONObject.put("ingredients_details","" );
            userJSONObject.put("sanjeev_kapoor_receipe", "No");
            userJSONObject.put("regional_food_receipe", "No");
            userJSONObject.put("age_group", "6-8 months");
