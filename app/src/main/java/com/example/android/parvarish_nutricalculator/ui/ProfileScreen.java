@@ -113,7 +113,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     private CallbackManager callbackManager;
     //Facebook
     private String arr_permissions[]={"public_profile","user_friends", "email"};
-
+    ListPopupWindow popupWindow1,popupWindow2;
     fbData fbModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -862,36 +862,7 @@ private void processfetchProfileDetails(){
 
 
 
-    class CustomAdapter extends BaseAdapter{
-        LayoutInflater layoutInflator;
-        private Context ctx;
-        public CustomAdapter(Context ctx){
-            this.ctx = ctx;
-        }
 
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = convertView;
-            view = layoutInflator.inflate(R.layout.baby_item, parent, false);
-            return view;
-        }
-    }
 
 
     @Override
@@ -923,43 +894,41 @@ private void processfetchProfileDetails(){
     private void openSettings() {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
-
-        String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-
-        ListPopupWindow popupWindow = new ListPopupWindow(ProfileScreen.this);
-        popupWindow.setAnchorView(menuSettings);
+        String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
+        popupWindow1 = new ListPopupWindow(ProfileScreen.this);
+        popupWindow1.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int) (height / 1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(ProfileScreen.this,arrayList,drawableImage,true));
-        popupWindow.show();
+        popupWindow1.setWidth((int) (width / 1.5));
+        popupWindow1.setHeight((int) (height / 1.5));
+        popupWindow1.setModal(true);
+        popupWindow1.setAdapter(new SettingsAdapter(ProfileScreen.this, arrayList, drawableImage,true));
+        popupWindow1.show();
     }
 
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
-        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes, R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(ProfileScreen.this);
+        String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
+        popupWindow2 = new ListPopupWindow(ProfileScreen.this);
 
-        popupWindow.setListSelector(new ColorDrawable());
-        popupWindow.setAnchorView(menuItemView);
+        popupWindow2.setListSelector(new ColorDrawable());
+        popupWindow2.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int) (width / 1.5));
-        popupWindow.setHeight((int) (height / 1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(ProfileScreen.this, arrayList, drawableImage, false));
-        popupWindow.show();
+        popupWindow2.setWidth((int) (width / 1.5));
+        popupWindow2.setHeight((int) (height / 1.5));
+        popupWindow2.setModal(true);
+        popupWindow2.setAdapter(new MoreAdapter(ProfileScreen.this, arrayList, drawableImage, false));
+        popupWindow2.show();
 
 
     }
@@ -969,19 +938,30 @@ private void processfetchProfileDetails(){
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(ProfileScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(ProfileScreen.this,StartScreen.class);
+
+
+        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isUserLogin", false);
+        editor.commit();
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
+        complexPreferences.clearObject();
+        complexPreferences.commit();
+        Intent i = new Intent(ProfileScreen.this, StartScreen.class);
         startActivity(i);
         finish();
     }
 
-    public  class SettingsAdapter extends ArrayAdapter<String> {
+    public class SettingsAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
         Context ctx;
-        private  class ViewHolder {
+
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -991,7 +971,7 @@ private void processfetchProfileDetails(){
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -1003,20 +983,20 @@ private void processfetchProfileDetails(){
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
                 }
@@ -1031,14 +1011,17 @@ private void processfetchProfileDetails(){
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(ProfileScreen.this,DisclaimerScreen.class);
+                            popupWindow1.dismiss();
+                            Intent i = new Intent(ProfileScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(ProfileScreen.this,AboutusScreen.class);
+                            popupWindow1.dismiss();
+                            Intent i2 = new Intent(ProfileScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
+                            popupWindow1.dismiss();
                             logoutFromApp();
                             break;
                     }
@@ -1051,7 +1034,7 @@ private void processfetchProfileDetails(){
         }
     }
 
-    public  class MoreAdapter extends ArrayAdapter<String> {
+    public class MoreAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
@@ -1059,7 +1042,7 @@ private void processfetchProfileDetails(){
         private boolean isSettings;
         Context ctx;
 
-        private  class ViewHolder {
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -1069,7 +1052,7 @@ private void processfetchProfileDetails(){
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -1081,21 +1064,21 @@ private void processfetchProfileDetails(){
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
 
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
 
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
@@ -1112,15 +1095,23 @@ private void processfetchProfileDetails(){
                 @Override
                 public void onClick(View v) {
 
-                    switch (position){
+                    switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(ProfileScreen.this,GuideLinesMainScreen.class);
+                            popupWindow2.dismiss();
+                            Intent iGuide = new Intent(ProfileScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(ProfileScreen.this,GlossaryScreen.class);
+                            popupWindow2.dismiss();
+                            Intent i = new Intent(ProfileScreen.this, GlossaryScreenTemp.class);
                             startActivity(i);
+                            break;
+                        case 7:
+                            Intent intent = new Intent(ProfileScreen.this, WalkThorugh.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }
@@ -1129,6 +1120,7 @@ private void processfetchProfileDetails(){
             return convertView;
         }
     }
+
 
     //end of main class
 }

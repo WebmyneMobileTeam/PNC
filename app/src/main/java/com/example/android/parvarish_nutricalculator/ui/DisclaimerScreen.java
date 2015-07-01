@@ -3,6 +3,7 @@ package com.example.android.parvarish_nutricalculator.ui;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.parvarish_nutricalculator.R;
+import com.example.android.parvarish_nutricalculator.custom.ComplexPreferences;
 import com.example.android.parvarish_nutricalculator.helpers.API;
 import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DisclaimerScreen extends ActionBarActivity {
+    ListPopupWindow popupWindow1,popupWindow2;
     private TextView description,app_url,fb_url,fb_email;
     private Toolbar toolbar;
     private ProgressDialog progressDialog;
@@ -118,46 +121,45 @@ public class DisclaimerScreen extends ActionBarActivity {
     }
 
 
+
     private void openSettings() {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
-
-        String[] names = {"Settings","Rate Us on Play Store","Join Us on Facebook","Share this App with Friends","Disclaimers","About Us","Feedback","Logout"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-
-        ListPopupWindow popupWindow = new ListPopupWindow(DisclaimerScreen.this);
-        popupWindow.setAnchorView(menuSettings);
+        String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
+        popupWindow1 = new ListPopupWindow(DisclaimerScreen.this);
+        popupWindow1.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int) (height / 1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(DisclaimerScreen.this,arrayList,drawableImage,true));
-        popupWindow.show();
+        popupWindow1.setWidth((int) (width / 1.5));
+        popupWindow1.setHeight((int) (height / 1.5));
+        popupWindow1.setModal(true);
+        popupWindow1.setAdapter(new SettingsAdapter(DisclaimerScreen.this, arrayList, drawableImage,true));
+        popupWindow1.show();
     }
 
     private void openMore() {
 
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
-        String[] names = {"Home","Profile","My Recipes","Diary","Friends","Nutritional Guidelines","Glossary of Ingredients","Welcome Tour"};
-        int[] drawableImage = {R.drawable.icon_home,R.drawable.drawable_profile,R.drawable.drawable_myrecipes,R.drawable.drawable_diary,R.drawable.drawable_friends,R.drawable.icon_nutritional,R.drawable.icon_gloassary,R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(DisclaimerScreen.this);
+        String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
+        int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
+        popupWindow2 = new ListPopupWindow(DisclaimerScreen.this);
 
-        popupWindow.setListSelector(new ColorDrawable());
-        popupWindow.setAnchorView(menuItemView);
+        popupWindow2.setListSelector(new ColorDrawable());
+        popupWindow2.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
-        int height =  getResources().getDisplayMetrics().heightPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int)(width/1.5));
-        popupWindow.setHeight((int)(height/1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(DisclaimerScreen.this,arrayList,drawableImage,false));
-        popupWindow.show();
+        popupWindow2.setWidth((int) (width / 1.5));
+        popupWindow2.setHeight((int) (height / 1.5));
+        popupWindow2.setModal(true);
+        popupWindow2.setAdapter(new MoreAdapter(DisclaimerScreen.this, arrayList, drawableImage, false));
+        popupWindow2.show();
 
 
     }
@@ -167,19 +169,30 @@ public class DisclaimerScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(DisclaimerScreen.this);
         LoginManager.getInstance().logOut();
-        Intent i= new Intent(DisclaimerScreen.this,StartScreen.class);
+
+
+        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isUserLogin", false);
+        editor.commit();
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DisclaimerScreen.this, "user_pref", 0);
+        complexPreferences.clearObject();
+        complexPreferences.commit();
+        Intent i = new Intent(DisclaimerScreen.this, StartScreen.class);
         startActivity(i);
         finish();
     }
 
-    public  class SettingsAdapter extends ArrayAdapter<String> {
+    public class SettingsAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
         private int[] imgIcons;
         private boolean isSettings;
         Context ctx;
-        private  class ViewHolder {
+
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -189,7 +202,7 @@ public class DisclaimerScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -201,20 +214,20 @@ public class DisclaimerScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
                 }
@@ -229,14 +242,17 @@ public class DisclaimerScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
-                            Intent i = new Intent(DisclaimerScreen.this,DisclaimerScreen.class);
+                            popupWindow1.dismiss();
+                            Intent i = new Intent(DisclaimerScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
-                            Intent i2 = new Intent(DisclaimerScreen.this,AboutusScreen.class);
+                            popupWindow1.dismiss();
+                            Intent i2 = new Intent(DisclaimerScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
+                            popupWindow1.dismiss();
                             logoutFromApp();
                             break;
                     }
@@ -249,7 +265,7 @@ public class DisclaimerScreen extends ActionBarActivity {
         }
     }
 
-    public  class MoreAdapter extends ArrayAdapter<String> {
+    public class MoreAdapter extends ArrayAdapter<String> {
 
         // View lookup cache
         private ArrayList<String> users;
@@ -257,7 +273,7 @@ public class DisclaimerScreen extends ActionBarActivity {
         private boolean isSettings;
         Context ctx;
 
-        private  class ViewHolder {
+        private class ViewHolder {
             TextView name;
             TextView home;
         }
@@ -267,7 +283,7 @@ public class DisclaimerScreen extends ActionBarActivity {
             this.users = users;
             this.ctx = context;
             this.imgIcons = img;
-            this.isSettings=value;
+            this.isSettings = value;
         }
 
         @Override
@@ -279,21 +295,21 @@ public class DisclaimerScreen extends ActionBarActivity {
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.item_popup,parent,false);
+                convertView = inflater.inflate(R.layout.item_popup, parent, false);
 
-                TextView itemNames = (TextView)convertView.findViewById(R.id.txtItemName);
-                ImageView imgIcon = (ImageView)convertView.findViewById(R.id.imgIcon);
+                TextView itemNames = (TextView) convertView.findViewById(R.id.txtItemName);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.imgIcon);
 
-                if(isSettings){
+                if (isSettings) {
 
                     itemNames.setText(users.get(position));
                     int col = Color.parseColor("#D13B3D");
                     imgIcon.setColorFilter(col, PorterDuff.Mode.SRC_ATOP);
                     imgIcon.setImageResource(R.drawable.iconsettings);
-                    if(position!=0) {
+                    if (position != 0) {
                         imgIcon.setVisibility(View.INVISIBLE);
                     }
-                }else{
+                } else {
 
                     itemNames.setText(users.get(position));
                     imgIcon.setImageResource(imgIcons[position]);
@@ -310,15 +326,23 @@ public class DisclaimerScreen extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    switch (position){
+                    switch (position) {
 
                         case 5:
-                            Intent iGuide = new Intent(DisclaimerScreen.this,GuideLinesMainScreen.class);
+                            popupWindow2.dismiss();
+                            Intent iGuide = new Intent(DisclaimerScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(DisclaimerScreen.this,GlossaryScreen.class);
+                            popupWindow2.dismiss();
+                            Intent i = new Intent(DisclaimerScreen.this, GlossaryScreenTemp.class);
                             startActivity(i);
+                            break;
+                        case 7:
+                            Intent intent = new Intent(DisclaimerScreen.this, WalkThorugh.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }
@@ -327,6 +351,7 @@ public class DisclaimerScreen extends ActionBarActivity {
             return convertView;
         }
     }
+
 
 //end of main class
 }

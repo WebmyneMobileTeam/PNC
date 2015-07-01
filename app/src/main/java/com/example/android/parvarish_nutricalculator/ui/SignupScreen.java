@@ -63,7 +63,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class SignupScreen extends ActionBarActivity {
-
+    ListPopupWindow popupWindow1,popupWindow2;
     private UIButton btnSignUpWithFacebook;
     private TextView txtStaticFacebookText;
     private EditText edUserName;
@@ -276,25 +276,24 @@ public class SignupScreen extends ActionBarActivity {
     }
 
 
+
     private void openSettings() {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
-
         String[] names = {"Settings", "Rate Us on Play Store", "Join Us on Facebook", "Share this App with Friends", "Disclaimers", "About Us", "Feedback", "Logout"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
-
-        ListPopupWindow popupWindow = new ListPopupWindow(SignupScreen.this);
-        popupWindow.setAnchorView(menuSettings);
+        popupWindow1 = new ListPopupWindow(SignupScreen.this);
+        popupWindow1.setAnchorView(menuSettings);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int) (width / 1.5));
-        popupWindow.setHeight((int) (height / 1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new SettingsAdapter(SignupScreen.this, arrayList, drawableImage, true));
-        popupWindow.show();
+        popupWindow1.setWidth((int) (width / 1.5));
+        popupWindow1.setHeight((int) (height / 1.5));
+        popupWindow1.setModal(true);
+        popupWindow1.setAdapter(new SettingsAdapter(SignupScreen.this, arrayList, drawableImage,true));
+        popupWindow1.show();
     }
 
     private void openMore() {
@@ -302,20 +301,20 @@ public class SignupScreen extends ActionBarActivity {
         View menuItemView = findViewById(R.id.actionMore); // SAME ID AS MENU ID
         String[] names = {"Home", "Profile", "My Recipes", "Diary", "Friends", "Nutritional Guidelines", "Glossary of Ingredients", "Welcome Tour"};
         int[] drawableImage = {R.drawable.icon_home, R.drawable.drawable_profile, R.drawable.drawable_myrecipes, R.drawable.drawable_diary, R.drawable.drawable_friends, R.drawable.icon_nutritional, R.drawable.icon_gloassary, R.drawable.drawable_tour};
-        ListPopupWindow popupWindow = new ListPopupWindow(SignupScreen.this);
+        popupWindow2 = new ListPopupWindow(SignupScreen.this);
 
-        popupWindow.setListSelector(new ColorDrawable());
-        popupWindow.setAnchorView(menuItemView);
+        popupWindow2.setListSelector(new ColorDrawable());
+        popupWindow2.setAnchorView(menuItemView);
         ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(names));
 
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
-        popupWindow.setWidth((int) (width / 1.5));
-        popupWindow.setHeight((int) (height / 1.5));
-        popupWindow.setModal(true);
-        popupWindow.setAdapter(new MoreAdapter(SignupScreen.this, arrayList, drawableImage, false));
-        popupWindow.show();
+        popupWindow2.setWidth((int) (width / 1.5));
+        popupWindow2.setHeight((int) (height / 1.5));
+        popupWindow2.setModal(true);
+        popupWindow2.setAdapter(new MoreAdapter(SignupScreen.this, arrayList, drawableImage, false));
+        popupWindow2.show();
 
 
     }
@@ -325,6 +324,16 @@ public class SignupScreen extends ActionBarActivity {
         Log.e("click", "logout");
         PrefUtils.clearCurrentUser(SignupScreen.this);
         LoginManager.getInstance().logOut();
+
+
+        SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isUserLogin", false);
+        editor.commit();
+
+        ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(SignupScreen.this, "user_pref", 0);
+        complexPreferences.clearObject();
+        complexPreferences.commit();
         Intent i = new Intent(SignupScreen.this, StartScreen.class);
         startActivity(i);
         finish();
@@ -388,14 +397,17 @@ public class SignupScreen extends ActionBarActivity {
 
                     switch (position) {
                         case 4:
+                            popupWindow1.dismiss();
                             Intent i = new Intent(SignupScreen.this, DisclaimerScreen.class);
                             startActivity(i);
                             break;
                         case 5:
+                            popupWindow1.dismiss();
                             Intent i2 = new Intent(SignupScreen.this, AboutusScreen.class);
                             startActivity(i2);
                             break;
                         case 7:
+                            popupWindow1.dismiss();
                             logoutFromApp();
                             break;
                     }
@@ -472,12 +484,20 @@ public class SignupScreen extends ActionBarActivity {
                     switch (position) {
 
                         case 5:
+                            popupWindow2.dismiss();
                             Intent iGuide = new Intent(SignupScreen.this, GuideLinesMainScreen.class);
                             startActivity(iGuide);
                             break;
                         case 6:
-                            Intent i = new Intent(SignupScreen.this, GlossaryScreen.class);
+                            popupWindow2.dismiss();
+                            Intent i = new Intent(SignupScreen.this, GlossaryScreenTemp.class);
                             startActivity(i);
+                            break;
+                        case 7:
+                            Intent intent = new Intent(SignupScreen.this, WalkThorugh.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
                             break;
                     }
                 }
@@ -486,6 +506,7 @@ public class SignupScreen extends ActionBarActivity {
             return convertView;
         }
     }
+
 
 
 }
