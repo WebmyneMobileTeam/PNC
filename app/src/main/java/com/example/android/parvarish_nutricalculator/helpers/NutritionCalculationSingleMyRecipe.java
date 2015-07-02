@@ -135,7 +135,7 @@ public class NutritionCalculationSingleMyRecipe {
                     if (cuurentRecipeIngredientID.equalsIgnoreCase(ingredient2.id)) {
                         Log.e("-----ING ENERGY ", ingredient2.energy);
                         Log.e("-----ING PROTEIN ", ingredient2.protein);
-                        Log.e("-----ING FAT ", ingredient2.fat);
+                        Log.e("-----ING zinc ", ingredient2.zinc);
                         Log.e("-----ING CALCIUM ", ingredient2.calcium);
                         Log.e("-----ING IRON ", ingredient2.iron);
 
@@ -144,6 +144,8 @@ public class NutritionCalculationSingleMyRecipe {
                         float energyFor1GM = energyFor100GM/100;
                         float currentIngredientEnergy = (convertedUnit * quantity) * energyFor1GM;
                         inner_energies.add(currentIngredientEnergy);
+
+                        Log.e("-----inner  ENERGY ", "" + currentIngredientEnergy);
 
                         // protien
                         float protienFor100GM = Float.parseFloat(ingredient2.protein);
@@ -158,7 +160,7 @@ public class NutritionCalculationSingleMyRecipe {
                         inner_calciums.add(currentIngredientCalcium);
 
                         // fat
-                        float fatFor100GM = Float.parseFloat(ingredient2.fat);
+                        float fatFor100GM = Float.parseFloat(ingredient2.zinc);
                         float fatFor1GM = fatFor100GM/100;
                         float currentIngredientFat = (convertedUnit * quantity) * fatFor1GM;
                         inner_fats.add(currentIngredientFat);

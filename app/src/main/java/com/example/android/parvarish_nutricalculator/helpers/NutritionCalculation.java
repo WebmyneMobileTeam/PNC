@@ -122,7 +122,7 @@ public class NutritionCalculation {
                 String qty = ingredient.RecipeIngredient.quantity;
                 String unit = ingredient.RecipeIngredient.unit;
                 float convertedUnit = 0f;
-                int quantity = Integer.parseInt(qty);
+                float quantity = Float.parseFloat(qty);
 
 
 
@@ -149,7 +149,7 @@ public class NutritionCalculation {
                     if (cuurentRecipeIngredientID.equalsIgnoreCase(ingredient2.id)) {
                         Log.e("-----ING ENERGY ", ingredient2.energy);
                         Log.e("-----ING PROTEIN ", ingredient2.protein);
-                        Log.e("-----ING FAT ", ingredient2.fat);
+                        Log.e("-----ING zinc ", ingredient2.zinc);
                         Log.e("-----ING CALCIUM ", ingredient2.calcium);
                         Log.e("-----ING IRON ", ingredient2.iron);
 
@@ -172,7 +172,7 @@ public class NutritionCalculation {
                         inner_calciums.add(currentIngredientCalcium);
 
                         // fat
-                        float fatFor100GM = Float.parseFloat(ingredient2.fat);
+                        float fatFor100GM = Float.parseFloat(ingredient2.zinc);
                         float fatFor1GM = fatFor100GM/100;
                         float currentIngredientFat = (convertedUnit * quantity) * fatFor1GM;
                         inner_fats.add(currentIngredientFat);
@@ -198,6 +198,7 @@ public class NutritionCalculation {
             fats.add(returnOverAllInnerFat());
 
         } catch (Exception e) {
+            Log.e("##### Exec",e.toString());
             e.printStackTrace();
         }
 
