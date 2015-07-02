@@ -119,6 +119,8 @@
 
 
                 <EditText
+                    android:inputType="number"
+                    android:maxLength="11"
                     android:id="@+id/edSignUpMobile"
                     android:layout_marginTop="4dp"
                     android:drawablePadding="16dp"
