@@ -39,6 +39,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientViewHolder
      ArrayList<glossaryIngredient> countryNames;
     private final Activity mContext;
 
+    public void updateData(){
+        notifyDataSetChanged();
+    }
+
     public IngredientAdapter(Activity context, int headerMode, ArrayList<glossaryIngredient> names) {
         mContext = context;
 

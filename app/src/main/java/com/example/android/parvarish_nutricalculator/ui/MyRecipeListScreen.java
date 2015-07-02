@@ -177,15 +177,16 @@ public class MyRecipeListScreen extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                final CustomDialog customDialog = new CustomDialog(MyRecipeListScreen.this, "View Recipe", "Edit Recipe", android.R.style.Theme_Translucent_NoTitleBar);
+                Intent i = new Intent(MyRecipeListScreen.this, MyRecipeViewScreen.class);
+                i.putExtra("listPos",position);
+                startActivity(i);
+
+                /*final CustomDialog customDialog = new CustomDialog(MyRecipeListScreen.this, "View Recipe", "Edit Recipe", android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
                 customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                     @Override
                     public void topButton() {
-                        customDialog.dismiss();
-                        Intent i = new Intent(MyRecipeListScreen.this, MyRecipeViewScreen.class);
-                        i.putExtra("listPos",position);
-                        startActivity(i);
+
                     }
 
                     @Override
@@ -196,7 +197,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
                         startActivity(i);
 
                     }
-                });
+                });*/
 
             }
         });

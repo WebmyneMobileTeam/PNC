@@ -34,6 +34,8 @@ public class glossaryIngredient {
     @SerializedName("fat")
     public String fat;
 
+    @SerializedName("perunit_wise_grams")
+    public String perunit_wise_grams;
 
     @SerializedName("calcium")
     public String calcium;

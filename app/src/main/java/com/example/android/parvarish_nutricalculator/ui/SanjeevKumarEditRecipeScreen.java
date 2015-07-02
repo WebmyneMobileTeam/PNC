@@ -2,12 +2,15 @@ package com.example.android.parvarish_nutricalculator.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +48,11 @@ import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     glossaryDescription ingdredient;
@@ -53,7 +60,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     sanjeevmainModel sajneevObj;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
-    private TextView txtEdit,txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
+    private TextView txtSave,txtEdit,txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
     ImageView photoImg;
     int listPos;
     ProgressDialog progressDialog;
@@ -93,15 +100,60 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
         txtEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(SanjeevKumarEditRecipeScreen.this,SanjeevkapoorMainEditScreen.class);
-                i.putExtra("pos",listPos);
+                Intent i = new Intent(SanjeevKumarEditRecipeScreen.this, SanjeevkapoorMainEditScreen.class);
+                i.putExtra("pos", listPos);
                 startActivity(i);
+            }
+        });
+
+        txtSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processSaveImageTOSDCard();
             }
         });
 
     }
 
+    private void processSaveImageTOSDCard(){
 
+        RelativeLayout r1 = (RelativeLayout)findViewById(R.id.mainLayout);
+        View v1 = r1.getRootView();
+
+
+        v1.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v1.getDrawingCache());
+        v1.setDrawingCacheEnabled(false);
+
+
+// storing the image to sd card
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        // File directory = cw.getDir("Krishna", Context.MODE_PRIVATE);
+        // Create imageDir
+        String root = Environment.getExternalStorageDirectory().toString();
+        String filepath = root+"/Parvarish App/";
+
+        long imgName =  System.currentTimeMillis();
+
+        File directory = new File(filepath);
+        directory.mkdirs();
+        File mypath=new File(directory,""+imgName+".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Toast.makeText(SanjeevKumarEditRecipeScreen.this,"Image saved to SD card.",Toast.LENGTH_LONG).show();
+            fos.close();
+        } catch (Exception e) {
+            Log.e("exc",toString());
+            e.printStackTrace();
+        }
+
+
+
+    }
 
     private void fetchIngredientsdetails(){
 
@@ -205,7 +257,7 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
 
     void init(){
-
+        txtSave= (TextView)findViewById(R.id.txtSave);
         txtMeth  = (TextView)findViewById(R.id.txtMeth);
         txtING  = (TextView)findViewById(R.id.txtING);
         txtEdit = (TextView)findViewById(R.id.txtEdit);
@@ -228,6 +280,15 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
     }
 
     private void addTableView(float energy, float protien, float fat, float calcium, float iron){
+
+        int ICMR_GET_POS = 0;
+        for(int i=0;i<icmrOBJ.data.size();i++){
+            if(icmrOBJ.data.get(i).IcmrRecommended.age_group.trim().equalsIgnoreCase(sajneevObj.data.get(listPos).Recipe.age_group)){
+                ICMR_GET_POS = i;
+                break;
+            }
+        }
+
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -254,31 +315,32 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
 
         ArrayList<POJOTableRow> values2 = new ArrayList<>();
         values2.add(new POJOTableRow("Energy (kcal)",Color.WHITE));
-        values2.add(new POJOTableRow(icmrOBJ.data.get(0).IcmrRecommended.energy.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.energy,Color.WHITE));
+        values2.add(new POJOTableRow(icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.energy.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.energy,Color.WHITE));
         values2.add(new POJOTableRow(String.format("%.2f",energy),Color.WHITE));
 
 
 
         ArrayList<POJOTableRow> values3 = new ArrayList<>();
         values3.add(new POJOTableRow("Protein (g)",Color.WHITE));
-        values3.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.protein),Color.WHITE));
+
+        values3.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein),Color.WHITE));
         values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values4 = new ArrayList<>();
         values4.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
-        values4.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.calcium),Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium),Color.WHITE));
         values4.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
 
 
         ArrayList<POJOTableRow> values5 = new ArrayList<>();
         values5.add(new POJOTableRow("Iron (mg)",Color.WHITE));
-        values5.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(0).IcmrRecommended.iron),Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron),Color.WHITE));
         values5.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
 
         ArrayList<POJOTableRow> values6 = new ArrayList<>();
         values6.add(new POJOTableRow("Zinc (mg)",Color.WHITE));
-        values6.add(new POJOTableRow((icmrOBJ.data.get(0).IcmrRecommended.fat.equalsIgnoreCase("")?"0":icmrOBJ.data.get(0).IcmrRecommended.fat),Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc),Color.WHITE));
         values6.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
 
 

@@ -127,6 +127,7 @@ public class GlossaryScreenTempFragment extends Fragment {
 
 
         ingArray = new ArrayList<glossaryIngredient>();
+        ArrayList<glossaryIngredient> searchedData = new ArrayList<glossaryIngredient>();
 
         boolean isSearchItemFind = false;
         String categoryTxt = btnCategory.getText().toString().toLowerCase();
@@ -141,7 +142,11 @@ public class GlossaryScreenTempFragment extends Fragment {
                     if(gd.data.get(i).Ingredient.get(j).name.equalsIgnoreCase(searchString)) {
                         isSearchItemFind = true;
                         ingNameSearch[k] = gd.data.get(i).Ingredient.get(j).name;
+
+                        searchedData.add(gd.data.get(i).Ingredient.get(j));
+
                         k++;
+                        break;
                     }
 
                 }
@@ -150,10 +155,11 @@ public class GlossaryScreenTempFragment extends Fragment {
         }
 
         if(isSearchItemFind) {
-            mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay, ingArray);
+            mAdapter = new IngredientAdapter(getActivity(), mHeaderDisplay, searchedData);
             mAdapter.setMarginsFixed(mAreMarginsFixed);
             mAdapter.setHeaderDisplay(mHeaderDisplay);
             mViews.setAdapter(mAdapter);
+            mAdapter.updateData();
         }else{
             Toast.makeText(getActivity(),"No Result found !!!",Toast.LENGTH_LONG).show();
         }

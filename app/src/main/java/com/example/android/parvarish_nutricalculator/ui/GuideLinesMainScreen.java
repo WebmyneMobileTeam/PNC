@@ -44,6 +44,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class GuideLinesMainScreen extends ActionBarActivity implements View.OnClickListener {
     private ProgressDialog progressDialog;
@@ -113,9 +115,11 @@ public class GuideLinesMainScreen extends ActionBarActivity implements View.OnCl
         String filepath = root+"/Parvarish App/";
 
 
+        long imgName =  System.currentTimeMillis();
+
         File directory = new File(filepath);
         directory.mkdirs();
-        File mypath=new File(directory,"Nutrition Guidelines1"+".jpg");
+        File mypath=new File(directory,""+imgName+".jpg");
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
