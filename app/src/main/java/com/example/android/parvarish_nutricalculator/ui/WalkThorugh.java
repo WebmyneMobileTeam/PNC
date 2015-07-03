@@ -66,7 +66,15 @@ public class WalkThorugh extends FragmentActivity {
         image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(getItem(+1)>=8){
+                    Intent intent = new Intent(WalkThorugh.this, HomeScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
                 viewPager.setCurrentItem(getItem(+1), true);
+
+
             }
         });
 
