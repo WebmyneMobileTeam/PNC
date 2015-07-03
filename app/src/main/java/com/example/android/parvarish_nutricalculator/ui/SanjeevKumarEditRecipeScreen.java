@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -146,6 +147,8 @@ public class SanjeevKumarEditRecipeScreen extends ActionBarActivity {
             b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             Toast.makeText(SanjeevKumarEditRecipeScreen.this,"Image saved to SD card.",Toast.LENGTH_LONG).show();
             fos.close();
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
         } catch (Exception e) {
             Log.e("exc",toString());
             e.printStackTrace();
