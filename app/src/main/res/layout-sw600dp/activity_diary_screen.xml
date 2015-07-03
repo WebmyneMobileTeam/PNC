@@ -82,7 +82,7 @@
 
             <ImageView
                 android:scaleType="fitXY"
-
+                android:id="@+id/imgDiaryReset"
                 android:gravity="center_vertical"
                 android:layout_gravity="center|center_vertical"
                 android:background="@drawable/reset"
