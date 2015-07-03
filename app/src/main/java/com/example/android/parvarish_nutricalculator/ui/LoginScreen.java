@@ -351,7 +351,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
 
 
-                 //   Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
 
                     SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
                     boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
@@ -372,7 +372,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                 @Override
                 public void error(String error) {
                     progressDialog.dismiss();
-//                    Toast.makeText(LoginScreen.this,error,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this,error,Toast.LENGTH_SHORT).show();
                 }
             }.call();
 
