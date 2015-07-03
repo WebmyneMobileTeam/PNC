@@ -276,7 +276,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
             txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(18);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setText(asr.get(position));
+            txt.setText(asr.get(position).trim());
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
 
@@ -288,7 +288,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
             txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(18);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
-            txt.setText(asr.get(i));
+            txt.setText(asr.get(i).trim());
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
         }

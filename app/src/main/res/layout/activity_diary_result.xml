@@ -120,7 +120,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="14sp"
-        android:id="@+id/btnCalculate"
+        android:id="@+id/btnSave"
         android:text="Save Report to phone"
         android:textColor="#ffffff"
         android:background="@color/color_button_darkred" />

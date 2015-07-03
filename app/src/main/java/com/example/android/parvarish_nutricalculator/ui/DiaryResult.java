@@ -2,12 +2,16 @@ package com.example.android.parvarish_nutricalculator.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +49,8 @@ import com.example.android.parvarish_nutricalculator.ui.widgets.MyTableView;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,6 +63,7 @@ public class DiaryResult extends ActionBarActivity {
     recipeModel myrecipe;
     glossaryDescription ingdredient;
     icmrMainModel icmrOBJ;
+    Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +84,18 @@ public class DiaryResult extends ActionBarActivity {
         addRecipeNames();
         callAsyncTaskForWebService();
 
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                processSaveImageTOSDCard();
+            }
+        });
+
     }
 
     void init(){
+        btnSave = (Button)findViewById(R.id.btnSave);
         linearRecipeNames = (LinearLayout)findViewById(R.id.linearRecipeNames);
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
     }
@@ -88,6 +106,47 @@ public class DiaryResult extends ActionBarActivity {
 
     }
 
+
+    private void processSaveImageTOSDCard(){
+
+        RelativeLayout r1 = (RelativeLayout)findViewById(R.id.mainRelative);
+        View v1 = r1.getRootView();
+
+
+        v1.setDrawingCacheEnabled(true);
+        Bitmap b = Bitmap.createBitmap(v1.getDrawingCache());
+        v1.setDrawingCacheEnabled(false);
+
+
+// storing the image to sd card
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        // File directory = cw.getDir("Krishna", Context.MODE_PRIVATE);
+        // Create imageDir
+        String root = Environment.getExternalStorageDirectory().toString();
+        String filepath = root+"/Parvarish App/";
+
+
+        File directory = new File(filepath);
+        directory.mkdirs();
+        File mypath=new File(directory,"Nutrition Guidelines2"+".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            Toast.makeText(DiaryResult.this,"Image saved to SD card.",Toast.LENGTH_LONG).show();
+            fos.close();
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+        } catch (Exception e) {
+            Log.e("exc",toString());
+            e.printStackTrace();
+        }
+
+
+
+    }
     void addRecipeNames(){
 
         for(int i=0;i<dm.diarysubModel.size();i++){

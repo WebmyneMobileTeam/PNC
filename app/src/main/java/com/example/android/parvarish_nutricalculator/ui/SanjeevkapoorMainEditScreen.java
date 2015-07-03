@@ -576,7 +576,7 @@ public class SanjeevkapoorMainEditScreen extends ActionBarActivity {
             txt.setPadding(12, 12, 12, 12);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setText(asr.get(position));
+            txt.setText(asr.get(position).trim());
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
         }
@@ -588,7 +588,7 @@ public class SanjeevkapoorMainEditScreen extends ActionBarActivity {
             txt.setPadding(12, 12, 12, 12);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
-            txt.setText(asr.get(i));
+            txt.setText(asr.get(i).trim());
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
         }
