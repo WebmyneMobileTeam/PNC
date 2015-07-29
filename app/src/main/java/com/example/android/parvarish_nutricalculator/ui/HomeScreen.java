@@ -67,6 +67,7 @@ public class HomeScreen extends ActionBarActivity {
             Toast.makeText(HomeScreen.this, "welcome " +usermodel.data.name, Toast.LENGTH_LONG).show();
         }*/
         txtName.setText(usermodel.data.name+"");
+        txtName.setTypeface(PrefUtils.getTypeFace(HomeScreen.this));
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             toolbar.setTitle("PARVARISH NUTRI CALCULATOR");
@@ -164,6 +165,7 @@ public class HomeScreen extends ActionBarActivity {
             vg.setOnClickListener(firstLayoutItemClickListener);
             ImageView img = (ImageView) vg.findViewById(R.id.itemImageHome);
             TextView txt = (TextView) vg.findViewById(R.id.itemTextHome);
+            txt.setTypeface(PrefUtils.getTypeFace(HomeScreen.this));
             img.setImageResource(icons1[i]);
             txt.setText(names1[i]);
         }
@@ -175,6 +177,7 @@ public class HomeScreen extends ActionBarActivity {
             vg.setOnClickListener(secondLayoutItemClickListener);
             ImageView img = (ImageView) vg.findViewById(R.id.itemImageHome);
             TextView txt = (TextView) vg.findViewById(R.id.itemTextHome);
+            txt.setTypeface(PrefUtils.getTypeFace(HomeScreen.this));
             img.setImageResource(icons2[i]);
             txt.setText(names2[i]);
         }

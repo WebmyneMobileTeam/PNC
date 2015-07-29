@@ -35,12 +35,14 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/addTitle"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
+                    android:textAllCaps="true"
                     android:gravity="center"
                     android:text="ADD RECIPES"
                     android:textColor="#000000"
-                    android:textSize="@dimen/big_text"
+                    android:textSize="@dimen/heading_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -59,6 +61,7 @@
                 android:background="#ccc" />
 
             <TextView
+                android:id="@+id/enterURLTitle"
                 android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Enter the URL of any recipe above, or browse recipes from some popular baby food recipe sites listed below."
@@ -117,6 +120,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/calculateTitle"
                 android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Calculate a regional baby-food recipe."
@@ -167,6 +171,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/calculateTitle2"
                 android:textColor="#494949"
                 android:layout_marginTop="16dp"
                 android:text="Calculate a popular Parvarish Sanjeev Kapoor recipe."
@@ -218,11 +223,12 @@
         android:padding="8dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:inputType="textCapCharacters"
         android:singleLine="true"
         android:textStyle="normal"
         android:gravity="center"
         android:layout_gravity="center"
-        android:textSize="@dimen/normal_text"
+        android:textSize="@dimen/heading_text"
         android:id="@+id/btnImport"
         android:text="Import Recipe"
         android:textColor="#ffffff"

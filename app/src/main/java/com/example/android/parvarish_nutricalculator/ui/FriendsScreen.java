@@ -48,6 +48,8 @@ import com.example.android.parvarish_nutricalculator.ui.widgets.HUD;
 import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,8 +63,10 @@ public class FriendsScreen extends ActionBarActivity {
     CustomAdapter adp;
     freindMainModel friendobj;
     EditText etSearchFreind;
-    ImageView imgAddFreind,imgPendingReq;
-    ListPopupWindow popupWindow1,popupWindow2;
+    ImageView imgAddFreind, imgPendingReq;
+    ListPopupWindow popupWindow1, popupWindow2;
+    TextView friendTitle, reqTitle, addTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,15 +90,14 @@ public class FriendsScreen extends ActionBarActivity {
         fetchFreindsScreen();
 
 
-
         friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                RelativeLayout rl = (RelativeLayout)view;
+                RelativeLayout rl = (RelativeLayout) view;
 
-                final TextView txtID = (TextView)rl.findViewById(R.id.USERID);
-                Log.e("#### User id -",txtID.getText().toString());
+                final TextView txtID = (TextView) rl.findViewById(R.id.USERID);
+                Log.e("#### User id -", txtID.getText().toString());
 
                 final CustomDialog customDialog = new CustomDialog(FriendsScreen.this, "See Friend's Feed", "Unfriend", android.R.style.Theme_Translucent_NoTitleBar);
                 customDialog.show();
@@ -108,7 +111,7 @@ public class FriendsScreen extends ActionBarActivity {
 
                     @Override
                     public void bottomButton() {
-                        showalert("Are you sure want to delete this request ?",friendobj.data.get(position).Friend.id);
+                        showalert("Are you sure want to delete this request ?", friendobj.data.get(position).Friend.id);
                         customDialog.dismiss();
                     }
                 });
@@ -119,7 +122,7 @@ public class FriendsScreen extends ActionBarActivity {
         imgAddFreind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialogBoxAddFreind cdbox = new CustomDialogBoxAddFreind(FriendsScreen.this,currentUser.data.id);
+                CustomDialogBoxAddFreind cdbox = new CustomDialogBoxAddFreind(FriendsScreen.this, currentUser.data.id);
                 cdbox.show();
             }
         });
@@ -127,7 +130,7 @@ public class FriendsScreen extends ActionBarActivity {
         imgPendingReq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =  new Intent(FriendsScreen.this,FriendsPendingRequestScreen.class);
+                Intent i = new Intent(FriendsScreen.this, FriendsPendingRequestScreen.class);
                 startActivity(i);
             }
         });
@@ -161,7 +164,7 @@ public class FriendsScreen extends ActionBarActivity {
     }
 
 
-    void showalert(String msg,final String idd){
+    void showalert(String msg, final String idd) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FriendsScreen.this);
         // set title
@@ -171,10 +174,10 @@ public class FriendsScreen extends ActionBarActivity {
         alertDialogBuilder
                 .setMessage(msg)
                 .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
-                            processRejectRequest(idd);
+                        processRejectRequest(idd);
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -191,22 +194,22 @@ public class FriendsScreen extends ActionBarActivity {
         alertDialog.show();
     }
 
-    void processRejectRequest(final String id){
+    void processRejectRequest(final String id) {
 
-        progressDialog =new HUD(FriendsScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(FriendsScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
-        new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE+id+"&status=Rejected", EnumType.GET) {
+        new GetPostClass(API.FRIENDS_REQUEST_STATUS_UPDATE + id + "&status=Rejected", EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
                 Log.e("freinds pending res", response);
 
                 try {
-                    Toast.makeText(FriendsScreen.this,"Friend request rejected sucessfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(FriendsScreen.this, "Friend request rejected sucessfully", Toast.LENGTH_LONG).show();
 
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
             }
@@ -219,10 +222,10 @@ public class FriendsScreen extends ActionBarActivity {
         }.call();
     }
 
-    private void fetchFreindsScreen(){
-        progressDialog  =new HUD(FriendsScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+    private void fetchFreindsScreen() {
+        progressDialog = new HUD(FriendsScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
-        new GetPostClass(API.FRIENDS_LISTING+currentUser.data.id, EnumType.GET) {
+        new GetPostClass(API.FRIENDS_LISTING + currentUser.data.id, EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
@@ -231,12 +234,12 @@ public class FriendsScreen extends ActionBarActivity {
                 try {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     friendobj = new GsonBuilder().create().fromJson(response, freindMainModel.class);
-                    adp = new CustomAdapter(FriendsScreen.this,friendobj.data,currentUser.data.id);
+                    adp = new CustomAdapter(FriendsScreen.this, friendobj.data, currentUser.data.id);
                     friendList.setAdapter(adp);
 
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
             }
@@ -250,23 +253,29 @@ public class FriendsScreen extends ActionBarActivity {
 
     }
 
-    private void init(){
-        friendList = (ListView)findViewById(R.id.friendList);
+    private void init() {
+        friendTitle = (TextView) findViewById(R.id.friendTitle);
+        friendList = (ListView) findViewById(R.id.friendList);
+        reqTitle = (TextView)findViewById(R.id.reqTitle);
+        addTitle = (TextView)findViewById(R.id.addTitle);
 
-        etSearchFreind = (EditText)findViewById(R.id.etSearchFreind);
-        imgAddFreind = (ImageView)findViewById(R.id.imgAddFreind);
-        imgPendingReq = (ImageView)findViewById(R.id.imgPendingReq);
+        etSearchFreind = (EditText) findViewById(R.id.etSearchFreind);
+        imgAddFreind = (ImageView) findViewById(R.id.imgAddFreind);
+        imgPendingReq = (ImageView) findViewById(R.id.imgPendingReq);
 
-        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
+        addTitle.setTypeface(PrefUtils.getTypeFace(FriendsScreen.this));
+        reqTitle.setTypeface(PrefUtils.getTypeFace(FriendsScreen.this));
+        etSearchFreind.setTypeface(PrefUtils.getTypeFace(FriendsScreen.this));
+        friendTitle.setTypeface(PrefUtils.getTypeFace(FriendsScreen.this));
+
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe, null, false);
         friendList.setEmptyView(emptyView);
-
-
 
 
     }
 
 
-    class CustomAdapter extends BaseAdapter{
+    class CustomAdapter extends BaseAdapter {
         LayoutInflater layoutInflator;
         private Context ctx;
         String myUserID;
@@ -274,13 +283,13 @@ public class FriendsScreen extends ActionBarActivity {
         ArrayList<freindsubModel> arraylist;
         String FreindUSERID;
 
-        public CustomAdapter(Context ctx,ArrayList<freindsubModel> obj,String cuurentUserID){
+        public CustomAdapter(Context ctx, ArrayList<freindsubModel> obj, String cuurentUserID) {
             this.ctx = ctx;
             this.myUserID = cuurentUserID;
             this.ValuesSearch = obj;
             arraylist = new ArrayList<freindsubModel>();
             arraylist.addAll(ValuesSearch);
-            FreindUSERID ="0";
+            FreindUSERID = "0";
         }
 
         @Override
@@ -299,32 +308,32 @@ public class FriendsScreen extends ActionBarActivity {
         }
 
         @Override
-        public View getView(final  int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             layoutInflator = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = convertView;
             view = layoutInflator.inflate(R.layout.friend_list_item_with_delete, parent, false);
 
-            TextView txtName = (TextView)view.findViewById(R.id.txtName);
-            ImageView imgDel = (ImageView)view.findViewById(R.id.imgDel);
-            ImageView imgProfile= (ImageView)view.findViewById(R.id.imgProfile);
-            TextView USERID = (TextView)view.findViewById(R.id.USERID);
+            TextView txtName = (TextView) view.findViewById(R.id.txtName);
+            ImageView imgDel = (ImageView) view.findViewById(R.id.imgDel);
+            ImageView imgProfile = (ImageView) view.findViewById(R.id.imgProfile);
+            TextView USERID = (TextView) view.findViewById(R.id.USERID);
 
+            txtName.setTypeface(PrefUtils.getTypeFace(FriendsScreen.this));
 
             // If im reciving any freind request than i will fetch details from USer object
-            if(ValuesSearch.get(position).Friend.friend_id.equalsIgnoreCase(myUserID)){
+            if (ValuesSearch.get(position).Friend.friend_id.equalsIgnoreCase(myUserID)) {
                 txtName.setText(ValuesSearch.get(position).User.name);
                 FreindUSERID = ValuesSearch.get(position).User.id;
 
             }
-              // Otherwise i will fetch details from FriendUser object
-            else{
+            // Otherwise i will fetch details from FriendUser object
+            else {
                 txtName.setText(ValuesSearch.get(position).FriendUser.name);
                 FreindUSERID = ValuesSearch.get(position).FriendUser.id;
 
             }
 
             USERID.setText(FreindUSERID);
-
 
 
             imgDel.setOnClickListener(new View.OnClickListener() {
@@ -339,10 +348,6 @@ public class FriendsScreen extends ActionBarActivity {
         }
 
 
-
-
-
-
         // Filter Class
         public void filter(String charText) {
 
@@ -353,7 +358,7 @@ public class FriendsScreen extends ActionBarActivity {
                 ValuesSearch.addAll(arraylist);
 
             } else {
-                for ( freindsubModel obj: arraylist) {
+                for (freindsubModel obj : arraylist) {
                     if (charText.length() != 0 && obj.FriendUser.name.toLowerCase(Locale.getDefault()).contains(charText)) {
                         ValuesSearch.add(obj);
                     }
@@ -378,7 +383,7 @@ public class FriendsScreen extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -388,7 +393,6 @@ public class FriendsScreen extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private void openSettings() {
@@ -406,7 +410,7 @@ public class FriendsScreen extends ActionBarActivity {
         popupWindow1.setWidth((int) (width / 1.5));
         popupWindow1.setHeight((int) (height / 1.5));
         popupWindow1.setModal(true);
-        popupWindow1.setAdapter(new SettingsAdapter(FriendsScreen.this, arrayList, drawableImage,true));
+        popupWindow1.setAdapter(new SettingsAdapter(FriendsScreen.this, arrayList, drawableImage, true));
         popupWindow1.show();
     }
 

@@ -34,6 +34,7 @@
                 android:id="@+id/ingName"
                 android:singleLine="true"
                 android:text="BAJRA"
+                android:textSize="@dimen/heading_text"
                 style="@style/header_text" />
 
             <ImageView

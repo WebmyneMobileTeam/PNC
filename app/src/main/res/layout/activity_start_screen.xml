@@ -82,6 +82,7 @@
 
         <me.drakeet.library.UIButton
             android:id="@+id/btnSignUpStartScreen"
+            android:textSize="@dimen/heading_text"
             android:text="Sign Up"
             style="@style/full_button_red"
             drakeet:alpha_pressed="80"
@@ -89,6 +90,7 @@
 
         <me.drakeet.library.UIButton
             android:id="@+id/btnLoginStartScreen"
+            android:textSize="@dimen/heading_text"
             android:text="Login"
             style="@style/full_button_white"
             drakeet:alpha_pressed="80"

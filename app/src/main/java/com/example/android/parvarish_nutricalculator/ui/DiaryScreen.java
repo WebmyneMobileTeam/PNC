@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -74,6 +75,7 @@ public class DiaryScreen extends ActionBarActivity {
     myrecipeModel myrecipe;
     int lastTouchedPos = 0;
     ImageView imgDiaryReset;
+    TextView diaryTitle, enterTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +163,8 @@ public class DiaryScreen extends ActionBarActivity {
         spinnerListServings.add("4");
         spinnerListServings.add("5");
 
-
+        diaryTitle = (TextView)findViewById(R.id.diaryTitle);
+        enterTitle = (TextView)findViewById(R.id.enterTitle);
         imgDiaryReset = (ImageView)findViewById(R.id.imgDiaryReset);
         linearTable = (LinearLayout) findViewById(R.id.linearTable);
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
@@ -170,6 +173,10 @@ public class DiaryScreen extends ActionBarActivity {
         btnAddMeal= (Button) findViewById(R.id.btnAddMeal);
         btnCalculate = (Button) findViewById(R.id.btnCalculate);
 
+        btnCalculate.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
+        btnAddMeal.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
+        enterTitle.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
+        diaryTitle.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(DiaryScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
@@ -190,6 +197,7 @@ public class DiaryScreen extends ActionBarActivity {
         View view = getLayoutInflater().inflate(R.layout.diary_list_item_view, linearTable, false);
         TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
         final TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        txtrecipeName.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
         Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
@@ -212,6 +220,7 @@ public class DiaryScreen extends ActionBarActivity {
 
         TextView txtDishNo = (TextView)view.findViewById(R.id.txtDishNo);
         final TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+        txtrecipeName.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
         Spinner spServings = (Spinner)view.findViewById(R.id.spServings);
 
         int counter = linearTableAdded.getChildCount();
@@ -243,6 +252,8 @@ public class DiaryScreen extends ActionBarActivity {
             diarySubModel dsm = new diarySubModel();
             Spinner tempServing = (Spinner) vg.findViewById(R.id.spServings);
             TextView txtrecipeName = (TextView) vg.findViewById(R.id.txtrecipeName);
+            txtrecipeName.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
+
             TextView txtDishNo = (TextView) vg.findViewById(R.id.txtDishNo);
 
             dsm.diaryNo=txtDishNo.getText().toString().trim();
@@ -279,6 +290,7 @@ public class DiaryScreen extends ActionBarActivity {
 
                     TextView txtDishNo = (TextView) view.findViewById(R.id.txtDishNo);
                     final TextView txtrecipeName = (TextView) view.findViewById(R.id.txtrecipeName);
+                    txtrecipeName.setTypeface(PrefUtils.getTypeFace(DiaryScreen.this));
                     Spinner spServings = (Spinner) view.findViewById(R.id.spServings);
 
                     CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(DiaryScreen.this, spinnerListServings);
@@ -451,10 +463,11 @@ public class DiaryScreen extends ActionBarActivity {
             TextView txt = new TextView(DiaryScreen.this);
             txt.setPadding(16, 16, 16, 16);
             txt.setSingleLine(true);
-            txt.setTextSize(18);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             return txt;
 
         }
@@ -463,11 +476,12 @@ public class DiaryScreen extends ActionBarActivity {
             TextView txt = new TextView(DiaryScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setSingleLine(true);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             return txt;
         }
     }

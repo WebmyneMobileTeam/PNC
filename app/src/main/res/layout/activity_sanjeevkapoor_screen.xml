@@ -31,7 +31,7 @@
                 android:gravity="center"
                 android:text="6 - 8 months"
                 android:textColor="#000000"
-                android:textSize="@dimen/big_text"
+                android:textSize="@dimen/heading_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <ImageView

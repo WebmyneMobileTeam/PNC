@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -82,6 +84,9 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         fetchFriendsFeeds();
 
         View headerView = ((LayoutInflater) FriendsFeedsScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.friends_feed_item_view_header, null, false);
+        EditText edUserNameLogin = (EditText)headerView.findViewById(R.id.edUserNameLogin);
+        edUserNameLogin.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
+
         listFeeds.addHeaderView(headerView);
 
         listFeeds.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -100,6 +105,8 @@ public class FriendsFeedsScreen extends ActionBarActivity {
         listFeeds = (ListView)findViewById(R.id.listFeeds);
         View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
         listFeeds.setEmptyView(emptyView);
+
+        txtUserName.setTypeface(PrefUtils.getTypeFace(FriendsFeedsScreen.this));
     }
 
     private void fetchFriendsFeeds(){
@@ -175,6 +182,9 @@ public class FriendsFeedsScreen extends ActionBarActivity {
 
             TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
             TextView txtBabyage = (TextView)view.findViewById(R.id.txtBabyage);
+
+            txtrecipeName.setTypeface(PrefUtils.getTypeFace(FriendsFeedsScreen.this));
+            txtBabyage.setTypeface(PrefUtils.getTypeFace(FriendsFeedsScreen.this));
 
             txtrecipeName.setText(ValuesSearch.get(position).name);
 

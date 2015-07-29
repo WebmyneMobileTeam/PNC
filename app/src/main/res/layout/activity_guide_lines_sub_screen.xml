@@ -65,6 +65,7 @@
 
             <TextView
                style="@style/header_text"
+                android:textSize="@dimen/heading_text"
                 android:text="NUTRITIONAL GUIDELINES"
               />
 

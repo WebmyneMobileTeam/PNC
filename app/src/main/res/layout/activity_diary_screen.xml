@@ -40,6 +40,9 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/diaryTitle"
+                android:textAllCaps="true"
+                android:textSize="@dimen/heading_text"
                 style="@style/header_text"
                 android:text="MY DIARY" />
 
@@ -92,6 +95,7 @@
 
 
         <TextView
+            android:id="@+id/enterTitle"
             android:textSize="@dimen/normal_text"
             android:gravity="center"
             android:padding="10dp"
@@ -125,6 +129,7 @@
             android:layout_gravity="center"
             android:textColor="#fff"
             android:layout_margin="16dp"
+            android:inputType="textCapCharacters"
             android:id="@+id/btnAddMeal"
             android:text="Add Meals"
             style="@style/btn_addBaby" />
@@ -140,6 +145,7 @@
 
     <Button
         android:padding="8dp"
+        android:inputType="textCapCharacters"
         android:id="@+id/btnCalculate"
         android:text="Calculate Today's Nutrition Score"
         android:layout_alignParentBottom="true"

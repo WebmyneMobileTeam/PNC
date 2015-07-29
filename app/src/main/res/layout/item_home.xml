@@ -17,6 +17,7 @@
     <TextView
         android:textStyle="bold"
         android:id="@+id/itemTextHome"
+        android:textSize="@dimen/sub_heading_text"
         style="@style/normalTextView"
         android:text="Text" />
 

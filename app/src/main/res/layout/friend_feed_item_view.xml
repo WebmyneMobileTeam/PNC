@@ -7,38 +7,41 @@
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="1dp"
         android:background="#DBDBDB"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
 
         <ImageView
-            android:background="@mipmap/ic_launcher"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/txtrecipeName"
-            android:paddingLeft="10dp"
-            android:textSize="16sp"
-            android:layout_gravity="center"
-            android:text="Dummy Text"
-            android:textColor="#000000"
-            android:textStyle="bold"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:paddingLeft="10dp"
+            android:text="Dummy Text"
+            android:textAllCaps="true"
+            android:textColor="#000000"
+            android:textSize="@dimen/sub_heading_text"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtBabyage"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp"
-            android:textColor="#000"
-            android:text="Baby Age: 13 Months"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:text="Baby's Age: 13 Months"
+            android:textAllCaps="true"
+            android:textColor="#000"
+            android:textSize="@dimen/sub_heading2_text" />
     </LinearLayout>
 </LinearLayout>

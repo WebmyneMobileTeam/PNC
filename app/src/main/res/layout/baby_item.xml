@@ -3,105 +3,112 @@
     android:id="@+id/addBabyView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
     tools:context="com.example.android.parvarish_nutricalculator.ui.HomeScreen">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/square_background"
-        android:padding="16dp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="16dp">
 
-
-    <LinearLayout
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:background="@drawable/leftwhite_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:text="BABY PROFILE"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <ImageView
-            android:background="@drawable/rightwhite_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:background="#ffffff"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"/>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/imgBabyProfile"
-        android:layout_weight="1"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/white_heart"
-        android:scaleType="centerInside"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:paddingLeft="10dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <EditText
-                android:layout_marginTop="15dp"
-                android:id="@+id/edBabyName"
-                android:hint="Name"
-                style="@style/edittext_login" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/leftwhite_arrow" />
 
-            <EditText
-                android:layout_marginTop="15dp"
-                android:id="@+id/edBabyDOB"
-                android:hint="Date of Birth"
+            <TextView
+                android:id="@+id/babyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="BABY PROFILE"
+                android:textColor="#000000"
+                android:textSize="@dimen/heading_text" />
 
-                style="@style/edittext_login" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rightwhite_arrow" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="5dp"
+            android:background="#ffffff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgBabyProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/white_heart"
+                android:scaleType="centerInside" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
+                <EditText
+                    android:id="@+id/edBabyName"
+                    style="@style/edittext_login"
+                    android:layout_marginTop="15dp"
+                    android:hint="Name" />
+
+                <EditText
+                    android:id="@+id/edBabyDOB"
+                    style="@style/edittext_login"
+                    android:layout_marginTop="15dp"
+
+                    android:hint="Date of Birth" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
     <LinearLayout
-        android:gravity="right"
-        android:layout_gravity="right"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:orientation="vertical">
+
         <Button
-            android:gravity="center"
-            android:layout_gravity="right"
-            android:textColor="#fff"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:id="@+id/btnAddBaby"
+            style="@style/btn_addBaby"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:inputType="textCapCharacters"
             android:text="Add Baby"
-            style="@style/btn_addBaby" />
+            android:textColor="#fff" />
     </LinearLayout>
 </LinearLayout>

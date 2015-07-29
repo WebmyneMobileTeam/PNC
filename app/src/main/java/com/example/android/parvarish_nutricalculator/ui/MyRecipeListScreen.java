@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -53,6 +54,8 @@ import com.facebook.login.LoginManager;
 import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.gson.GsonBuilder;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,11 +66,10 @@ import java.util.Locale;
 public class MyRecipeListScreen extends ActionBarActivity {
 
 
-
-    ListPopupWindow popupWindow1,popupWindow2;
+    ListPopupWindow popupWindow1, popupWindow2;
     private HUD progressDialog;
     private Spinner forSpinner;
-    ArrayList<String> spinnerList=new ArrayList<>();
+    ArrayList<String> spinnerList = new ArrayList<>();
     private ListView myRecipeList;
     userModel currentUser;
     private Toolbar toolbar;
@@ -77,6 +79,8 @@ public class MyRecipeListScreen extends ActionBarActivity {
     CustomAdapter adp;
     EditText etSearchRecipe;
     Button btnAddRecipe;
+    TextView myRecipeTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +96,6 @@ public class MyRecipeListScreen extends ActionBarActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
 
-
     }
 
 
@@ -104,20 +107,19 @@ public class MyRecipeListScreen extends ActionBarActivity {
         init();
 
 
-
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeListScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
         fetchMyRecpie();
 
 
-
+        spinnerList.clear();
         spinnerList.add("Sort");
         spinnerList.add("Baby name Ascending");
         spinnerList.add("Baby name Descending");
 
-        CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(MyRecipeListScreen.this,spinnerList);
-        forSpinner= (Spinner) findViewById(R.id.forSpinner);
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(MyRecipeListScreen.this, spinnerList);
+        forSpinner = (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
 
 
@@ -178,7 +180,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 Intent i = new Intent(MyRecipeListScreen.this, MyRecipeViewScreen.class);
-                i.putExtra("listPos",position);
+                i.putExtra("listPos", position);
                 startActivity(i);
 
                 /*final CustomDialog customDialog = new CustomDialog(MyRecipeListScreen.this, "View Recipe", "Edit Recipe", android.R.style.Theme_Translucent_NoTitleBar);
@@ -203,22 +205,25 @@ public class MyRecipeListScreen extends ActionBarActivity {
         });
     }
 
-    private void init(){
-        btnAddRecipe = (Button)findViewById(R.id.btnAddRecipe);
-        etSearchRecipe = (EditText)findViewById(R.id.etSearchRecipe);
-        myRecipeList= (ListView) findViewById(R.id.myRecipeList);
-        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe,null, false);
+    private void init() {
+        myRecipeTitle = (TextView) findViewById(R.id.myRecipeTitle);
+        btnAddRecipe = (Button) findViewById(R.id.btnAddRecipe);
+        etSearchRecipe = (EditText) findViewById(R.id.etSearchRecipe);
+        myRecipeList = (ListView) findViewById(R.id.myRecipeList);
+        View emptyView = getLayoutInflater().inflate(R.layout.empty_myrecipe, null, false);
         myRecipeList.setEmptyView(emptyView);
-
+        myRecipeTitle.setTypeface(PrefUtils.getTypeFace(MyRecipeListScreen.this));
+        btnAddRecipe.setTypeface(PrefUtils.getTypeFace(MyRecipeListScreen.this));
+        etSearchRecipe.setTypeface(etSearchRecipe.getTypeface(), Typeface.ITALIC);
 
     }
 
-    private void fetchMyRecpie(){
+    private void fetchMyRecpie() {
 
-        progressDialog =new HUD(MyRecipeListScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(MyRecipeListScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
 
-        new GetPostClass(API.MY_RECIPE+currentUser.data.id, EnumType.GET) {
+        new GetPostClass(API.MY_RECIPE + currentUser.data.id, EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
@@ -232,15 +237,12 @@ public class MyRecipeListScreen extends ActionBarActivity {
                     complexPreferences.putObject("current-myrecipe", myrecipe);
                     complexPreferences.commit();
 
-                    adp = new CustomAdapter(MyRecipeListScreen.this,myrecipe.data.Recipe);
+                    adp = new CustomAdapter(MyRecipeListScreen.this, myrecipe.data.Recipe);
                     myRecipeList.setAdapter(adp);
 
 
-
-
-
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
             }
@@ -260,63 +262,60 @@ public class MyRecipeListScreen extends ActionBarActivity {
         private final Context activity;
         private ArrayList<String> asr;
 
-        public CustomSpinnerAdapter(Context context,ArrayList<String> asr) {
-            this.asr=asr;
+        public CustomSpinnerAdapter(Context context, ArrayList<String> asr) {
+            this.asr = asr;
             activity = context;
         }
 
-        public int getCount()
-        {
+        public int getCount() {
             return asr.size();
         }
 
-        public Object getItem(int i)
-        {
+        public Object getItem(int i) {
             return asr.get(i);
         }
 
-        public long getItemId(int i)
-        {
-            return (long)i;
+        public long getItemId(int i) {
+            return (long) i;
         }
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(MyRecipeListScreen.this);
             txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setSingleLine(true);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
-            return  txt;
+            txt.setTypeface(etSearchRecipe.getTypeface(), Typeface.ITALIC);
+            return txt;
 
         }
 
         public View getView(int i, View view, ViewGroup viewgroup) {
             TextView txt = new TextView(MyRecipeListScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setPadding(16,16,16,16);
-            txt.setTextSize(18);
+            txt.setPadding(16, 16, 16, 16);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setSingleLine(true);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));
-            return  txt;
+            txt.setTypeface(etSearchRecipe.getTypeface(), Typeface.ITALIC);
+            return txt;
         }
     }
 
 
-
-
-    class CustomAdapter extends BaseAdapter{
+    class CustomAdapter extends BaseAdapter {
         LayoutInflater layoutInflator;
         private Context ctx;
 
         List<myrecipedata> ValuesSearch;
         ArrayList<myrecipedata> arraylist;
 
-        public CustomAdapter(Context ctx,ArrayList<myrecipedata> obj){
+        public CustomAdapter(Context ctx, ArrayList<myrecipedata> obj) {
             this.ctx = ctx;
             this.ValuesSearch = obj;
 
@@ -346,13 +345,16 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
             view = layoutInflator.inflate(R.layout.myrecipe_feed_item_view, parent, false);
 
-            ImageView imgDelete = (ImageView)view.findViewById(R.id.imgDelete);
-            TextView txtBabyage = (TextView)view.findViewById(R.id.txtBabyage);
-            TextView txtrecipeName = (TextView)view.findViewById(R.id.txtrecipeName);
+            ImageView imgDelete = (ImageView) view.findViewById(R.id.imgDelete);
+            TextView txtBabyage = (TextView) view.findViewById(R.id.txtBabyage);
+            TextView txtrecipeName = (TextView) view.findViewById(R.id.txtrecipeName);
 
             txtrecipeName.setText(ValuesSearch.get(position).name);
 
-            txtBabyage.setText("Baby Age: "+ValuesSearch.get(position).age_group);
+            txtBabyage.setTypeface(PrefUtils.getTypeFace(MyRecipeListScreen.this));
+            txtrecipeName.setTypeface(PrefUtils.getTypeFace(MyRecipeListScreen.this));
+
+            txtBabyage.setText("Baby's Age: " + ValuesSearch.get(position).age_group);
 
 
             imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -375,7 +377,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
                 ValuesSearch.addAll(arraylist);
 
             } else {
-                for ( myrecipedata obj: arraylist) {
+                for (myrecipedata obj : arraylist) {
                     if (charText.length() != 0 && obj.name.toLowerCase(Locale.getDefault()).contains(charText)) {
                         ValuesSearch.add(obj);
                     }
@@ -391,14 +393,14 @@ public class MyRecipeListScreen extends ActionBarActivity {
             int DSC = 2;
             //ValuesSearch.clear();
             //ValuesSearch.addAll(arraylist);
-            if(pos ==1){
+            if (pos == 1) {
                 Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
                     @Override
                     public int compare(myrecipedata object1, myrecipedata object2) {
                         return object1.name.compareTo(object2.name);
                     }
                 });
-            }else{
+            } else {
                 Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
                     @Override
                     public int compare(myrecipedata object1, myrecipedata object2) {
@@ -412,12 +414,10 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
 
 
-
-
     }
 
 
-    void showDeleteAlert(String msg,final String recpieID){
+    void showDeleteAlert(String msg, final String recpieID) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MyRecipeListScreen.this);
         // set title
@@ -427,8 +427,8 @@ public class MyRecipeListScreen extends ActionBarActivity {
         alertDialogBuilder
                 .setMessage(msg)
                 .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 
                         processDeleteRecipe(recpieID);
                     }
@@ -448,23 +448,23 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
     }
 
-    void processDeleteRecipe(final String id){
+    void processDeleteRecipe(final String id) {
 
-        progressDialog =new HUD(MyRecipeListScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(MyRecipeListScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
 
-        new GetPostClass(API.DELETE_RECIPE+id, EnumType.GET) {
+        new GetPostClass(API.DELETE_RECIPE + id, EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
                 Log.e("recipe del res", response);
 
                 try {
-                    Toast.makeText(MyRecipeListScreen.this,"Recipe deleted sucessfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyRecipeListScreen.this, "Recipe deleted sucessfully", Toast.LENGTH_LONG).show();
 
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
             }
@@ -492,7 +492,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -502,7 +502,6 @@ public class MyRecipeListScreen extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private void openSettings() {
@@ -520,7 +519,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
         popupWindow1.setWidth((int) (width / 1.5));
         popupWindow1.setHeight((int) (height / 1.5));
         popupWindow1.setModal(true);
-        popupWindow1.setAdapter(new SettingsAdapter(MyRecipeListScreen.this, arrayList, drawableImage,true));
+        popupWindow1.setAdapter(new SettingsAdapter(MyRecipeListScreen.this, arrayList, drawableImage, true));
         popupWindow1.show();
     }
 

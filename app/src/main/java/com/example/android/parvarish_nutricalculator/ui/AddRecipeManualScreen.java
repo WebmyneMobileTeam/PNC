@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -96,6 +97,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     EditText etRecpieName,etIngDetails,etNoofServings;
     ArrayList<glossaryIngredient> ingHashMap;
     ArrayList<String> IngredientNames;
+    TextView recipeTitle, ingredientTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,6 +213,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
 
     private void init(){
+        recipeTitle = (TextView)findViewById(R.id.recipeTitle);
+        ingredientTitle=(TextView)findViewById(R.id.ingredientTitle);
         imgRecipe = (ImageView)findViewById(R.id.imgRecipe);
         etNoofServings = (EditText)findViewById(R.id.etNoofServings);
         etIngDetails = (EditText)findViewById(R.id.etIngDetails);
@@ -220,6 +225,10 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
         btnAddIng = (Button) findViewById(R.id.btnAddIng);
 
+        btnSubmit.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
+        etIngDetails.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
+        ingredientTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
+        recipeTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeManualScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
@@ -230,7 +239,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
        try {
 
            int babyspinnerPos = forSpinner.getSelectedItemPosition();
-           
+
            userJSONObject.put("name", etRecpieName.getText().toString().trim());
            userJSONObject.put("user_id", currentUser.data.id);
            userJSONObject.put("method", etIngDetails.getText().toString().trim());
@@ -488,6 +497,8 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         spTwo = (Spinner) view.findViewById(R.id.spTwo);
         etIngname = (AutoCompleteTextView) view.findViewById(R.id.etIngredient);
 
+        etIngname.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
+
 
        // AutoCompleteAdapter autocomlpeteadapter = new AutoCompleteAdapter(AddRecipeManualScreen.this,android.R.layout.simple_dropdown_item_1line, IngredientNames);
         etIngname.setAdapter(adapter);
@@ -569,6 +580,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position).trim());
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;
         }
@@ -580,6 +592,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
             txt.setPadding(12, 12, 12, 12);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             txt.setText(asr.get(i).trim());
             txt.setTextColor(Color.parseColor("#000000"));
             return txt;

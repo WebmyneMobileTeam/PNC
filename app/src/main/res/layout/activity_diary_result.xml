@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-
+                android:textSize="@dimen/heading_text"
                 android:gravity="center"
                 android:text="MY DIARY"
                style="@style/header_text"/>

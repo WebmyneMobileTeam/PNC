@@ -31,7 +31,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_below="@+id/imgProfile"
                 android:id="@+id/txtName"
-                android:textSize="@dimen/big_text"
+                android:textSize="@dimen/heading_text"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

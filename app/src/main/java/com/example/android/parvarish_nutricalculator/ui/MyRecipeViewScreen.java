@@ -55,21 +55,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MyRecipeViewScreen extends ActionBarActivity {
-    ListPopupWindow popupWindow1,popupWindow2;
+    ListPopupWindow popupWindow1, popupWindow2;
     myrecipeModel myrecipe;
     glossaryDescription ingdredient;
     icmrMainModel icmrOBJ;
     private LinearLayout linearTableDetails;
     private Toolbar toolbar;
-    private TextView txtSave,txtEdit,txtServing,txtAgeGroup,txtTitle,txtMethod,txtMeth,txtING;
+    private TextView txtSave, txtEdit, txtServing, txtAgeGroup, txtTitle, txtMethod, txtMeth, txtING;
     ImageView photoImg;
     int listPos;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_sanjeev_recipie);
-
 
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,7 +81,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
         listPos = getIntent().getIntExtra("listPos", 0);
-        Log.e("Pos ",""+listPos);
+        Log.e("Pos ", "" + listPos);
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(MyRecipeViewScreen.this, "user_pref", 0);
         myrecipe = complexPreferences.getObject("current-myrecipe", myrecipeModel.class);
@@ -90,7 +90,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         init();
 
 
-        linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
+        linearTableDetails = (LinearLayout) findViewById(R.id.linearTableFriendRecipeDetail);
 
         fetchIngredientsdetails();
 
@@ -115,9 +115,9 @@ public class MyRecipeViewScreen extends ActionBarActivity {
     }
 
 
-    private void processSaveImageTOSDCard(){
+    private void processSaveImageTOSDCard() {
 
-        RelativeLayout r1 = (RelativeLayout)findViewById(R.id.mainLayout);
+        RelativeLayout r1 = (RelativeLayout) findViewById(R.id.mainLayout);
         View v1 = r1.getRootView();
 
 
@@ -132,31 +132,31 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         // File directory = cw.getDir("Krishna", Context.MODE_PRIVATE);
         // Create imageDir
         String root = Environment.getExternalStorageDirectory().toString();
-        String filepath = root+"/Parvarish App/";
+        String filepath = root + "/Parvarish App/";
 
-        long imgName =  System.currentTimeMillis();
+        long imgName = System.currentTimeMillis();
 
         File directory = new File(filepath);
         directory.mkdirs();
-        File mypath=new File(directory,""+imgName+".jpg");
+        File mypath = new File(directory, "" + imgName + ".jpg");
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
             b.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            Toast.makeText(MyRecipeViewScreen.this,"Image saved to SD card.",Toast.LENGTH_LONG).show();
+            Toast.makeText(MyRecipeViewScreen.this, "Image saved to SD card.", Toast.LENGTH_LONG).show();
             fos.close();
 
             sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
         } catch (Exception e) {
-            Log.e("exc",toString());
+            Log.e("exc", toString());
             e.printStackTrace();
         }
 
 
-
     }
-    private void fetchIngredientsdetails(){
+
+    private void fetchIngredientsdetails() {
 
         progressDialog = new ProgressDialog(MyRecipeViewScreen.this);
         progressDialog.setMessage("Loading Details...");
@@ -172,14 +172,14 @@ public class MyRecipeViewScreen extends ActionBarActivity {
                     //  JSONObject jsonObject = new JSONObject(response.toString().trim());/*
                     ingdredient = new GsonBuilder().create().fromJson(response, glossaryDescription.class);
 
-                    String ing="";
+                    String ing = "";
 
                     ArrayList<glossaryIngredient> arr = ingdredient.returnAllIngredients();
-                    for(int i = 0; i < myrecipe.data.Recipe.get(listPos).RecipeIngredientList.size(); i++) {
+                    for (int i = 0; i < myrecipe.data.Recipe.get(listPos).RecipeIngredientList.size(); i++) {
 
                         for (int j = 0; j < arr.size(); j++) {
                             if (arr.get(j).id.equalsIgnoreCase(myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.ingredient_id)) {
-                                ing +=myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.quantity+" "+arr.get(j).name+" "+myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.unit+"\n";
+                                ing += myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.quantity + " " + arr.get(j).name + " " + myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.unit + "\n";
 
                                 Log.e("#### my recipe ing id", myrecipe.data.Recipe.get(listPos).RecipeIngredientList.get(i).RecipeIngredient.ingredient_id);
                                 Log.e("#### org ing id", arr.get(j).id);
@@ -189,10 +189,10 @@ public class MyRecipeViewScreen extends ActionBarActivity {
                     }
 
 
-                     txtING.setText(ing);
+                    txtING.setText(ing);
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
                 fetchICMRdetails();
@@ -209,7 +209,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
     }
 
 
-    private void fetchICMRdetails(){
+    private void fetchICMRdetails() {
 
         progressDialog = new ProgressDialog(MyRecipeViewScreen.this);
         progressDialog.setMessage("Loading Details...");
@@ -226,30 +226,27 @@ public class MyRecipeViewScreen extends ActionBarActivity {
                     icmrOBJ = new GsonBuilder().create().fromJson(response, icmrMainModel.class);
 
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
 
-
-                NutritionCalculationSingleMyRecipe executer = new NutritionCalculationSingleMyRecipe(MyRecipeViewScreen.this,myrecipe.data.Recipe.get(listPos).RecipeIngredientList,ingdredient,myrecipe.data.Recipe.get(listPos).no_of_servings);
+                NutritionCalculationSingleMyRecipe executer = new NutritionCalculationSingleMyRecipe(MyRecipeViewScreen.this, myrecipe.data.Recipe.get(listPos).RecipeIngredientList, ingdredient, myrecipe.data.Recipe.get(listPos).no_of_servings);
                 executer.startCalculation();
 
                 executer.setOnCalculationResult(new NutritionCalculationSingleMyRecipe.OnCalculationResult() {
                     @Override
                     public void onResult(float energy, float protien, float fat, float calcium, float iron) {
-                        Log.e("Result Energy ",""+energy);
-                        Log.e("Result protien ",""+protien);
-                        Log.e("Result fat ",""+fat);
-                        Log.e("Result calcium ",""+calcium);
-                        Log.e("Result iron ",""+iron);
+                        Log.e("Result Energy ", "" + energy);
+                        Log.e("Result protien ", "" + protien);
+                        Log.e("Result fat ", "" + fat);
+                        Log.e("Result calcium ", "" + calcium);
+                        Log.e("Result iron ", "" + iron);
 
 
-                        addTableView(energy,protien,fat,calcium,iron);
+                        addTableView(energy, protien, fat, calcium, iron);
                     }
                 });
-
-
 
 
             }
@@ -263,19 +260,22 @@ public class MyRecipeViewScreen extends ActionBarActivity {
     }
 
 
-    void init(){
-        txtSave= (TextView)findViewById(R.id.txtSave);
+    void init() {
+        txtSave = (TextView) findViewById(R.id.txtSave);
 
-        txtEdit= (TextView)findViewById(R.id.txtEdit);
-        txtMeth  = (TextView)findViewById(R.id.txtMeth);
-        txtING  = (TextView)findViewById(R.id.txtING);
+        txtEdit = (TextView) findViewById(R.id.txtEdit);
+        txtMeth = (TextView) findViewById(R.id.txtMeth);
+        txtING = (TextView) findViewById(R.id.txtING);
 
-        txtMethod = (TextView)findViewById(R.id.txtMethod);
-        txtServing = (TextView)findViewById(R.id.txtServing);
-        txtAgeGroup  = (TextView)findViewById(R.id.txtAgeGroup);
-        txtTitle = (TextView)findViewById(R.id.txtTitle);
-        photoImg = (ImageView)findViewById(R.id.photoImg);
+        txtMethod = (TextView) findViewById(R.id.txtMethod);
+        txtServing = (TextView) findViewById(R.id.txtServing);
+        txtAgeGroup = (TextView) findViewById(R.id.txtAgeGroup);
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
+        photoImg = (ImageView) findViewById(R.id.photoImg);
 
+        txtEdit.setTypeface(PrefUtils.getTypeFace(MyRecipeViewScreen.this));
+        txtSave.setTypeface(PrefUtils.getTypeFace(MyRecipeViewScreen.this));
+        txtTitle.setTypeface(PrefUtils.getTypeFace(MyRecipeViewScreen.this));
         txtTitle.setText(myrecipe.data.Recipe.get(listPos).name);
         txtServing.setText("Servings : " + myrecipe.data.Recipe.get(listPos).no_of_servings);
         txtAgeGroup.setText("Age of Baby : " + myrecipe.data.Recipe.get(listPos).age_group);
@@ -294,22 +294,21 @@ public class MyRecipeViewScreen extends ActionBarActivity {
 
     }
 
-    private void addTableView(float energy, float protien, float fat, float calcium, float iron){
+    private void addTableView(float energy, float protien, float fat, float calcium, float iron) {
 
         int ICMR_GET_POS = 0;
-        for(int i=0;i<icmrOBJ.data.size();i++){
-            if(icmrOBJ.data.get(i).IcmrRecommended.age_group.trim().equalsIgnoreCase(myrecipe.data.Recipe.get(listPos).age_group)){
+        for (int i = 0; i < icmrOBJ.data.size(); i++) {
+            if (icmrOBJ.data.get(i).IcmrRecommended.age_group.trim().equalsIgnoreCase(myrecipe.data.Recipe.get(listPos).age_group)) {
                 ICMR_GET_POS = i;
                 break;
             }
         }
 
 
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         MyTableView tableView = new MyTableView(MyRecipeViewScreen.this);
-        tableView.setPadding(8,8,8,8);
+        tableView.setPadding(8, 8, 8, 8);
 
         // setting weights recommanded
         ArrayList<Float> weights = new ArrayList<>();
@@ -321,7 +320,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         linearTableDetails.addView(tableView, params);
 
         ArrayList<POJOTableRow> values = new ArrayList<>();
-        values.add(new POJOTableRow("Nutrients",Color.BLACK));
+        values.add(new POJOTableRow("Nutrients", Color.BLACK));
         values.add(new POJOTableRow("ICMR Recommandation", Color.BLACK));
         values.add(new POJOTableRow("Recipe Values", Color.BLACK));
 
@@ -330,35 +329,32 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         tableView.addDivider();
 
         ArrayList<POJOTableRow> values2 = new ArrayList<>();
-        values2.add(new POJOTableRow("Energy (kcal)",Color.WHITE));
+        values2.add(new POJOTableRow("Energy (kcal)", Color.WHITE));
         values2.add(new POJOTableRow(icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.energy.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.energy, Color.WHITE));
         values2.add(new POJOTableRow(String.format("%.2f", energy), Color.WHITE));
 
 
-
         ArrayList<POJOTableRow> values3 = new ArrayList<>();
-        values3.add(new POJOTableRow("Protein (g)",Color.WHITE));
-        values3.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein),Color.WHITE));
-        values3.add(new POJOTableRow(String.format("%.2f",protien),Color.WHITE));
+        values3.add(new POJOTableRow("Protein (g)", Color.WHITE));
+        values3.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.protein), Color.WHITE));
+        values3.add(new POJOTableRow(String.format("%.2f", protien), Color.WHITE));
 
 
         ArrayList<POJOTableRow> values4 = new ArrayList<>();
-        values4.add(new POJOTableRow("Calcium (mg)",Color.WHITE));
-        values4.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium),Color.WHITE));
-        values4.add(new POJOTableRow(String.format("%.2f",calcium),Color.WHITE));
+        values4.add(new POJOTableRow("Calcium (mg)", Color.WHITE));
+        values4.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.calcium), Color.WHITE));
+        values4.add(new POJOTableRow(String.format("%.2f", calcium), Color.WHITE));
 
 
         ArrayList<POJOTableRow> values5 = new ArrayList<>();
-        values5.add(new POJOTableRow("Iron (mg)",Color.WHITE));
-        values5.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron),Color.WHITE));
-        values5.add(new POJOTableRow(String.format("%.2f", iron),Color.WHITE));
+        values5.add(new POJOTableRow("Iron (mg)", Color.WHITE));
+        values5.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.iron), Color.WHITE));
+        values5.add(new POJOTableRow(String.format("%.2f", iron), Color.WHITE));
 
         ArrayList<POJOTableRow> values6 = new ArrayList<>();
-        values6.add(new POJOTableRow("Zinc (mg)",Color.WHITE));
-        values6.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc.equalsIgnoreCase("")?"0":icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc),Color.WHITE));
-        values6.add(new POJOTableRow(String.format("%.2f",fat),Color.WHITE));
-
-
+        values6.add(new POJOTableRow("Zinc (mg)", Color.WHITE));
+        values6.add(new POJOTableRow((icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc.equalsIgnoreCase("") ? "0" : icmrOBJ.data.get(ICMR_GET_POS).IcmrRecommended.zinc), Color.WHITE));
+        values6.add(new POJOTableRow(String.format("%.2f", fat), Color.WHITE));
 
 
         tableView.addRow(values2);
@@ -383,7 +379,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -393,7 +389,6 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private void openSettings() {
@@ -411,7 +406,7 @@ public class MyRecipeViewScreen extends ActionBarActivity {
         popupWindow1.setWidth((int) (width / 1.5));
         popupWindow1.setHeight((int) (height / 1.5));
         popupWindow1.setModal(true);
-        popupWindow1.setAdapter(new SettingsAdapter(MyRecipeViewScreen.this, arrayList, drawableImage,true));
+        popupWindow1.setAdapter(new SettingsAdapter(MyRecipeViewScreen.this, arrayList, drawableImage, true));
         popupWindow1.show();
     }
 

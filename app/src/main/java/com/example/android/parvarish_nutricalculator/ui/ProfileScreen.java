@@ -85,14 +85,16 @@ import java.util.regex.Pattern;
 import me.drakeet.library.UIButton;
 
 
-public class ProfileScreen extends ActionBarActivity implements View.OnClickListener{
+public class ProfileScreen extends ActionBarActivity implements View.OnClickListener {
+
+    TextView profileTitle;
     private static final int CAMERA_REQUEST = 500;
     private static final int GALLERY_REQUEST = 300;
-    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
-    private Button btnSave,btnChangePassword;
-    private EditText edSignUpCity,edSignUpMobile,edSignUpEmail,edSignUpPassword,edSignUpUserName;
+    final CharSequence[] items = {"Take Photo", "Choose from Gallery"};
+    private Button btnSave, btnChangePassword;
+    private EditText edSignUpCity, edSignUpMobile, edSignUpEmail, edSignUpPassword, edSignUpUserName;
     private ImageView imgProfile;
-    private HUD progressDialog,progressDialog2;
+    private HUD progressDialog, progressDialog2;
     private ListView profileList;
     private Toolbar toolbar;
     userModel currentUser;
@@ -100,21 +102,22 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     UIButton btnLoginFacebook;
     String currentDate;
     babyModel cuurentBaby;
-    Bitmap thumbnail,babyThumbnail;
+    Bitmap thumbnail, babyThumbnail;
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     LinearLayout addBabyLinearMain;
     View babyView;
-    int  pos=0;
+    int pos = 0;
     boolean isMainProfileImage = false;
     boolean isBabyProfileImage = false;
-    String currBabyId,currBabyName,currBabyDOB,currUserID;
+    String currBabyId, currBabyName, currBabyDOB, currUserID;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     //Facebook
-    private String arr_permissions[]={"public_profile","user_friends", "email"};
-    ListPopupWindow popupWindow1,popupWindow2;
+    private String arr_permissions[] = {"public_profile", "user_friends", "email"};
+    ListPopupWindow popupWindow1, popupWindow2;
     fbData fbModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,27 +180,26 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
 
-                if(isMainProfileImage) {
+                if (isMainProfileImage) {
                     isMainProfileImage = true;
                     thumbnail = (Bitmap) data.getExtras().get("data");
                     imgProfile.setImageBitmap(thumbnail);
-                }else {
-                           isBabyProfileImage = true;
-                           final View v = addBabyLinearMain.getChildAt(cuurentBaby.data.size());
-                           ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
-                           babyThumbnail = (Bitmap) data.getExtras().get("data");
-                           imgBabyProfile.setImageBitmap(babyThumbnail);
+                } else {
+                    isBabyProfileImage = true;
+                    final View v = addBabyLinearMain.getChildAt(cuurentBaby.data.size());
+                    ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
+                    babyThumbnail = (Bitmap) data.getExtras().get("data");
+                    imgBabyProfile.setImageBitmap(babyThumbnail);
 
                 }
 
             }
-        }else if(requestCode == GALLERY_REQUEST){
-
+        } else if (requestCode == GALLERY_REQUEST) {
 
 
             // Get the Image from data
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
             // Get the cursor
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -210,11 +212,11 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
 
             if (resultCode == RESULT_OK) {
-                if(isMainProfileImage) {
+                if (isMainProfileImage) {
                     isMainProfileImage = true;
                     thumbnail = (Bitmap) data.getExtras().get("data");
                     imgProfile.setImageBitmap(thumbnail);
-                }else {
+                } else {
                     isBabyProfileImage = true;
                     final View v = addBabyLinearMain.getChildAt(cuurentBaby.data.size());
                     ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
@@ -228,35 +230,43 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     }
 
-    private void init(){
+    private void init() {
 
-       btnLoginFacebook = (UIButton)findViewById(R.id.btnLoginFacebook);
+        profileTitle = (TextView) findViewById(R.id.profileTitle);
+        profileTitle.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
 
-        imgProfile = (ImageView)findViewById(R.id.imgProfile);
+        btnLoginFacebook = (UIButton) findViewById(R.id.btnLoginFacebook);
 
-        btnSave = (Button)findViewById(R.id.btnSave);
-        btnChangePassword = (Button)findViewById(R.id.btnChangePassword);
+        imgProfile = (ImageView) findViewById(R.id.imgProfile);
+
+        btnSave = (Button) findViewById(R.id.btnSave);
+        btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
 
         btnSave.setOnClickListener(this);
         btnChangePassword.setOnClickListener(this);
 
-        edSignUpCity = (EditText)findViewById(R.id.edSignUpCity);
-        edSignUpMobile = (EditText)findViewById(R.id.edSignUpMobile);
-        edSignUpEmail = (EditText)findViewById(R.id.edSignUpEmail);
-        edSignUpPassword = (EditText)findViewById(R.id.edSignUpPassword);
-        edSignUpUserName = (EditText)findViewById(R.id.edSignUpUserName);
+        edSignUpCity = (EditText) findViewById(R.id.edSignUpCity);
+        edSignUpMobile = (EditText) findViewById(R.id.edSignUpMobile);
+        edSignUpEmail = (EditText) findViewById(R.id.edSignUpEmail);
+        edSignUpPassword = (EditText) findViewById(R.id.edSignUpPassword);
+        edSignUpUserName = (EditText) findViewById(R.id.edSignUpUserName);
 
-        addBabyLinearMain = (LinearLayout)findViewById(R.id.addBabyLinearMain);
+        edSignUpUserName.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        btnChangePassword.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        btnSave.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        edSignUpCity.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        edSignUpMobile.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        edSignUpEmail.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+        edSignUpPassword.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+
+        addBabyLinearMain = (LinearLayout) findViewById(R.id.addBabyLinearMain);
 
 
+        callbackManager = CallbackManager.Factory.create();
 
-
-        callbackManager=CallbackManager.Factory.create();
-
-        loginButton= (LoginButton)findViewById(R.id.login_button);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
 
         loginButton.setReadPermissions(arr_permissions);
-
 
 
         btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
@@ -271,34 +281,33 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                 loginButton.invalidate();
 
 
-
             }
         });
 
     }
 
 
-    private void processfetchBabyDetails(){
+    private void processfetchBabyDetails() {
 
-        progressDialog  =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(ProfileScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         //API.GET_BABY_DETAILS+currentUser.data.id
-        new GetPostClass(API.GET_BABY_DETAILS+currentUser.data.id,EnumType.GET) {
+        new GetPostClass(API.GET_BABY_DETAILS + currentUser.data.id, EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
                 Log.e("baby response", response);
 
                 try {
-                  //  JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    //  JSONObject jsonObject = new JSONObject(response.toString().trim());
                     cuurentBaby = new GsonBuilder().create().fromJson(response, babyModel.class);
 
-                    Log.e("baby size",""+cuurentBaby.data.size());
+                    Log.e("baby size", "" + cuurentBaby.data.size());
 
                     addBabyViews();
 
-                }catch(Exception e){
-                    Log.e("exc",e.toString());
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
             }
@@ -313,21 +322,21 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     }
 
-    private void addBabyViews(){
+    private void addBabyViews() {
 
         int babySize = cuurentBaby.data.size();
-        if(babySize==0){
+        if (babySize == 0) {
             View newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
-            addBabyLinearMain.addView(newbabyView,0);
-        }else{
-            for(int i=0;i<babySize;i++){
-              View   newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
-              addBabyLinearMain.addView(newbabyView,i);
+            addBabyLinearMain.addView(newbabyView, 0);
+        } else {
+            for (int i = 0; i < babySize; i++) {
+                View newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
+                addBabyLinearMain.addView(newbabyView, i);
 
             }
             // add extra baby view for adding new babay
             View newbabyView = ((LayoutInflater) ProfileScreen.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.baby_item, addBabyLinearMain, false);
-            addBabyLinearMain.addView(newbabyView,babySize);
+            addBabyLinearMain.addView(newbabyView, babySize);
 
 
         }
@@ -335,26 +344,29 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
 
     }
 
-    private void fillBabyDetails(){
+    private void fillBabyDetails() {
 
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         int babySize = cuurentBaby.data.size();
 
-        for(int i=0;i<=babySize;i++){
+        for (int i = 0; i <= babySize; i++) {
 
             final View v = addBabyLinearMain.getChildAt(i);
 
 
-            final EditText edBabyName =  (EditText)v.findViewById(R.id.edBabyName);
-            final EditText edBabyDOB =  (EditText)v.findViewById(R.id.edBabyDOB);
-            Button btnAddBaby =  (Button)v.findViewById(R.id.btnAddBaby);
-            ImageView imgBabyProfile =  (ImageView)v.findViewById(R.id.imgBabyProfile);
+            final TextView babyTitle = (TextView)v.findViewById(R.id.babyTitle);
+            final EditText edBabyName = (EditText) v.findViewById(R.id.edBabyName);
+            final EditText edBabyDOB = (EditText) v.findViewById(R.id.edBabyDOB);
+            Button btnAddBaby = (Button) v.findViewById(R.id.btnAddBaby);
+            ImageView imgBabyProfile = (ImageView) v.findViewById(R.id.imgBabyProfile);
 
-
-
+            babyTitle.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+            edBabyName.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+            edBabyDOB.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
+            btnAddBaby.setTypeface(PrefUtils.getTypeFace(ProfileScreen.this));
 
             // this IF for adding new baby
-            if(i == babySize){
+            if (i == babySize) {
 
                 edBabyDOB.setFocusable(false);
                 edBabyDOB.setOnClickListener(new View.OnClickListener() {
@@ -377,8 +389,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                         fromDatePickerDialog.show();
                     }
                 });
-
-
 
 
                 imgBabyProfile.setOnClickListener(new View.OnClickListener() {
@@ -415,7 +425,7 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                     }
                 });
 
-            }else{
+            } else {
 
                 edBabyName.setText(cuurentBaby.data.get(i).Baby.baby_name);
                 edBabyDOB.setText(cuurentBaby.data.get(i).Baby.baby_dob);
@@ -426,7 +436,6 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
                 v.setOnClickListener(myBabyClick);
 
 
-
             }
         }
 
@@ -434,16 +443,15 @@ public class ProfileScreen extends ActionBarActivity implements View.OnClickList
     }
 
 
-
-private View.OnClickListener myBabyClick = new View.OnClickListener() {
+    private View.OnClickListener myBabyClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             int pos = addBabyLinearMain.indexOfChild(v);
 
             currBabyId = cuurentBaby.data.get(pos).Baby.id;
-            currBabyName =cuurentBaby.data.get(pos).Baby.baby_name;
-            currBabyDOB =cuurentBaby.data.get(pos).Baby.baby_dob;
+            currBabyName = cuurentBaby.data.get(pos).Baby.baby_name;
+            currBabyDOB = cuurentBaby.data.get(pos).Baby.baby_dob;
             currUserID = cuurentBaby.data.get(pos).Baby.user_id;
 
             CustomDialog customDialog = new CustomDialog(ProfileScreen.this, "Edit Baby Details", "Delete Baby Details", android.R.style.Theme_Translucent_NoTitleBar);
@@ -451,7 +459,7 @@ private View.OnClickListener myBabyClick = new View.OnClickListener() {
             customDialog.setResponse(new CustomDialog.CustomDialogInterface() {
                 @Override
                 public void topButton() {
-                    processShowEditBabyDialog(currBabyName,currBabyDOB,currUserID,currBabyId);
+                    processShowEditBabyDialog(currBabyName, currBabyDOB, currUserID, currBabyId);
                 }
 
                 @Override
@@ -463,23 +471,23 @@ private View.OnClickListener myBabyClick = new View.OnClickListener() {
         }
     };
 
-    private void processShowEditBabyDialog(String babyName,String babyDOB,String uid,String bid){
-        CustomDialogBoxEditBaby cdbox = new CustomDialogBoxEditBaby(ProfileScreen.this,babyName,babyDOB,uid,bid);
+    private void processShowEditBabyDialog(String babyName, String babyDOB, String uid, String bid) {
+        CustomDialogBoxEditBaby cdbox = new CustomDialogBoxEditBaby(ProfileScreen.this, babyName, babyDOB, uid, bid);
         cdbox.show();
     }
 
-private void processShowDeleteBabyDialog(String bid){
+    private void processShowDeleteBabyDialog(String bid) {
 
-        progressDialog =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(ProfileScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
         //API.GET_BABY_DETAILS+currentUser.data.id
-        new GetPostClass(API.DELETE_BABY+bid,EnumType.GET) {
+        new GetPostClass(API.DELETE_BABY + bid, EnumType.GET) {
             @Override
             public void response(String response) {
                 progressDialog.dismiss();
                 Log.e("baby response", response);
 
-                Toast.makeText(ProfileScreen.this,"Delete Sucessfully",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileScreen.this, "Delete Sucessfully", Toast.LENGTH_SHORT).show();
 
                 Intent refresh = new Intent(ProfileScreen.this, ProfileScreen.class);
                 startActivity(refresh);//Start the same Activity
@@ -497,107 +505,108 @@ private void processShowDeleteBabyDialog(String bid){
 
     }
 
-private void processAddbaby(String edBabyName,String edBabyDOB){
-    if(isEmptyField2(edBabyName)){
-        Toast.makeText(ProfileScreen.this,"Please Enter baby name !!!",Toast.LENGTH_SHORT).show();
-    }else if(isEmptyField2(edBabyDOB)){
-        Toast.makeText(ProfileScreen.this,"Please Enter baby DOB !!!",Toast.LENGTH_SHORT).show();
-    }else {
-        processAdd(edBabyName,edBabyDOB);
+    private void processAddbaby(String edBabyName, String edBabyDOB) {
+        if (isEmptyField2(edBabyName)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter baby name !!!", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField2(edBabyDOB)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter baby DOB !!!", Toast.LENGTH_SHORT).show();
+        } else {
+            processAdd(edBabyName, edBabyDOB);
+        }
+
     }
 
-}
-
-private void processAdd(String edBabyName,String edBabyDOB){
+    private void processAdd(String edBabyName, String edBabyDOB) {
         List<NameValuePair> pairs = new ArrayList<>();
 
-         Log.e("dob", edBabyDOB);
+        Log.e("dob", edBabyDOB);
 
         pairs.add(new BasicNameValuePair("user_id", currentUser.data.id));
-        pairs.add(new BasicNameValuePair("baby_name",edBabyName));
-        pairs.add(new BasicNameValuePair("baby_dob",edBabyDOB));
+        pairs.add(new BasicNameValuePair("baby_name", edBabyName));
+        pairs.add(new BasicNameValuePair("baby_dob", edBabyDOB));
 
 
-    if(isBabyProfileImage) {
-        String base64Image = PrefUtils.returnBas64Image(babyThumbnail);
-        pairs.add(new BasicNameValuePair("photo_url", base64Image));
-    }else{
-        pairs.add(new BasicNameValuePair("photo_url", ""));
-    }
+        if (isBabyProfileImage) {
+            String base64Image = PrefUtils.returnBas64Image(babyThumbnail);
+            pairs.add(new BasicNameValuePair("photo_url", base64Image));
+        } else {
+            pairs.add(new BasicNameValuePair("photo_url", ""));
+        }
 
 
-         Log.e("request",""+ pairs.toString());
+        Log.e("request", "" + pairs.toString());
 
-        progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog2 = new HUD(ProfileScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.show();
-        new GetPostClass(API.ADD_BABY,pairs,EnumType.POST) {
+        new GetPostClass(API.ADD_BABY, pairs, EnumType.POST) {
             @Override
             public void response(String response) {
                 progressDialog2.dismiss();
 
                 Log.e("baby response", response);
 
-                Toast.makeText(ProfileScreen.this,"Baby details added Sucessfully",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileScreen.this, "Baby details added Sucessfully", Toast.LENGTH_SHORT).show();
 
                 Intent refresh = new Intent(ProfileScreen.this, ProfileScreen.class);
                 startActivity(refresh);//Start the same Activity
                 finish(); //finish Activity.
             }
+
             @Override
             public void error(String error) {
                 progressDialog2.dismiss();
-                Toast.makeText(ProfileScreen.this,error,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
     }
 
-private void processfetchProfileDetails(){
+    private void processfetchProfileDetails() {
 
 
-        progressDialog =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog = new HUD(ProfileScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog.show();
 
-         new GetPostClass(API.GET_PROFILE+currentUser.data.id,EnumType.GET) {
-                @Override
-                public void response(String response) {
-                    progressDialog.dismiss();
-                    Log.e("profile response", response);
+        new GetPostClass(API.GET_PROFILE + currentUser.data.id, EnumType.GET) {
+            @Override
+            public void response(String response) {
+                progressDialog.dismiss();
+                Log.e("profile response", response);
 
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.toString().trim());
-                        userProfile = new GsonBuilder().create().fromJson(response, userModel.class);
-
-
-                        Log.e("sucness",userProfile.data.city);
-                        Log.e("sucness",userProfile.data.email);
-                        Log.e("sucness",userProfile.data.mobile);
+                try {
+                    JSONObject jsonObject = new JSONObject(response.toString().trim());
+                    userProfile = new GsonBuilder().create().fromJson(response, userModel.class);
 
 
-                        fillDetails();
+                    Log.e("sucness", userProfile.data.city);
+                    Log.e("sucness", userProfile.data.email);
+                    Log.e("sucness", userProfile.data.mobile);
 
-                        processfetchBabyDetails();
+
+                    fillDetails();
+
+                    processfetchBabyDetails();
 
 
-                        Log.e("sucness","saved profile");
+                    Log.e("sucness", "saved profile");
 
-                    }catch(Exception e){
-                        Log.e("exc",e.toString());
-                    }
-
+                } catch (Exception e) {
+                    Log.e("exc", e.toString());
                 }
 
-                @Override
-                public void error(String error) {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProfileScreen.this, error, Toast.LENGTH_SHORT).show();
-                }
-            }.call();
+            }
+
+            @Override
+            public void error(String error) {
+                progressDialog.dismiss();
+                Toast.makeText(ProfileScreen.this, error, Toast.LENGTH_SHORT).show();
+            }
+        }.call();
 
 
     }
 
-    private void fillDetails(){
+    private void fillDetails() {
         edSignUpCity.setText(userProfile.data.city);
         edSignUpMobile.setText(userProfile.data.mobile);
         edSignUpEmail.setText(userProfile.data.email);
@@ -609,12 +618,10 @@ private void processfetchProfileDetails(){
             byte[] decodedString = Base64.decode(userProfile.data.profile_pic, Base64.DEFAULT);
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             imgProfile.setImageBitmap(decodedByte);
-        }catch(Exception e){
-            Log.e("#### exc",e.toString());
+        } catch (Exception e) {
+            Log.e("#### exc", e.toString());
         }
     }
-
-
 
 
     private FacebookCallback<LoginResult> mCallBack = new FacebookCallback<LoginResult>() {
@@ -639,16 +646,15 @@ private void processfetchProfileDetails(){
                                 fbModel.fb_id = object.getString("id").toString();
                                 fbModel.fb_email = object.getString("email").toString();
 
-                                Log.e("#### fb email ",object.getString("email").toString());
+                                Log.e("#### fb email ", object.getString("email").toString());
                                 fbModel.name = object.getString("name").toString();
                                 fbModel.gender = object.getString("gender").toString();
 
 
-                            }catch (Exception e){
-                              Log.e("#### EXC",e.toString());
+                            } catch (Exception e) {
+                                Log.e("#### EXC", e.toString());
                                 e.printStackTrace();
                             }
-
 
 
                         }
@@ -675,17 +681,9 @@ private void processfetchProfileDetails(){
     };
 
 
-
-
-
-
-
-
-
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnSave:
                 processValidateProfileData();
                 break;
@@ -694,65 +692,61 @@ private void processfetchProfileDetails(){
         }
     }
 
-    private void processValidateProfileData(){
+    private void processValidateProfileData() {
 
-        if(isEmptyField(edSignUpUserName)){
-                Toast.makeText(ProfileScreen.this,"Please Enter User Name !!!",Toast.LENGTH_SHORT).show();
-        }else if(isEmptyField(edSignUpPassword)){
-            Toast.makeText(ProfileScreen.this,"Please Enter User Password !!!",Toast.LENGTH_SHORT).show();
-        }else if(isEmptyField(edSignUpEmail)){
-            Toast.makeText(ProfileScreen.this,"Please Enter User Email !!!",Toast.LENGTH_SHORT).show();
-        }else if(isEmptyField(edSignUpMobile)){
-            Toast.makeText(ProfileScreen.this,"Please Enter User Mobile no. !!!",Toast.LENGTH_SHORT).show();
-        }else if(isEmptyField(edSignUpCity)){
-            Toast.makeText(ProfileScreen.this,"Please Enter City !!!",Toast.LENGTH_SHORT).show();
+        if (isEmptyField(edSignUpUserName)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter User Name !!!", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edSignUpPassword)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter User Password !!!", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edSignUpEmail)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter User Email !!!", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edSignUpMobile)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter User Mobile no. !!!", Toast.LENGTH_SHORT).show();
+        } else if (isEmptyField(edSignUpCity)) {
+            Toast.makeText(ProfileScreen.this, "Please Enter City !!!", Toast.LENGTH_SHORT).show();
         }/*else if(!isPasswordMatch(edSignUpPassword)){
             Toast.makeText(ProfileScreen.this,"Please Enter Correct Password !!!",Toast.LENGTH_SHORT).show();
-        }*/else if(!isEmailMatch(edSignUpEmail)){
-            Toast.makeText(ProfileScreen.this,"Invalid Email address !!!",Toast.LENGTH_SHORT).show();
-        }else{
+        }*/ else if (!isEmailMatch(edSignUpEmail)) {
+            Toast.makeText(ProfileScreen.this, "Invalid Email address !!!", Toast.LENGTH_SHORT).show();
+        } else {
             processUpdateProfile();
         }
 
     }
 
 
-    private void processUpdateProfile(){
-
-
-
+    private void processUpdateProfile() {
 
 
         List<NameValuePair> pairs = new ArrayList<>();
 
-        pairs.add(new BasicNameValuePair("user_id",currentUser.data.id));
-        pairs.add(new BasicNameValuePair("email",edSignUpEmail.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("user_id", currentUser.data.id));
+        pairs.add(new BasicNameValuePair("email", edSignUpEmail.getText().toString().trim()));
         pairs.add(new BasicNameValuePair("name", edSignUpUserName.getText().toString().trim()));
 
-        pairs.add(new BasicNameValuePair("dob",currentUser.data.dob));
-        pairs.add(new BasicNameValuePair("password",edSignUpPassword.getText().toString().trim()));
+        pairs.add(new BasicNameValuePair("dob", currentUser.data.dob));
+        pairs.add(new BasicNameValuePair("password", edSignUpPassword.getText().toString().trim()));
         pairs.add(new BasicNameValuePair("city", edSignUpCity.getText().toString().trim()));
 
 
         pairs.add(new BasicNameValuePair("mobile", edSignUpMobile.getText().toString().trim()));
-        pairs.add(new BasicNameValuePair("gender",currentUser.data.gender));
+        pairs.add(new BasicNameValuePair("gender", currentUser.data.gender));
 
-        if(isMainProfileImage) {
+        if (isMainProfileImage) {
 
             //complete code to save image on server
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             thumbnail.compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
             byte[] b = baos.toByteArray();
-            String  encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-            Log.e("### BASE64 STRING ",encodedImage);
+            String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+            Log.e("### BASE64 STRING ", encodedImage);
 
 
             String base64Image = PrefUtils.returnBas64Image(thumbnail);
             pairs.add(new BasicNameValuePair("profile_pic", encodedImage));
-        }else{
+        } else {
             pairs.add(new BasicNameValuePair("profile_pic", currentUser.data.profile_pic));
         }
-
 
 
         try {
@@ -762,11 +756,11 @@ private void processfetchProfileDetails(){
                 pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
 
             } else {
-                pairs.add(new BasicNameValuePair("fb_id",fbModel.fb_id));
+                pairs.add(new BasicNameValuePair("fb_id", fbModel.fb_id));
                 pairs.add(new BasicNameValuePair("fb_email", fbModel.fb_email));
             }
-        }catch (Exception e){
-            Log.e("~~~~Exce in FB",e.toString());
+        } catch (Exception e) {
+            Log.e("~~~~Exce in FB", e.toString());
             // If the facebook parameters are null
             pairs.add(new BasicNameValuePair("fb_id", currentUser.data.fb_id));
             pairs.add(new BasicNameValuePair("fb_email", currentUser.data.fb_email));
@@ -774,17 +768,16 @@ private void processfetchProfileDetails(){
         }
 
 
-
-        progressDialog2 =new HUD(ProfileScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+        progressDialog2 = new HUD(ProfileScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
         progressDialog2.show();
-        new GetPostClass(API.UPDATE_PROFILE,pairs,EnumType.POST) {
+        new GetPostClass(API.UPDATE_PROFILE, pairs, EnumType.POST) {
             @Override
             public void response(String response) {
                 progressDialog2.dismiss();
 
                 Log.e("login response", response);
 
-                Toast.makeText(ProfileScreen.this,"Update Sucessfully",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileScreen.this, "Update Sucessfully", Toast.LENGTH_SHORT).show();
 
                 try {
                     JSONObject jsonObject = new JSONObject(response.toString().trim());
@@ -796,8 +789,7 @@ private void processfetchProfileDetails(){
                     complexPreferences.commit();
 
 
-
-                 //   userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
+                    //   userModel userUserModel = new GsonBuilder().create().fromJson(response, userModel.class);
 
                   /*  ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(ProfileScreen.this, "user_pref", 0);
                     complexPreferences.putObject("current-user", userUserModel);
@@ -806,20 +798,20 @@ private void processfetchProfileDetails(){
                     Log.e("sucness", "update profile");
 
 
-                }catch(Exception e){
-                    Log.e("excption s",e.toString());
+                } catch (Exception e) {
+                    Log.e("excption s", e.toString());
                 }
 
 
-
 //                    Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
-                Intent i=new Intent(ProfileScreen.this,HomeScreen.class);
+                Intent i = new Intent(ProfileScreen.this, HomeScreen.class);
                 startActivity(i);
             }
+
             @Override
             public void error(String error) {
                 progressDialog2.dismiss();
-                Toast.makeText(ProfileScreen.this,error,Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileScreen.this, error, Toast.LENGTH_SHORT).show();
             }
         }.call();
 
@@ -852,17 +844,13 @@ private void processfetchProfileDetails(){
     }
 
     public boolean isPasswordMatch(EditText param1) {
-        if(currentUser.data.password.equals(param1)){
+        if (currentUser.data.password.equals(param1)) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
     }
-
-
-
-
 
 
     @Override
@@ -879,7 +867,7 @@ private void processfetchProfileDetails(){
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.actionMore:
                 openMore();
                 break;
@@ -906,7 +894,7 @@ private void processfetchProfileDetails(){
         popupWindow1.setWidth((int) (width / 1.5));
         popupWindow1.setHeight((int) (height / 1.5));
         popupWindow1.setModal(true);
-        popupWindow1.setAdapter(new SettingsAdapter(ProfileScreen.this, arrayList, drawableImage,true));
+        popupWindow1.setAdapter(new SettingsAdapter(ProfileScreen.this, arrayList, drawableImage, true));
         popupWindow1.show();
     }
 

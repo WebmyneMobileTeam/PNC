@@ -38,7 +38,7 @@
                     android:gravity="center"
                     android:text="ENTER REGIONAL RECIPE"
                     android:textColor="#000000"
-                    android:textSize="@dimen/big_text"
+                    android:textSize="@dimen/heading_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView
@@ -74,7 +74,7 @@
                         android:singleLine="true"
                         android:layout_margin="16dp"
                         android:id="@+id/etRecpieName"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/heading_text"
                         android:textColor="@android:color/black"
                         android:textColorHint="@android:color/black"
                         android:background="@android:color/white"
@@ -149,7 +149,7 @@
 
             <TextView
                 android:layout_gravity="center"
-                android:textSize="26sp"
+                android:textSize="@dimen/heading_text"
                 android:padding="8sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import com.facebook.login.LoginManager;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +61,7 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
     sanjeevmainModel sajneevObj;
     regionalmainModel regionalObj;
     boolean importFromRegional;
+    TextView addTitle, enterURLTitle, calculateTitle, calculateTitle2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,15 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         toolbar.setNavigationIcon(R.mipmap.ic_launcher);
 
         SpRegionalRecipie = (Spinner) findViewById(R.id.SpRegionalRecipie);
+        addTitle = (TextView)findViewById(R.id.addTitle);
+        enterURLTitle= (TextView)findViewById(R.id.enterURLTitle);
+        calculateTitle = (TextView)findViewById(R.id.calculateTitle);
+        calculateTitle2= (TextView)findViewById(R.id.calculateTitle2);
+
+        calculateTitle2.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
+        calculateTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
+        enterURLTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
+        addTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
 
 
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeWebScreen.this, "user_pref", 0);
@@ -86,11 +98,14 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         img3 = (ImageView) findViewById(R.id.img3);
         img4 = (ImageView) findViewById(R.id.img4);
 
+        edURL.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
+
         img1.setOnClickListener(this);
         img2.setOnClickListener(this);
         img3.setOnClickListener(this);
         img4.setOnClickListener(this);
         btnImport = (Button) findViewById(R.id.btnImport);
+        btnImport.setTypeface(PrefUtils.getTypeFace(AddRecipeWebScreen.this));
 
         btnImport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,10 +289,11 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(AddRecipeWebScreen.this);
             txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setText(asr.get(position).trim());
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             return txt;
 
         }
@@ -286,10 +302,11 @@ public class AddRecipeWebScreen extends ActionBarActivity implements View.OnClic
             TextView txt = new TextView(AddRecipeWebScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
             txt.setPadding(16, 16, 16, 16);
-            txt.setTextSize(18);
+            txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
             txt.setText(asr.get(i).trim());
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
             return txt;
         }
     }

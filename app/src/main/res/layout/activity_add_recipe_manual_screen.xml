@@ -31,13 +31,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
+                    android:id="@+id/recipeTitle"
                     android:singleLine="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:text="ENTER RECIPE"
                     android:textColor="#000000"
-                    android:textSize="@dimen/big_text"
+                    android:textSize="@dimen/heading_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView
@@ -71,13 +72,13 @@
                         android:hint="Recipe Name"
                         android:layout_width="0dp"
                         android:singleLine="true"
-                        android:layout_margin="16dp"
+                        android:layout_margin="10dp"
                         android:id="@+id/etRecpieName"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/sub_heading_text"
                         android:textColor="@android:color/black"
                         android:textColorHint="@android:color/black"
                         android:background="@android:color/white"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
@@ -105,7 +106,7 @@
                     android:layout_gravity="center"
                     android:text="For"
                     android:textColor="@android:color/black"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/heading_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <LinearLayout
@@ -140,7 +141,7 @@
                     android:padding="12dp"
                     android:id="@+id/etNoofServings"
                     android:inputType="number"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sub_heading_text"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/black"
                     android:background="@android:color/white"
@@ -149,8 +150,9 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/ingredientTitle"
                 android:layout_gravity="center"
-                android:textSize="26sp"
+                android:textSize="@dimen/heading_text"
                 android:padding="8sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
@@ -204,8 +206,10 @@
             </EditText>
 
             <Button
+                android:inputType="textCapCharacters"
                 android:text="Submit"
                 android:id="@+id/btnSubmit"
+                android:textSize="@dimen/heading_text"
                 android:background="@color/red"
                 style="@style/full_button_red">
             </Button>

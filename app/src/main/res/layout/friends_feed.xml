@@ -23,7 +23,7 @@
         <TextView
             android:textStyle="bold"
             android:id="@+id/txtUserName"
-            android:padding="16dp"
+            android:padding="@dimen/heading_text"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="#ffffff"
