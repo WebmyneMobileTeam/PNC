@@ -236,6 +236,9 @@ public class MyRecipeListScreen extends ActionBarActivity {
                     myRecipeList.setAdapter(adp);
 
 
+
+
+
                 }catch(Exception e){
                     Log.e("exc",e.toString());
                 }

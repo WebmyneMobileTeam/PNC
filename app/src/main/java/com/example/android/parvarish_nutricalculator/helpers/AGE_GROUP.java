@@ -48,7 +48,7 @@ public class AGE_GROUP {
         }else if((YEARS==0)&&(MONTHS>=6 && MONTHS <=8)){
             age_group = "6-8 Months";
         }else{
-            age_group = "6-8 Months";
+            age_group = "0-6 Months";
         }
 
         return age_group;
