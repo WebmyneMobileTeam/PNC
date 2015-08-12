@@ -82,6 +82,7 @@
                 android:textStyle="normal" />
 
             <LinearLayout
+                android:id="@+id/reqLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -89,6 +90,7 @@
                 <ImageView
                     android:id="@+id/imgPendingReq"
                     android:layout_width="wrap_content"
+                    android:clickable="false"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="4dp"
@@ -99,6 +101,7 @@
                     android:id="@+id/reqTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:gravity="center"
                     android:maxLines="2"
                     android:text="Friend\nRequests"
@@ -107,6 +110,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/addLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -114,6 +118,7 @@
                 <ImageView
                     android:id="@+id/imgAddFreind"
                     android:layout_width="wrap_content"
+                    android:clickable="false"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="4dp"
@@ -122,6 +127,7 @@
 
                 <TextView
                     android:id="@+id/addTitle"
+                    android:clickable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"

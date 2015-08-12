@@ -74,14 +74,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class AddRecipeManualScreen extends ActionBarActivity {
-    ListPopupWindow popupWindow1,popupWindow2;
+    ListPopupWindow popupWindow1, popupWindow2;
     private static final int CAMERA_REQUEST = 500;
     private static final int GALLERY_REQUEST = 300;
     private boolean isPictureTaken = false;
-    final CharSequence[] items = { "Take Photo", "Choose from Gallery" };
+    final CharSequence[] items = {"Take Photo", "Choose from Gallery"};
     Bitmap thumbnail;
     ImageView imgRecipe;
-    private ProgressDialog progressDialog,progressDialog2;
+    private ProgressDialog progressDialog, progressDialog2;
     ArrayList<String> spinnerList = new ArrayList<>();
     private Spinner forSpinner;
     private Spinner spOne, spTwo;
@@ -94,10 +94,12 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     int posi = 0, posj = 0;
     String nameIng;
     Button btnSubmit;
-    EditText etRecpieName,etIngDetails,etNoofServings;
+    EditText etRecpieName, etIngDetails, etNoofServings;
     ArrayList<glossaryIngredient> ingHashMap;
     ArrayList<String> IngredientNames;
     TextView recipeTitle, ingredientTitle;
+    boolean selectFromAuto = false;
+    ArrayList<String> ingList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         init();
         processfetchBabyDetails();
 
-
         btnAddIng.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +127,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
                 Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
                 Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
 
-
                 AutoCompleteTextView etIngr = (AutoCompleteTextView) mainLiner.getChildAt(1);
                 nameIng = etIngr.getText().toString().trim();
 
@@ -135,16 +135,19 @@ public class AddRecipeManualScreen extends ActionBarActivity {
                     Toast.makeText(AddRecipeManualScreen.this, "Please select Quantity and Unit first !!!", Toast.LENGTH_LONG).show();
                 } else if (nameIng.toString().trim().length() == 0) {
                     Toast.makeText(AddRecipeManualScreen.this, "Please enter ingredient name !!!", Toast.LENGTH_LONG).show();
+                } else if (!selectFromAuto) {
+                    Toast.makeText(AddRecipeManualScreen.this, "Please select ingredient name from Ingredient dropdown after typing 2 letters on it.", Toast.LENGTH_LONG).show();
                 } else {
                     posi = tempspOne.getSelectedItemPosition();
                     posj = tempspTwo.getSelectedItemPosition();
-
 
                     processAddIng();
 
                     tempspOne.setSelection(0);
                     tempspTwo.setSelection(0);
                     etIngr.setText("");
+
+
                 }
             }
         });
@@ -158,13 +161,13 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
                 if (etRecpieName.toString().trim().length() == 0) {
                     Toast.makeText(AddRecipeManualScreen.this, "Please enter Recipe name !!!", Toast.LENGTH_LONG).show();
-                }else if(forSpinner.getSelectedItemPosition()==0){
-                   Toast.makeText(AddRecipeManualScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
-               }else if(etNoofServings.toString().trim().length() == 0){
+                } else if (forSpinner.getSelectedItemPosition() == 0) {
+                    Toast.makeText(AddRecipeManualScreen.this, "Please select Baby first !!!", Toast.LENGTH_LONG).show();
+                } else if (etNoofServings.toString().trim().length() == 0) {
                     Toast.makeText(AddRecipeManualScreen.this, "Please enter No. of servings !!!", Toast.LENGTH_LONG).show();
-                }else if(totalIng == 0){
+                } else if (totalIng == 0) {
                     Toast.makeText(AddRecipeManualScreen.this, "Please add Ingredients !!!", Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     processSubmitRecipeToServer();
                 }
             }
@@ -212,15 +215,15 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     }
 
 
-    private void init(){
-        recipeTitle = (TextView)findViewById(R.id.recipeTitle);
-        ingredientTitle=(TextView)findViewById(R.id.ingredientTitle);
-        imgRecipe = (ImageView)findViewById(R.id.imgRecipe);
-        etNoofServings = (EditText)findViewById(R.id.etNoofServings);
-        etIngDetails = (EditText)findViewById(R.id.etIngDetails);
+    private void init() {
+        recipeTitle = (TextView) findViewById(R.id.recipeTitle);
+        ingredientTitle = (TextView) findViewById(R.id.ingredientTitle);
+        imgRecipe = (ImageView) findViewById(R.id.imgRecipe);
+        etNoofServings = (EditText) findViewById(R.id.etNoofServings);
+        etIngDetails = (EditText) findViewById(R.id.etIngDetails);
         forSpinner = (Spinner) findViewById(R.id.forSpinner);
-        etRecpieName = (EditText)findViewById(R.id.etRecpieName);
-        btnSubmit = (Button)findViewById(R.id.btnSubmit);
+        etRecpieName = (EditText) findViewById(R.id.etRecpieName);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
         linearTable = (LinearLayout) findViewById(R.id.linearTable);
         linearTableAdded = (LinearLayout) findViewById(R.id.linearTableAdded);
         btnAddIng = (Button) findViewById(R.id.btnAddIng);
@@ -229,107 +232,104 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         etIngDetails.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
         ingredientTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
         recipeTitle.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
+
         ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(AddRecipeManualScreen.this, "user_pref", 0);
         currentUser = complexPreferences.getObject("current-user", userModel.class);
 
     }
 
-    private void processSubmitRecipeToServer(){
+    private void processSubmitRecipeToServer() {
         JSONObject userJSONObject = new JSONObject();
-       try {
+        try {
 
-           int babyspinnerPos = forSpinner.getSelectedItemPosition();
+            int babyspinnerPos = forSpinner.getSelectedItemPosition();
 
-           userJSONObject.put("name", etRecpieName.getText().toString().trim());
-           userJSONObject.put("user_id", currentUser.data.id);
-           userJSONObject.put("method", etIngDetails.getText().toString().trim());
-           userJSONObject.put("ingredients_details", "");
-           userJSONObject.put("sanjeev_kapoor_receipe", "No");
-           userJSONObject.put("regional_food_receipe", "No");
+            userJSONObject.put("name", etRecpieName.getText().toString().trim());
+            userJSONObject.put("user_id", currentUser.data.id);
+            userJSONObject.put("method", etIngDetails.getText().toString().trim());
+            userJSONObject.put("ingredients_details", "");
+            userJSONObject.put("sanjeev_kapoor_receipe", "No");
+            userJSONObject.put("regional_food_receipe", "No");
 
-           //Setting the age group
-           AGE_GROUP obj = new AGE_GROUP(cuurentBaby.data.get(babyspinnerPos - 1).Baby.baby_dob);
-           String age_group = obj.getAgeGroup();
+            //Setting the age group
+            AGE_GROUP obj = new AGE_GROUP(cuurentBaby.data.get(babyspinnerPos - 1).Baby.baby_dob);
+            String age_group = obj.getAgeGroup();
 
-           userJSONObject.put("age_group", age_group);
+            userJSONObject.put("age_group", age_group);
 
-           userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
+            userJSONObject.put("no_of_servings", etNoofServings.getText().toString().trim());
 
-           if(isPictureTaken) {
-               String base64Image = PrefUtils.returnBas64Image(thumbnail);
-               userJSONObject.put("photo_url", base64Image);
-           }else{
-               userJSONObject.put("photo_url","");
-           }
+            if (isPictureTaken) {
+                String base64Image = PrefUtils.returnBas64Image(thumbnail);
+                userJSONObject.put("photo_url", base64Image);
+            } else {
+                userJSONObject.put("photo_url", "");
+            }
 
-           userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos - 1).Baby.id);
-
-
+            userJSONObject.put("baby_id", cuurentBaby.data.get(babyspinnerPos - 1).Baby.id);
 
 
+            JSONArray array = new JSONArray();
+            for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
+                LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(k);
+                LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
+                AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
 
 
-           JSONArray array = new JSONArray();
-           for (int k = 0; k < linearTableAdded.getChildCount(); k++) {
-               LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(k);
-               LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
-               AutoCompleteTextView tempetIngredient = (AutoCompleteTextView) mainLiner.getChildAt(1);
+                Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
+                Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
 
-
-               Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
-               Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
-
-               Log.e("spinner1 Value", tempspOne.getSelectedItem().toString());
-               Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
-               Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
+                Log.e("spinner1 Value", tempspOne.getSelectedItem().toString());
+                Log.e("spinner2 Value", tempspTwo.getSelectedItem().toString());
+                Log.e("Ingrediitent Name Value", tempetIngredient.getText().toString().trim());
 
                 JSONObject ingreditent = new JSONObject();
 
 
-               for (int i = 0; i < ingHashMap.size(); i++) {
-                   if (ingHashMap.get(i).name.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
-                       ingreditent.put("ingredient_id", ingHashMap.get(i).id);
-                   }
-               }
+                for (int i = 0; i < ingHashMap.size(); i++) {
+                    if (ingHashMap.get(i).name.equalsIgnoreCase(tempetIngredient.getText().toString().trim())) {
+                        ingreditent.put("ingredient_id", ingHashMap.get(i).id);
+                    }
+                }
 
 
-               ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
-               ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
+                ingreditent.put("quantity", tempspOne.getSelectedItem().toString());
+                ingreditent.put("unit", tempspTwo.getSelectedItem().toString());
 
-               array.put(ingreditent);
-               // end of main for loop
-           }
+                array.put(ingreditent);
+                // end of main for loop
+            }
 
-           userJSONObject.put("recipe_ingredient", array);
+            userJSONObject.put("recipe_ingredient", array);
 
             JSONPost json = new JSONPost();
-           json.POST(AddRecipeManualScreen.this, API.ADD_RECIPE, userJSONObject.toString(),"Saving Recipe...");
-           json.setPostResponseListener(new POSTResponseListener() {
-               @Override
-               public String onPost(String msg) {
+            json.POST(AddRecipeManualScreen.this, API.ADD_RECIPE, userJSONObject.toString(), "Saving Recipe...");
+            json.setPostResponseListener(new POSTResponseListener() {
+                @Override
+                public String onPost(String msg) {
 
-                   Log.e("add recipe", "onPost response: " + msg);
-                    Toast.makeText(AddRecipeManualScreen.this,"Recipe added Succesfully",Toast.LENGTH_SHORT).show();
+                    Log.e("add recipe", "onPost response: " + msg);
+                    Toast.makeText(AddRecipeManualScreen.this, "Recipe added Succesfully", Toast.LENGTH_SHORT).show();
                     finish();
 
-                   return null;
-               }
+                    return null;
+                }
 
-               @Override
-               public void onPreExecute() {
+                @Override
+                public void onPreExecute() {
 
-               }
+                }
 
-               @Override
-               public void onBackground() {
+                @Override
+                public void onBackground() {
 
-               }
-           });
+                }
+            });
 
 
-       }catch (Exception e){
-           Log.e("Exception",e.toString());
-       }
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
+        }
     }
 
     private void processAddIng() {
@@ -359,9 +359,9 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         etIngredient.setFocusable(false);
         etIngredient.setOnTouchListener(myAutoEditTextListener);
 
-
         linearTableAdded.addView(view);
 
+        addAutoCompleteData();
     }
 
     View.OnTouchListener myAutoEditTextListener = new View.OnTouchListener() {
@@ -369,18 +369,29 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
 
-            AutoCompleteTextView txt = (AutoCompleteTextView)v;
+            AutoCompleteTextView txt = (AutoCompleteTextView) v;
             final int DRAWABLE_RIGHT = 2;
             if (event.getAction() == 0) {
                 if (event.getRawX() >= (txt.getRight() - txt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                    LinearLayout parent = (LinearLayout)txt.getParent();
+                    LinearLayout parent = (LinearLayout) txt.getParent();
                     //  Toast.makeText(DiaryScreen.this,"clicked "+,Toast.LENGTH_SHORT).show();
+                    LinearLayout mainLiner = (LinearLayout) linearTableAdded.getChildAt(0);
+                    LinearLayout subLiner = (LinearLayout) mainLiner.getChildAt(0);
+
+                    Spinner tempspOne = (Spinner) subLiner.getChildAt(0);
+                    Spinner tempspTwo = (Spinner) subLiner.getChildAt(1);
+
+                    tempspOne.setSelection(0);
+                    tempspTwo.setSelection(0);
+
                     linearTableAdded.removeViewAt(linearTableAdded.indexOfChild(parent));
                     linearTableAdded.invalidate();
+                    ingList.remove(txt.getText().toString());
+                    addAutoCompleteData();
+
                 }
 
             }
-
 
             return false;
         }
@@ -424,6 +435,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
 
     }
+
     private void fetchGlossaryList() {
         progressDialog = new ProgressDialog(AddRecipeManualScreen.this);
         progressDialog.setMessage("Loading ...");
@@ -480,17 +492,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         List<String> siteIdList = new ArrayList<>(keys);
 
 */
-        IngredientNames = new ArrayList<String>();
-
-
-        for (int i=0;i<ingHashMap.size();i++) {
-            IngredientNames.add(ingHashMap.get(i).name);
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, IngredientNames);
-
-
         View view = getLayoutInflater().inflate(R.layout.item_recipe_manual_screen, linearTable, false);
 
         spOne = (Spinner) view.findViewById(R.id.spOne);
@@ -499,11 +500,11 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
         etIngname.setTypeface(PrefUtils.getTypeFace(AddRecipeManualScreen.this));
 
+        addAutoCompleteData();
 
-       // AutoCompleteAdapter autocomlpeteadapter = new AutoCompleteAdapter(AddRecipeManualScreen.this,android.R.layout.simple_dropdown_item_1line, IngredientNames);
-        etIngname.setAdapter(adapter);
-       // etIngredient.setThreshold(1);
+        // AutoCompleteAdapter autocomlpeteadapter = new AutoCompleteAdapter(AddRecipeManualScreen.this,android.R.layout.simple_dropdown_item_1line, IngredientNames);
 
+        // etIngredient.setThreshold(1);
 
         ArrayList<String> firstColumn = new ArrayList<String>();
         ArrayList<String> secondColumn = new ArrayList<String>();
@@ -549,6 +550,33 @@ public class AddRecipeManualScreen extends ActionBarActivity {
 
     }
 
+    private void addAutoCompleteData() {
+        selectFromAuto = false;
+        IngredientNames = new ArrayList<String>();
+
+        for (int i = 0; i < ingHashMap.size(); i++) {
+            IngredientNames.add(ingHashMap.get(i).name);
+        }
+
+        for (int i = 0; i < ingHashMap.size(); i++) {
+            for (int j = 0; j < ingList.size(); j++) {
+                if (ingHashMap.get(i).name.equals(ingList.get(j))) {
+                    IngredientNames.remove(ingList.get(j));
+                }
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, IngredientNames);
+        etIngname.setAdapter(adapter);
+        etIngname.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectFromAuto = true;
+                nameIng = parent.getItemAtPosition(position).toString();
+                ingList.add(nameIng);
+            }
+        });
+    }
 
 
     public class CustomSpinnerAdapter extends BaseAdapter implements SpinnerAdapter {
@@ -625,7 +653,6 @@ public class AddRecipeManualScreen extends ActionBarActivity {
     }
 
 
-
     private void openSettings() {
 
         View menuSettings = findViewById(R.id.actionSettings); // SAME ID AS MENU ID
@@ -641,7 +668,7 @@ public class AddRecipeManualScreen extends ActionBarActivity {
         popupWindow1.setWidth((int) (width / 1.5));
         popupWindow1.setHeight((int) (height / 1.5));
         popupWindow1.setModal(true);
-        popupWindow1.setAdapter(new SettingsAdapter(AddRecipeManualScreen.this, arrayList, drawableImage,true));
+        popupWindow1.setAdapter(new SettingsAdapter(AddRecipeManualScreen.this, arrayList, drawableImage, true));
         popupWindow1.show();
     }
 

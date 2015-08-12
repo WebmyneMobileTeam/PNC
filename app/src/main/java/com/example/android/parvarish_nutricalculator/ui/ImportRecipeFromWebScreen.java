@@ -56,6 +56,7 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,6 +88,7 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
     EditText etRecpieName,etIngDetails,etNoofServings;
     ArrayList<glossaryIngredient> ingHashMap;
     ArrayList<String> IngredientNames;
+    TextView enterReceipeTitle, ingredientTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,7 +195,11 @@ public class ImportRecipeFromWebScreen extends ActionBarActivity {
         webRecipe = (WebView)findViewById(R.id.webRecipe);
         String url = getIntent().getStringExtra("url");
 
+        enterReceipeTitle = (TextView)findViewById(R.id.enterReceipeTitle);
+        enterReceipeTitle.setTypeface(PrefUtils.getTypeFace(ImportRecipeFromWebScreen.this));
 
+        ingredientTitle = (TextView)findViewById(R.id.ingredientTitle);
+        ingredientTitle.setTypeface(PrefUtils.getTypeFace(ImportRecipeFromWebScreen.this));
 
         webRecipe.setWebViewClient(new MyBrowser());
 

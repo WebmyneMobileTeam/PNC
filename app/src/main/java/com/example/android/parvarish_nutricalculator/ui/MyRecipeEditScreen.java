@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -634,23 +635,26 @@ public class MyRecipeEditScreen extends ActionBarActivity {
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
             TextView txt = new TextView(MyRecipeEditScreen.this);
-            txt.setPadding(12, 12, 12, 12);
+            txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
+            txt.setSingleLine(true);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setText(asr.get(position).trim());
+            txt.setText(asr.get(position));
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(txt.getTypeface(), Typeface.ITALIC);
             return txt;
         }
 
         public View getView(int i, View view, ViewGroup viewgroup) {
-
             TextView txt = new TextView(MyRecipeEditScreen.this);
             txt.setGravity(Gravity.CENTER_VERTICAL);
-            txt.setPadding(12, 12, 12, 12);
+            txt.setPadding(16, 16, 16, 16);
             txt.setTextSize(getResources().getDimension(R.dimen.spinner_text));
+            txt.setSingleLine(true);
             txt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_drop_down, 0);
-            txt.setText(asr.get(i).trim());
+            txt.setText(asr.get(i));
             txt.setTextColor(Color.parseColor("#000000"));
+            txt.setTypeface(txt.getTypeface(), Typeface.ITALIC);
             return txt;
         }
     }

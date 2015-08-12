@@ -115,13 +115,13 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
         spinnerList.clear();
         spinnerList.add("Sort");
-        spinnerList.add("Baby name Ascending");
-        spinnerList.add("Baby name Descending");
+        spinnerList.add("Baby Age");
+        spinnerList.add("Baby Name");
+        spinnerList.add("Upload Date");
 
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(MyRecipeListScreen.this, spinnerList);
         forSpinner = (Spinner) findViewById(R.id.forSpinner);
         forSpinner.setAdapter(customSpinnerAdapter);
-
 
         forSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -239,7 +239,7 @@ public class MyRecipeListScreen extends ActionBarActivity {
 
                     adp = new CustomAdapter(MyRecipeListScreen.this, myrecipe.data.Recipe);
                     myRecipeList.setAdapter(adp);
-
+                    adp.sorting(2);
 
                 } catch (Exception e) {
                     Log.e("exc", e.toString());
@@ -393,29 +393,32 @@ public class MyRecipeListScreen extends ActionBarActivity {
             int DSC = 2;
             //ValuesSearch.clear();
             //ValuesSearch.addAll(arraylist);
-            if (pos == 1) {
+            if (pos == 1) { // Age
+                Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
+                    @Override
+                    public int compare(myrecipedata object1, myrecipedata object2) {
+                        return object2.age_group.compareTo(object1.age_group);
+                    }
+                });
+            } else if (pos == 2) { // Name
                 Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
                     @Override
                     public int compare(myrecipedata object1, myrecipedata object2) {
                         return object1.name.compareTo(object2.name);
                     }
                 });
-            } else {
+            } else { // Cretaed (Upload Date)
                 Collections.sort(ValuesSearch, new Comparator<myrecipedata>() {
                     @Override
                     public int compare(myrecipedata object1, myrecipedata object2) {
-                        return object2.name.compareTo(object1.name);
+                        return object1.created.compareTo(object2.created);
                     }
                 });
             }
 
-
             notifyDataSetChanged();
         }
-
-
     }
-
 
     void showDeleteAlert(String msg, final String recpieID) {
 

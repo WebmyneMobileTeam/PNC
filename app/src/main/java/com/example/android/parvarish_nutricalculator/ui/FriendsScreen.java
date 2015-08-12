@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class FriendsScreen extends ActionBarActivity {
     ImageView imgAddFreind, imgPendingReq;
     ListPopupWindow popupWindow1, popupWindow2;
     TextView friendTitle, reqTitle, addTitle;
+    LinearLayout reqLayout, addLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +121,7 @@ public class FriendsScreen extends ActionBarActivity {
         });
 
 
-        imgAddFreind.setOnClickListener(new View.OnClickListener() {
+        addLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CustomDialogBoxAddFreind cdbox = new CustomDialogBoxAddFreind(FriendsScreen.this, currentUser.data.id);
@@ -127,7 +129,7 @@ public class FriendsScreen extends ActionBarActivity {
             }
         });
 
-        imgPendingReq.setOnClickListener(new View.OnClickListener() {
+        reqLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(FriendsScreen.this, FriendsPendingRequestScreen.class);
@@ -258,6 +260,9 @@ public class FriendsScreen extends ActionBarActivity {
         friendList = (ListView) findViewById(R.id.friendList);
         reqTitle = (TextView)findViewById(R.id.reqTitle);
         addTitle = (TextView)findViewById(R.id.addTitle);
+
+        reqLayout = (LinearLayout)findViewById(R.id.reqLayout);
+        addLayout = (LinearLayout)findViewById(R.id.addLayout);
 
         etSearchFreind = (EditText) findViewById(R.id.etSearchFreind);
         imgAddFreind = (ImageView) findViewById(R.id.imgAddFreind);

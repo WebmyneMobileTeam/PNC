@@ -38,7 +38,7 @@ import java.util.List;
 
 import me.drakeet.library.UIButton;
 
-public class LoginScreen extends ActionBarActivity implements View.OnClickListener{
+public class LoginScreen extends ActionBarActivity implements View.OnClickListener {
 
     private EditText edUserName;
     private EditText edPassword;
@@ -47,7 +47,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     private UIButton btnFacebookLogin;
     private HUD progressDialog;
 
-//    private ProgressDialog progressDialog;
+    //    private ProgressDialog progressDialog;
     User user;
     private CallbackManager callbackManager;
     private LoginButton loginButton;
@@ -57,7 +57,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
-        if(PrefUtils.getCurrentUser(LoginScreen.this) != null){
+        if (PrefUtils.getCurrentUser(LoginScreen.this) != null) {
             Intent homeIntent = new Intent(LoginScreen.this, HomeScreen.class);
             startActivity(homeIntent);
             finish();
@@ -81,7 +81,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
         btnForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(LoginScreen.this,ForgotPasswordActivity.class);
+                Intent i = new Intent(LoginScreen.this, ForgotPasswordActivity.class);
                 startActivity(i);
             }
         });
@@ -104,7 +104,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent iHome = new Intent(LoginScreen.this,StartScreen.class);
+        Intent iHome = new Intent(LoginScreen.this, StartScreen.class);
         startActivity(iHome);
         finish();
     }
@@ -113,9 +113,9 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
 
-        callbackManager=CallbackManager.Factory.create();
-        loginButton= (LoginButton)findViewById(R.id.login_button);
-        loginButton.setReadPermissions("public_profile", "email","user_friends");
+        callbackManager = CallbackManager.Factory.create();
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("public_profile", "email", "user_friends");
 
         btnFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +127,6 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                 loginButton.registerCallback(callbackManager, mCallBack);
                 loginButton.setPressed(false);
                 loginButton.invalidate();
-
 
 
             }
@@ -158,20 +157,20 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             userModel userUserModel = new userModel();
                             try {
 
-                            //    registrationProcess(object.getString("id").toString(),object.getString("email").toString(), object.getString("name").toString());
+                                //    registrationProcess(object.getString("id").toString(),object.getString("email").toString(), object.getString("name").toString());
 
                                 userUserModel.data.fb_id = object.getString("id").toString();
                                 userUserModel.data.email = object.getString("email").toString();
                                 userUserModel.data.name = object.getString("name").toString();
                                 userUserModel.data.gender = object.getString("gender").toString();
-                                PrefUtils.setCurrentUser(userUserModel,LoginScreen.this);
 
-                            }catch (Exception e){
-                                Log.e("### EXC",e.toString());
+                                Log.e("my fb name", userUserModel.data.name);
+                                PrefUtils.setCurrentUser(userUserModel, LoginScreen.this);
+
+                            } catch (Exception e) {
+                                Log.e("### EXC", e.toString());
                                 e.printStackTrace();
                             }
-
-
 
 
                             ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(LoginScreen.this, "user_pref", 0);
@@ -188,18 +187,18 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                             SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
                             boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
 
-                            if(isFristTime){
+                            if (isFristTime) {
                                 Intent intent = new Intent(LoginScreen.this, WalkThorugh.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
-                            }else {
+                            } else {
                                 Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                             }
-        //    callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
+                            //    callRegistrationProcess(object.getString("email").toString(), object.getString("name").toString(), AppConstants.TYPE_FB);
                         }
                     });
 
@@ -224,7 +223,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     };
 
 
-    private void registrationProcess(String fbID,String email,String name) {
+    private void registrationProcess(String fbID, String email, String name) {
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginScreen.this);
         progressDialog.setMessage("Loading");
@@ -247,7 +246,7 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 //                    Toast.makeText(SignupScreen.this,response,Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
 
-                Log.e("##### RES--",response);
+                Log.e("##### RES--", response);
 
                 try {
 
@@ -294,12 +293,10 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
     }
 
 
-
-
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.btnLogin:
                 loginProcess();
@@ -309,23 +306,23 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
     private void loginProcess() {
 
-        if(passValidationProcess()){
+        if (passValidationProcess()) {
 
             List<NameValuePair> pairs = new ArrayList<>();
-            pairs.add(new BasicNameValuePair("email",edUserName.getText().toString()));
-            pairs.add(new BasicNameValuePair("fb_id",""));
+            pairs.add(new BasicNameValuePair("email", edUserName.getText().toString()));
+            pairs.add(new BasicNameValuePair("fb_id", ""));
             pairs.add(new BasicNameValuePair("password", edPassword.getText().toString()));
 
 
-            progressDialog =new HUD(LoginScreen.this,android.R.style.Theme_Translucent_NoTitleBar);
+            progressDialog = new HUD(LoginScreen.this, android.R.style.Theme_Translucent_NoTitleBar);
             progressDialog.show();
 
-           new GetPostClass(API.LOGIN,pairs,EnumType.POST) {
+            new GetPostClass(API.LOGIN, pairs, EnumType.POST) {
                 @Override
                 public void response(String response) {
                     progressDialog.dismiss();
 
-                    Log.e("login response",response);
+                    Log.e("login response", response);
 
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString().trim());
@@ -343,12 +340,11 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
 
                         Log.e("sucness", "saved current user");
 
-                        Log.e("id",""+ userUserModel.data.id);
+                        Log.e("id", "" + userUserModel.data.id);
 
-                    }catch(Exception e){
-                        Log.e("excption s",e.toString());
+                    } catch (Exception e) {
+                        Log.e("excption s", e.toString());
                     }
-
 
 
                     //Toast.makeText(LoginScreen.this,response,Toast.LENGTH_SHORT).show();
@@ -356,12 +352,12 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                     SharedPreferences preferences1 = getSharedPreferences("firstTime", MODE_PRIVATE);
                     boolean isFristTime = preferences1.getBoolean("isFirstTime", true);
 
-                    if(isFristTime){
+                    if (isFristTime) {
                         Intent intent = new Intent(LoginScreen.this, WalkThorugh.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                    }else {
+                    } else {
                         Intent intent = new Intent(LoginScreen.this, HomeScreen.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -369,24 +365,25 @@ public class LoginScreen extends ActionBarActivity implements View.OnClickListen
                     }
 
                 }
+
                 @Override
                 public void error(String error) {
                     progressDialog.dismiss();
-                    Toast.makeText(LoginScreen.this,error,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, error, Toast.LENGTH_SHORT).show();
                 }
             }.call();
 
-        }else{
-            Toast.makeText(LoginScreen.this,"Enter credentials",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(LoginScreen.this, "Enter credentials", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public boolean passValidationProcess(){
+    public boolean passValidationProcess() {
         boolean ispassed = false;
 
-        if(edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()){
+        if (edUserName.getText().toString().isEmpty() || edPassword.getText().toString().isEmpty()) {
             ispassed = false;
-        }else{
+        } else {
             ispassed = true;
         }
         return ispassed;

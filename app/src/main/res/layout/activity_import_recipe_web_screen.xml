@@ -52,6 +52,7 @@ android:layout_height="match_parent">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
+                    android:id="@+id/enterReceipeTitle"
                     android:singleLine="true"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
@@ -170,8 +171,9 @@ android:layout_height="match_parent">
             </LinearLayout>
 
             <TextView
+                android:id="@id/ingredientTitle"
                 android:layout_gravity="center"
-                android:textSize="26sp"
+                android:textSize="@dimen/heading_text"
                 android:padding="8sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"

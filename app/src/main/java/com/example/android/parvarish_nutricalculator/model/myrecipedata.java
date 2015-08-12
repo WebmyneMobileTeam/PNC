@@ -8,7 +8,6 @@ import java.util.ArrayList;
  */
 public class myrecipedata {
 
-
     @SerializedName("Babies")
     public ArrayList<babyData> Babies;
 
@@ -26,7 +25,6 @@ public class myrecipedata {
 
     @SerializedName("name")
     public String name;
-
 
     @SerializedName("method")
     public String method;

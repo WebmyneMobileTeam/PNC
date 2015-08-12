@@ -40,6 +40,7 @@ import com.example.android.parvarish_nutricalculator.helpers.EnumType;
 import com.example.android.parvarish_nutricalculator.helpers.GetPostClass;
 import com.example.android.parvarish_nutricalculator.helpers.JSONPost;
 import com.example.android.parvarish_nutricalculator.helpers.POSTResponseListener;
+import com.example.android.parvarish_nutricalculator.helpers.PrefUtils;
 import com.example.android.parvarish_nutricalculator.model.Model;
 import com.example.android.parvarish_nutricalculator.model.myrecipedata;
 import com.example.android.parvarish_nutricalculator.ui.ProfileScreen;
@@ -62,22 +63,21 @@ import java.util.regex.Pattern;
 /**
  * Created by Android on 27-04-2015.
  */
-public class CustomDialogBoxAddFreind extends Dialog  implements
-        View.OnClickListener{
-    private ProgressDialog progressDialog;
+public class CustomDialogBoxAddFreind extends Dialog implements
+        View.OnClickListener {
     public Activity act;
     public Dialog d;
-    public Button yes,btnShareLink;
+    public Button yes, btnShareLink;
     ListView listView;
+    TextView addFriend;
     private String UserId;
 
     ArrayAdapter<String> adapter;
-    public CustomDialogBoxAddFreind(Activity context,String uid ) {
+
+    public CustomDialogBoxAddFreind(Activity context, String uid) {
         super(context);
         this.act = context;
-        this.UserId=uid;
-
-
+        this.UserId = uid;
     }
 
     @Override
@@ -87,32 +87,29 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.add_friend_item);
 
-        listView = (ListView)findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
+        addFriend = (TextView) findViewById(R.id.addFriend);
+        addFriend.setTypeface(PrefUtils.getTypeFace(act));
+
         yes = (Button) findViewById(R.id.btnSendReq);
 
         btnShareLink = (Button) findViewById(R.id.btnShareLink);
         btnShareLink.setOnClickListener(this);
         yes.setOnClickListener(this);
 
-
         final ArrayList<String> EmailAcc = proessFetchEmailContacts();
 
-         adapter = new ArrayAdapter<String>(act,android.R.layout.simple_list_item_multiple_choice,EmailAcc);
+        adapter = new ArrayAdapter<String>(act, android.R.layout.simple_list_item_multiple_choice, EmailAcc);
 
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-
-
-
     }
 
-
-
-    public ArrayList<String> proessFetchEmailContacts(){
+    public ArrayList<String> proessFetchEmailContacts() {
         ArrayList<String> names = new ArrayList<String>();
         ContentResolver cr = act.getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         if (cur.getCount() > 0) {
             while (cur.moveToNext()) {
                 String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
@@ -122,11 +119,11 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
                         new String[]{id}, null);
                 while (cur1.moveToNext()) {
                     //to get the contact names
-                    String name=cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                   // Log.e("Name :", name);
+                    String name = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    // Log.e("Name :", name);
                     String email = cur1.getString(cur1.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
                     //Log.e("Email", email);
-                    if(email!=null){
+                    if (email != null) {
                         names.add(email);
                     }
                 }
@@ -154,17 +151,17 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
                         FINAL_EMAIL.add(adapter.getItem(position));
                 }
 
-                Log.e("@@@@ List size -",""+FINAL_EMAIL.size());
-                for(int i=0;i<FINAL_EMAIL.size();i++) {
+                Log.e("@@@@ List size -", "" + FINAL_EMAIL.size());
+                for (int i = 0; i < FINAL_EMAIL.size(); i++) {
                     Log.e("#### Name-", FINAL_EMAIL.get(i));
 
                 }
 
-                    if( FINAL_EMAIL.size()==0){
-                        showToast("Please Select at least one email address !!!");
-                    }else {
-                        processFreindInvite(FINAL_EMAIL);
-                    }
+                if (FINAL_EMAIL.size() == 0) {
+                    showToast("Please Select at least one email address !!!");
+                } else {
+                    processFreindInvite(FINAL_EMAIL);
+                }
 
 
                 break;
@@ -182,27 +179,17 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
             default:
                 break;
         }
-       // dismiss();
+        // dismiss();
 
     }
 
 
-
-
-
-
-
-
-
-
-
-
-     void showToast(String msg){
+    void showToast(String msg) {
         Toast.makeText(act, msg, Toast.LENGTH_SHORT).show();
     }
 
-    void processFreindInvite(final ArrayList<String> EMAIL_ADDRESS){
-        try{
+    void processFreindInvite(final ArrayList<String> EMAIL_ADDRESS) {
+        try {
 
             JSONObject userJSONObject = new JSONObject();
 
@@ -211,21 +198,21 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
 
             JSONArray array = new JSONArray();
 
-            for(int i=0;i<EMAIL_ADDRESS.size();i++)
-            array.put(EMAIL_ADDRESS.get(i));
+            for (int i = 0; i < EMAIL_ADDRESS.size(); i++)
+                array.put(EMAIL_ADDRESS.get(i));
 
-            userJSONObject.put("friend_email",array);
+            userJSONObject.put("friend_email", array);
 
-            Log.e("@@@# freind req",userJSONObject.toString());
+            Log.e("@@@# freind req", userJSONObject.toString());
             JSONPost json = new JSONPost();
-            json.POST(act, API.FRIENDS_INVITE, userJSONObject.toString(),"Sending Request...");
+            json.POST(act, API.FRIENDS_INVITE, userJSONObject.toString(), "Sending Request...");
             json.setPostResponseListener(new POSTResponseListener() {
                 @Override
                 public String onPost(String msg) {
 
                     Log.e("add freinf req", "onPost response: " + msg);
 
-                    Toast.makeText(act,"Freind Request Sent Succesfully",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(act, "Freind Request Sent Succesfully", Toast.LENGTH_SHORT).show();
                     dismiss();
 
                     return null;
@@ -243,8 +230,8 @@ public class CustomDialogBoxAddFreind extends Dialog  implements
             });
 
 
-        }catch (Exception e){
-            Log.e("Exception",e.toString());
+        } catch (Exception e) {
+            Log.e("Exception", e.toString());
         }
     }
 

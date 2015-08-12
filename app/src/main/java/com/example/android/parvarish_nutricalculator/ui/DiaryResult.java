@@ -64,6 +64,7 @@ public class DiaryResult extends ActionBarActivity {
     glossaryDescription ingdredient;
     icmrMainModel icmrOBJ;
     Button btnSave;
+    TextView diaryTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,8 @@ public class DiaryResult extends ActionBarActivity {
 
     void init(){
         btnSave = (Button)findViewById(R.id.btnSave);
+        diaryTitle = (TextView)findViewById(R.id.diaryTitle);
+        diaryTitle.setTypeface(PrefUtils.getTypeFace(DiaryResult.this));
         linearRecipeNames = (LinearLayout)findViewById(R.id.linearRecipeNames);
         linearTableDetails = (LinearLayout)findViewById(R.id.linearTableFriendRecipeDetail);
     }
